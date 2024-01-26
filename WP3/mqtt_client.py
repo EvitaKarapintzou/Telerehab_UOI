@@ -52,21 +52,22 @@ def get_data_tranch(q1,q2,q3,q4):
     while(not q4.empty()):
         imu4List.append(q4.get())
 
-    #print(len(q1) + "!!!!!!!")
     get_metrics(imu1List,imu2List,imu3List,imu4List)
     
-    while not imu1Queue.empty():
-    	imu1Queue.get()
-    while not imu2Queue.empty():
-    	imu2Queue.get()
-    while not imu3Queue.empty():
-    	imu3Queue.get()
-    while not imu4Queue.empty():
-    	imu4Queue.get()
+    #while not imu1Queue.empty():
+    #	imu1Queue.get()
+    #while not imu2Queue.empty():
+    #	imu2Queue.get()
+    #while not imu3Queue.empty():
+    #	imu3Queue.get()
+    #while not imu4Queue.empty():
+    #	imu4Queue.get()
 
 def scheduler(scheduleQueue):
-	time.sleep(1)
-	scheduleQueue.put("GO");
+	#for i in range(80):
+	while(True):
+		time.sleep(0.5)
+		scheduleQueue.put("GO");
 	
 
 def receive_imu_data(q,scheduleQueue):
@@ -91,13 +92,14 @@ def receive_imu_data(q,scheduleQueue):
             # imu3Queue.put("3")
             # imu4Queue.put("4")
             
-            while not q.empty():
-            	q.get()
+            #while not q.empty():
+            #	q.get()
             
+            #print(A)
             
             for item in parts:
               name = item.split()
-              #print(name[1])
+             # print(name[1])
               if(name[1] == "E15561CB9161"):
                   imu1Queue.put(item)
               elif(name[1] == "E25AD03D0194"):
@@ -109,14 +111,13 @@ def receive_imu_data(q,scheduleQueue):
 
             
                  
-            print(imu1Queue.qsize(), " ", imu2Queue.qsize(), " ", imu3Queue.qsize(), " ", imu4Queue.qsize())
-            #if(not scheduleQueue.empty()):
-            #    get_data_tranch(imu1Queue,imu2Queue,imu3Queue,imu4Queue)
+            #print(imu1Queue.qsize(), " ", imu2Queue.qsize(), " ", imu3Queue.qsize(), " ", imu4Queue.qsize())
+            if(not scheduleQueue.empty()):
+                get_data_tranch(imu1Queue,imu2Queue,imu3Queue,imu4Queue)
                 
-            #    scheduleQueue.get()
-           # print("############")
+                scheduleQueue.get()
 
-mbB = mp.Process(target=receive_imu_data,args=(queueData,scheduleQueue));
+mbB = mp.Process(target=receive_imu_data,args=(queueData,scheduleQueue,));
 mbB.start();
 mbB1 = mp.Process(target=scheduler,args=(scheduleQueue,));
 mbB1.start();
