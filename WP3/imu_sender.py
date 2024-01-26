@@ -11,7 +11,6 @@ from paho.mqtt import client as mqtt_client
 broker = '192.168.0.231'
 port = 1883
 topic = "location/123"
-# Generate a Client ID with the publish prefix.
 client_id = f'publish-{random.randint(0, 1000)}'
 # username = 'emqx'
 # password = 'public'
@@ -75,45 +74,27 @@ def publish(client):
         imu4Data.append(format_message("MetaWearE7", "FEAC84C53DE7", ', '.join(row)))
 
     sendData = []
+    
     for i in range(min(len(imu1Data),len(imu2Data),len(imu3Data), len(imu4Data))):
-        sendData.append(imu1Data)
-        sendData.append(imu2Data)
-        sendData.append(imu3Data)
-        sendData.append(imu4Data)
-        #print(imu1Data[i])
-        #print(imu2Data[i])
-        #print(imu3Data[i])
-        #print(imu4Data[i])
-
+        sendData.append(imu1Data[i])
+        sendData.append(imu2Data[i])
+        sendData.append(imu3Data[i])
+        sendData.append(imu4Data[i])
+        
+        print(sendData)
         if(len(sendData) >=100):
             sendDataString = ""
-            for i in range(len(sendData)):
-                sendDataString = sendDataString + ', '.join(sendData[i])
             
-            result = client.publish(topic, sendDataString)
+            result = client.publish(topic, str(sendData))
             sendData = []
-
-    
-
-    # while True:
-    #     time.sleep(1)
-    #     msg = f"messages: {msg_count}"
-    #     result = client.publish(topic, msg)
-    #     # result: [0, 1]
-    #     status = result[0]
-    #     if status == 0:
-    #         print(f"Send `{msg}` to topic `{topic}`")
-    #     else:
-    #         print(f"Failed to send message to topic {topic}")
-    #     msg_count += 1
-    #     if msg_count > 5:
-    #         break
+            #time.sleep(0.3)
 
 
 def run():
     client = connect_mqtt()
     client.loop_start()
     publish(client)
+    print("telos")
     client.loop_stop()
 
 
