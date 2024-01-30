@@ -74,7 +74,7 @@ def publish(client):
         if(len(sendData) >=100):
             sendDataString = ""
 
-            sendDataString = ", ".join(["'" + item + "'" for item in sendData])
+            sendDataString = ", ".join(["\"" + item + "\"" for item in sendData])
             result = client.publish(topic, str(sendDataString))
             sendData = []
 
