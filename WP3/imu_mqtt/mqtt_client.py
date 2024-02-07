@@ -24,7 +24,6 @@ imu4FinalQueue = mp.Queue();
 scheduleQueue = mp.Queue();
 imus = []
 firstPacket = mp.Value('b', True)
-fileName = ""
 lastDataTime = mp.Value('d',time.time())
 startReceiving = mp.Value('b', False)
 manager = mp.Manager()
@@ -97,7 +96,7 @@ def get_data_tranch(q1,q2,q3,q4,):
 
 def scheduler(scheduleQueue):
 	while(True):
-		time.sleep(0.5)
+		time.sleep(5)
 		scheduleQueue.put("GO");
 	
 def receive_imu_data(q,scheduleQueue):
@@ -108,7 +107,7 @@ def receive_imu_data(q,scheduleQueue):
             
             for item in parts:
               name = item.split()
-              if(len(name) > 0):
+              if(len(name) > 1):
                 if(name[1] == str(imus[0])):
                     imu1Queue.put(item)
                 elif(name[1] == str(imus[1])):
@@ -166,13 +165,13 @@ def condition_checker():
     c = 0
     imu1List = []
     while True:
-        if time.time() - lastDataTime.value >= 10 and startReceiving.value == True :
-            print(scheduleQueue)
+        if time.time() - lastDataTime.value >= 50 and startReceiving.value == True :
             write_to_files = True
             firstPacket.value = True
             print("Data has been saved!\n")
             startReceiving.value = False
             csv_file_path[:] = [] 
+            time.sleep(60)
         time.sleep(1)  
 
 read_configure_file()
