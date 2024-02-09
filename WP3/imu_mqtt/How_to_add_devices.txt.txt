@@ -1,0 +1,14 @@
+Μέσα στο internal shared space -> Android -> data -> com.mbientlab.metawear.metabase -> files -> devices
+	1) Για κάθε imu
+		Φτιάξε φάκελο με όνομα MAC address
+			φτιάξε αρχείο με όνομα info
+				Το περιεχόμενο θα είναι:
+				{"model-number":"5","name":ΧΧΧΧ,"model-name":"MetaMotion RL"}
+
+				*ΧΧΧΧ = "MetaWear40"
+
+	Μόλις προστεθούν όλα τα imu.
+
+	2) Φτιάξε φάκελο στο internal shared space -> Android -> data -> com.mbientlab.metawear.metabase -> files -> groups
+		Εσωτερικά φτιάξε αρχεία με όνομα τα MAC address από το κάθε imu, χωρίς περιεχόμενο.
+
