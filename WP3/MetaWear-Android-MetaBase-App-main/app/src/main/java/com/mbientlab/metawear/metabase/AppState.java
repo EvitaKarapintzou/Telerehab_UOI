@@ -141,7 +141,6 @@ class AppState {
 
                     itemView.setOnClickListener(v -> {
                         if (itemSelected != null) {
-                            System.out.println("EPILEXTHHKEEEEEEEEEEE");
                             itemSelected.apply(items.get(getAdapterPosition()));
                         }
                     });
@@ -163,9 +162,9 @@ class AppState {
 
             @Override
             public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-                Group group =items.get(position);
-
+                Group group = items.get(position);
                 ((TextView) holder.itemView.findViewById(R.id.group_name)).setText(group.name);
+
                 if (position == 0 && itemSelected != null && !items.isEmpty()) {    //Auto selected the imu group
                     itemSelected.apply(group);
                 }

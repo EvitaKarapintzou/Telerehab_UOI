@@ -40,6 +40,7 @@ class SelectedGrouping {
     final String name;
 
     SelectedGrouping(List<AppState.Session> sessions, String name) {
+        System.out.println("$$$$ " + sessions.size() + " " + name);
         devices = new ArrayList<>();
         this.sessions = sessions;
         this.name = name;
