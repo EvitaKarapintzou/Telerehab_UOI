@@ -42,7 +42,7 @@
 
     <string name="dfu_firmware_path_type">Invalid firmware path type</string>
 
-    <string name="app_name">MetaBase</string>
+    <string name="app_name">IMU sensors</string>
     <string name="title_config">Configure</string>
     <string name="title_error">Error</string>
     <string name="title_download">Download</string>
