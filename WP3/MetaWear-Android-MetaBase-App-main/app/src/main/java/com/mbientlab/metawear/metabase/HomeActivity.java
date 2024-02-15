@@ -32,6 +32,8 @@
 package com.mbientlab.metawear.metabase;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -64,6 +66,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.provider.Settings;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.widget.Button;
@@ -155,6 +158,8 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
         }
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,6 +168,7 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         setRequestedOrientation(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
                 ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE :
@@ -180,10 +186,10 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
             currentFragment = (AppFragmentBase) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_KEY);
         }
 
-        scanner = BtleScanner.getScanner(((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter(), new UUID[] {
+        scanner = BtleScanner.getScanner(((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter(), new UUID[]{
                 MetaWearBoard.METAWEAR_GATT_SERVICE
         });
-        getApplicationContext().bindService(new Intent(this, BtleService.class),this, Context.BIND_AUTO_CREATE);
+        getApplicationContext().bindService(new Intent(this, BtleService.class), this, Context.BIND_AUTO_CREATE);
 
 
 //        Gson gson = new Gson();
@@ -193,8 +199,8 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
 //        publisher.publish("location/12345", json, 2);
 //        publisher.disconnect();
 
-       // Intent serviceIntent = new Intent(this, MyBackgroundService.class);
-       // startService(serviceIntent);
+        // Intent serviceIntent = new Intent(this, MyBackgroundService.class);
+        // startService(serviceIntent);
 
 
 //        Intent serviceIntent = new Intent(this, MyJobIntentService.class);
@@ -221,7 +227,9 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
     @Override
     protected void onResume() {
         super.onResume();
-        //moveTaskToBack(true);
+        moveTaskToBack(true);
+        //showNotification(getApplicationContext());
+        //showNotifcation2("msn", "body");
         if (!appInBackground) {
             appInBackground = false;
         }
@@ -235,15 +243,55 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
         appInBackground = true;
     }
 
+    public void showNotifcation2(String title, String body, Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //Mostrar notificacion en Android Api level >=26
+            final String CHANNEL_ID = "HEADS_UP_NOTIFICATIONS";
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "MyNotification",
+                    NotificationManager.IMPORTANCE_HIGH);
+
+            getSystemService(NotificationManager.class).createNotificationChannel(channel);
+            Notification.Builder notification = new Notification.Builder(context, CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setContentText(body)
+                    .setSmallIcon(R.drawable.rssi_level)
+                    .setAutoCancel(true);
+            if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            NotificationManagerCompat.from(context).notify(1, notification.build());
+
+        }else{
+            //Mostrar notificación para Android Api Level Menor a 26
+            String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setContentText(body)
+                    .setSmallIcon(R.drawable.rssi_level)
+                    .setAutoCancel(true);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(/*notification id*/1, notificationBuilder.build());
+
+        }
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
         clearActiveInstance();
-        // Unbind the service when the activity is destroyed
         getApplicationContext().unbindService(this);
-
         //Intent serviceIntent = new Intent(this, MyBackgroundService.class);
         //stopService(serviceIntent);
     }
@@ -280,7 +328,6 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
         if (currentFragment.getMenuGroupResId() != null) {
             menu.setGroupVisible(currentFragment.getMenuGroupResId(), true);
         }
-
         return super.onPrepareOptionsMenu(menu);
     }
 
