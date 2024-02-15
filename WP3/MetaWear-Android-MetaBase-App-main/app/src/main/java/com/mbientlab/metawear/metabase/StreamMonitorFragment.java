@@ -31,14 +31,24 @@
 
 package com.mbientlab.metawear.metabase;
 
+
+
+import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -46,8 +56,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
-import android.provider.Settings;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -82,6 +94,7 @@ import bolts.Task;
 import bolts.TaskCompletionSource;
 
 import static com.mbientlab.metawear.metabase.Global.FIREBASE_PARAM_LOG_DURATION;
+import static com.mbientlab.metawear.metabase.HomeActivity.getActiveInstance;
 
 public class StreamMonitorFragment extends AppFragmentBase implements ServiceConnection {
     private final static String FIREBASE_EVENT_STREAM_STOP = "stop_stream";
@@ -115,6 +128,40 @@ public class StreamMonitorFragment extends AppFragmentBase implements ServiceCon
             List<DataHandler.SampleCountDataHandler> streamMetrics;
             Map<MetaBaseDevice, List<Pair<SensorConfig, DataHandler.SampleCountDataHandler>>> samples;
 
+            public void showNotifcation(String title, String body, Context context) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    final String CHANNEL_ID = "HEADS_UP_NOTIFICATIONS";
+                    NotificationChannel channel = new NotificationChannel(
+                            CHANNEL_ID,
+                            "MyNotification",
+                            NotificationManager.IMPORTANCE_HIGH);
+
+                    context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
+                    Notification.Builder notification = new Notification.Builder(context, CHANNEL_ID)
+                            .setContentTitle(title)
+                            .setContentText(body)
+                            .setSmallIcon(R.drawable.imuicon_drawio_removebg_preview)
+                            .setAutoCancel(true);
+                    if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    NotificationManagerCompat.from(context).notify(1, notification.build());
+
+                }else{
+                    String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
+                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                            .setContentTitle(title)
+                            .setContentText(body)
+                            .setSmallIcon(R.drawable.imuicon_drawio_removebg_preview)
+                            .setAutoCancel(true);
+
+                    NotificationManager notificationManager =
+                            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(/*notification id*/1, notificationBuilder.build());
+
+                }
+            }
+
             void start(Parameter parameter) {
                 this.parameter = parameter;
                 metawears = new ArrayList<>();
@@ -124,6 +171,7 @@ public class StreamMonitorFragment extends AppFragmentBase implements ServiceCon
 
                 getApplicationContext().bindService(new Intent(Service.this, BtleService.class), Service.this, Context.BIND_AUTO_CREATE);
                 active = true;
+                showNotifcation("IMU sensors", "The data logging has started!", getApplicationContext());
             }
         }
 
@@ -173,12 +221,14 @@ public class StreamMonitorFragment extends AppFragmentBase implements ServiceCon
         return inflater.inflate(R.layout.fragment_stream_monitor, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         elapsedTimeText= view.findViewById(R.id.elapsed_time);
         elapsedTimeText.setText("00:00:00");
+        //showNotifcation2("msn", "body", getActiveInstance().getApplicationContext());
 
         view.findViewById(R.id.stream_stop).setOnClickListener(v -> {
 //            new Handler().postDelayed(() -> {
@@ -186,7 +236,6 @@ public class StreamMonitorFragment extends AppFragmentBase implements ServiceCon
 //            }, 180000);
 
             owner.stopService(streamServiceIntent);
-
 
 
             final long stop = System.nanoTime();
@@ -298,8 +347,42 @@ public class StreamMonitorFragment extends AppFragmentBase implements ServiceCon
 //            Client newClient = new Client(hostUrl,port, "TERMINATED");
 //            newClient.execute();
 
+//            new Handler().postDelayed(() -> {
+//                //owner.getApplicationContext().unbindService(this);
+//                //super.onDestroy();
+//                //Intent intent = new Intent(owner.getApplicationContext(), HomeActivity.class);
+//                //startActivity(intent);
+//                bringAppToForeground();
+//                System.out.println("!!!!!!!!!!!!!!!!!!!!11111111111");
+//            }, 2000);
             new Handler().postDelayed(() -> {
-                System.exit(1);
+                //owner.getApplicationContext().unbindService(this);
+                //super.onDestroy();
+                //Intent intent = new Intent(owner.getApplicationContext(), HomeActivity.class);
+                //startActivity(intent);
+                System.out.println("!!!!!!!!!!!!!!!!!!!!22222222");
+//                System.runFinalization();
+//                Runtime.getRuntime().gc();
+//                System.gc();
+                //owner.finishAffinity();
+                //printRunningProcesses();
+                //closeProcesses();
+                //System.exit(1);
+                int pid = android.os.Process.myPid();
+                getActivity().finish();
+                getActivity().finishAffinity();
+                System.out.println("$$$$$ " + pid);
+                binder.showNotifcation("IMU sensors", "The data logging has been completed!", getContext());
+                android.os.Process.killProcess(pid);
+
+                System.exit(0);
+
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        bringAppToForeground();
+//                    }
+//                }, 200);
             }, 10000);
 
 
@@ -314,8 +397,63 @@ public class StreamMonitorFragment extends AppFragmentBase implements ServiceCon
         }, 61000);
     }
 
+    private void printRunningProcesses() {
+        ActivityManager activityManager = (ActivityManager) owner.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = activityManager.getRunningAppProcesses();
+
+        if (runningAppProcesses != null) {
+            Log.d("RunningProcesses", "Printing running processes:");
+            for (ActivityManager.RunningAppProcessInfo processInfo : runningAppProcesses) {
+                Log.d("RunningProcesses", "Process Name: " + processInfo.processName);
+            }
+        }
+    }
+
+    private void closeProcesses() {
+        ActivityManager activityManager = (ActivityManager) owner.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = activityManager.getRunningAppProcesses();
+
+        if (runningAppProcesses != null) {
+            Log.d("CloseProcesses", "Closing processes:");
+            for (ActivityManager.RunningAppProcessInfo processInfo : runningAppProcesses) {
+                // Exclude your own application process
+                //if (!processInfo.processName.equals(getPackageName())) {
+                    Log.d("CloseProcesses", "Closing process: " + processInfo.processName);
+                    activityManager.killBackgroundProcesses(processInfo.processName);
+                //}
+            }
+        }
+    }
+
+    private void bringAppToForeground() {
+        Intent intent = new Intent(HomeActivity.getActiveInstance().getApplicationContext(), HomeActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                owner.getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE
+        );
+
+        try {
+            pendingIntent.send();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    closeProcesses();
+                }
+            }, 2000);
+
+
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
         super.onActivityCreated(savedInstanceState);
 
         parameter = (Parameter) activityBus.parameter();
@@ -369,56 +507,59 @@ public class StreamMonitorFragment extends AppFragmentBase implements ServiceCon
             binder.session = new AppState.Session("", String.format(Locale.US, DataHandler.CsvDataHandler.TIMESTAMP_FORMAT, now));
 
             LinearLayout metrics = getView().findViewById(R.id.metrics);
-            for (Pair<MetaBaseDevice, Map<SensorConfig, Route>> it : parameter.devices) {
-                final DataHandler.SampleCountDataHandler sampleCounter = new DataHandler.SampleCountDataHandler();
-                sampleCounter.init();
-                binder.dataHandlers.add(sampleCounter);
-                binder.streamMetrics.add(sampleCounter);
+            //System.out.println("!!!!!!!! " + parameter.devices.size());
 
-                LinearLayout status = (LinearLayout) getLayoutInflater().inflate(R.layout.board_status, null);
-                final TextView deviceName = status.findViewById(R.id.device_name);
-                final ImageView alert = status.findViewById(R.id.alert_reconnecting);
+            try {
+                for (Pair<MetaBaseDevice, Map<SensorConfig, Route>> it : parameter.devices) {
+                    final DataHandler.SampleCountDataHandler sampleCounter = new DataHandler.SampleCountDataHandler();
+                    sampleCounter.init();
+                    binder.dataHandlers.add(sampleCounter);
+                    binder.streamMetrics.add(sampleCounter);
 
-                deviceName.setText(it.first.name);
-                sampleCounter.sampleCountView = status.findViewById(R.id.sample_count);
-                sampleCounter.sampleCountView.setText("0");
+                    LinearLayout status = (LinearLayout) getLayoutInflater().inflate(R.layout.board_status, null);
+                    final TextView deviceName = status.findViewById(R.id.device_name);
+                    final ImageView alert = status.findViewById(R.id.alert_reconnecting);
 
-                final MetaWearBoard m = activityBus.getMetaWearBoard(it.first.btDevice);
-                m.onUnexpectedDisconnect(code -> dcHandler.apply(m, deviceName, alert));
-                binder.metawears.add(m);
+                    deviceName.setText(it.first.name);
+                    sampleCounter.sampleCountView = status.findViewById(R.id.sample_count);
+                    sampleCounter.sampleCountView.setText("0");
 
-                List<Pair<SensorConfig, DataHandler.SampleCountDataHandler>> sensorSamples = new ArrayList<>();
-                JseMetaWearBoard casted = (JseMetaWearBoard) m;
-                File csvDest = new File(AppState.devicesPath, it.first.getFileFriendlyMac());
-                for (Map.Entry<SensorConfig, Route> it2 : it.second.entrySet()) {
-                    String filename = String.format(Locale.US, "%s_" + DataHandler.CsvDataHandler.TIMESTAMP_FORMAT + "_%s_%s_%s_%s.csv",
-                            it.first.name,
-                            now,
-                            it.first.getFileFriendlyMac(),
-                            owner.getString(it2.getKey().nameResId),
-                            it2.getKey().selectedFreqText(),
-                            casted.getFirmware()
-                    );
-                    File output = new File(csvDest, filename);
-                    binder.session.files.add(output);
-                    final DataHandler csvWriter;
-                    //Client newClient = new Client("195.130.118.252",12345, "!!!!!!!!");
-                    try {
-                        DataHandler.SampleCountDataHandler sensorCount = new DataHandler.SampleCountDataHandler();
-                        sensorSamples.add(new Pair<>(it2.getKey(), sensorCount));
+                    final MetaWearBoard m = activityBus.getMetaWearBoard(it.first.btDevice);
+                    m.onUnexpectedDisconnect(code -> dcHandler.apply(m, deviceName, alert));
+                    binder.metawears.add(m);
 
-                        csvWriter = new DataHandler.CsvDataHandler(new FileOutputStream(output), it2.getValue().generateIdentifier(0), it2.getKey().frequency(m), true);
-                        csvWriter.init();
-                        //csvWriter.setClient(newClient);
-                        binder.dataHandlers.add(csvWriter);
+                    List<Pair<SensorConfig, DataHandler.SampleCountDataHandler>> sensorSamples = new ArrayList<>();
+                    JseMetaWearBoard casted = (JseMetaWearBoard) m;
+                    File csvDest = new File(AppState.devicesPath, it.first.getFileFriendlyMac());
+                    for (Map.Entry<SensorConfig, Route> it2 : it.second.entrySet()) {
+                        String filename = String.format(Locale.US, "%s_" + DataHandler.CsvDataHandler.TIMESTAMP_FORMAT + "_%s_%s_%s_%s.csv",
+                                it.first.name,
+                                now,
+                                it.first.getFileFriendlyMac(),
+                                owner.getString(it2.getKey().nameResId),
+                                it2.getKey().selectedFreqText(),
+                                casted.getFirmware()
+                        );
+                        File output = new File(csvDest, filename);
+                        binder.session.files.add(output);
+                        final DataHandler csvWriter;
+                        //Client newClient = new Client("195.130.118.252",12345, "!!!!!!!!");
+                        try {
+                            DataHandler.SampleCountDataHandler sensorCount = new DataHandler.SampleCountDataHandler();
+                            sensorSamples.add(new Pair<>(it2.getKey(), sensorCount));
 
-                        csvWriter.setName(it.first.name);
-                        csvWriter.setMac(it.first.getFileFriendlyMac());
-                        it2.getValue().resubscribe(0, (data, env) -> {
-                            sampleCounter.process(data);
-                            csvWriter.process(data);
-                            sensorCount.process(data);
-                        });
+                            csvWriter = new DataHandler.CsvDataHandler(new FileOutputStream(output), it2.getValue().generateIdentifier(0), it2.getKey().frequency(m), true);
+                            csvWriter.init();
+                            //csvWriter.setClient(newClient);
+                            binder.dataHandlers.add(csvWriter);
+
+                            csvWriter.setName(it.first.name);
+                            csvWriter.setMac(it.first.getFileFriendlyMac());
+                            it2.getValue().resubscribe(0, (data, env) -> {
+                                sampleCounter.process(data);
+                                csvWriter.process(data);
+                                sensorCount.process(data);
+                            });
 //                        Constants urlPort = new Constants();
 //                        String hostUrl = urlPort.getHostUrl();
 //                        Integer port = urlPort.getPort();
@@ -427,20 +568,40 @@ public class StreamMonitorFragment extends AppFragmentBase implements ServiceCon
 //
 //                        newClient.execute();
 
-                    } catch (FileNotFoundException e) {
-                        Log.w("metabase", "Failed to create CSV file for sensor [" + owner.getString(it2.getKey().nameResId) + ", " + m.getMacAddress() + "]");
+                        } catch (FileNotFoundException e) {
+                            Log.w("metabase", "Failed to create CSV file for sensor [" + owner.getString(it2.getKey().nameResId) + ", " + m.getMacAddress() + "]");
+                        }
+                    }
+
+                    binder.samples.put(it.first, sensorSamples);
+                    metrics.addView(status);
+                }
+
+                for (int i = 0; i < parameter.devices.size(); i++) {
+                    for (Map.Entry<SensorConfig, Route> it2 : parameter.devices.get(i).second.entrySet()) {
+                        it2.getKey().start(binder.metawears.get(i));
                     }
                 }
-
-                binder.samples.put(it.first, sensorSamples);
-                metrics.addView(status);
             }
-            for (int i = 0; i < parameter.devices.size(); i++) {
-                for (Map.Entry<SensorConfig, Route> it2 : parameter.devices.get(i).second.entrySet()) {
-                    it2.getKey().start(binder.metawears.get(i));
-                }
+            catch (Exception e){
+                Intent intent = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                getActivity().finish();
             }
-
+//            }
+//            catch (Exception e){
+//                System.out.println("%%%%%%%%%222");
+//                Intent intent = owner.getBaseContext().getPackageManager().getLaunchIntentForPackage(owner.getBaseContext().getPackageName());
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        bringAppToForeground();
+//                    }
+//                }, 200);
+//            }
             binder.start = System.nanoTime();
             uiScheduler.postDelayed(updateValues, 1000L);
         } else {
