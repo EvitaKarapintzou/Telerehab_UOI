@@ -37,8 +37,18 @@ import static com.mbientlab.metawear.metabase.database.addNewData;
 import static com.mbientlab.metawear.metabase.database.clearData;
 import static com.mbientlab.metawear.metabase.database.getData;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.gson.Gson;
 import com.mbientlab.metawear.Data;
@@ -237,7 +247,7 @@ interface DataHandler {
                         fos.write(String.format(Locale.US, "%d,%s,%.3f,%.3f,%.3f,%.3f,%.3f%n",
                                 last.getTimeInMillis(), formatTimestamp(last), offset,
                                 vector4[0], vector4[1], vector4[2], vector4[3]).getBytes());
-                        Constants urlPort = new Constants();
+                        /*Constants urlPort = new Constants();
                         String hostUrl = urlPort.getHostUrl();
                         Integer port = 0;
                         if(seq_packet == 0){
@@ -275,21 +285,21 @@ interface DataHandler {
                         else if (seq_packet == 9) {
                             port = 12354;
                             seq_packet = 0;
-                        }
+                        }*/
                         message = name + " " + mac + " " + last.getTimeInMillis() + " " + formatTimestamp(last) + " " + offset + " " + vector4[0] + " " + vector4[1] + " " + vector4[2] + " " + vector4[3];
 //                      Client newClient = new Client(hostUrl,port, message);
 //                      newClient.execute();
 
                         addNewData(message);
                         ArrayList<String> retData = getData();
-                        //System.out.println("SIZEEEEE " + retData.size());
 
                         if(retData.size() >= 100){
                             Gson gson = new Gson();
                             String json = gson.toJson(retData);
-                            MqttPublisher publisher = new MqttPublisher("tcp://broker.emqx.io:1883", "AndroidClient");
+                            //MqttPublisher publisher = new MqttPublisher("tcp://192.168.0.231:1883", "AndroidClient");
+                            MqttPublisher publisher = new MqttPublisher("tcp://195.130.118.252:1883", "AndroidClient");
                             publisher.connect();
-                            publisher.publish("location/12345", json, 2);
+                            publisher.publish("location/123", json, 2);
                             publisher.disconnect();
                             clearData();
                         }
