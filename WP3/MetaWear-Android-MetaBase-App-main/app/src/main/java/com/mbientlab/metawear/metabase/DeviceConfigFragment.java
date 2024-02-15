@@ -31,11 +31,15 @@
 
 package com.mbientlab.metawear.metabase;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Handler;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,26 +96,48 @@ public class DeviceConfigFragment extends AppFragmentBase {
         ((TextView) syncDialog.findViewById(R.id.message)).setText(R.string.message_loading_sensors);
 
         Task<Void> result = Task.forResult(null);
-        for(MetaBaseDevice d: parameter.devices) {
 
-            final MetaWearBoard metawear = activityBus.getMetaWearBoard(d.btDevice);
-            result = result.onSuccessTask(ignored -> {
-                try {
-                    ((JseMetaWearBoard) metawear).loadBoardAttributes();
-                    sensorsAdapter.metawears.add(metawear);
-                    return Task.forResult(null);
-                } catch (IOException | ClassNotFoundException e) {
-                    return metawear.connectAsync().onSuccessTask(ignored2 -> {
+//        new Handler().postDelayed(() -> {
+//            System.out.println("EIDAAAA " + parameter.devices.size());
+//        }, 11000);
+
+        try {
+            for (MetaBaseDevice d : parameter.devices) {
+                System.out.println("meta to selectedGroup1");
+                final MetaWearBoard metawear = activityBus.getMetaWearBoard(d.btDevice);
+
+                result = result.onSuccessTask(ignored -> {
+                    try {
+                        System.out.println("meta to selectedGroup2");
+                        ((JseMetaWearBoard) metawear).loadBoardAttributes();
                         sensorsAdapter.metawears.add(metawear);
-                        return metawear.disconnectAsync();
-                    }).continueWithTask(task -> {
-                        if (task.isFaulted()) {
-                            throw new RuntimeException(String.format(Locale.US, "Unable to determine available sensors for '%s'", d.name));
-                        }
-                        return task;
-                    });
+                        return Task.forResult(null);
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("meta to selectedGroup3");
+                        return metawear.connectAsync().onSuccessTask(ignored2 -> {
+                            sensorsAdapter.metawears.add(metawear);
+                            return metawear.disconnectAsync();
+                        }).continueWithTask(task -> {
+                            if (task.isFaulted()) {
+                                throw new RuntimeException(String.format(Locale.US, "Unable to determine available sensors for '%s'", d.name));
+                            }
+                            return task;
+                        });
+                    }
+                });
+            }
+        }
+        catch (Exception e){
+            System.out.println("%%%%%%%%%");
+            Intent intent = owner.getBaseContext().getPackageManager().getLaunchIntentForPackage(owner.getBaseContext().getPackageName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    bringAppToForeground();
                 }
-            });
+            }, 200);
         }
         result.continueWith(task -> {
             syncDialog.dismiss();
@@ -131,6 +157,23 @@ public class DeviceConfigFragment extends AppFragmentBase {
 
             return null;
         }, Task.UI_THREAD_EXECUTOR);
+    }
+
+    private void bringAppToForeground() {
+        Intent intent = new Intent(owner.getApplicationContext(), HomeActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                owner.getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE
+        );
+
+        try {
+            pendingIntent.send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -373,7 +416,7 @@ public class DeviceConfigFragment extends AppFragmentBase {
                                     positiveButton.performClick();
                                     try {
                                         startConfigure();
-                                        Thread.sleep(2000);
+                                        Thread.sleep(4000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
