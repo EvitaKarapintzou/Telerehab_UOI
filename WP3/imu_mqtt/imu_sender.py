@@ -4,11 +4,11 @@ from email import message
 import random
 import time
 import csv
-
+import random
 from paho.mqtt import client as mqtt_client
 
 
-broker = '195.130.118.252'
+broker = '192.168.0.231'
 port = 1883
 topic = "location/123"
 client_id = f'publish-{random.randint(0, 1000)}'
@@ -35,13 +35,13 @@ def format_message(name, mac,row):
 
 def publish(client):
     msg_count = 1
-    imu1 = open('2024-01-24-17-04-37_MetaWear61_2024-01-24T17.03.29.677_E15561CB9161_Quaternion_100.000Hz_1.7.3.csv', newline='')
+    imu1 = open('head_FEAC84C53DE7_2024-02-08_12_44_56.csv', newline='')
     imu1Reader = csv.reader(imu1, delimiter=' ', quotechar='|')
-    imu2 = open('2024-01-24-17-04-37_MetaWear94_2024-01-24T17.03.29.677_E25AD03D0194_Quaternion_100.000Hz_1.7.3.csv', newline='')
+    imu2 = open('back_E25AD03D0194_2024-02-08_12_44_56.csv', newline='')
     imu2Reader = csv.reader(imu2, delimiter=' ', quotechar='|')
-    imu3 = open('2024-01-24-17-04-37_MetaWearBD_2024-01-24T17.03.29.677_C8925E7DC6BD_Quaternion_100.000Hz_1.7.3.csv', newline='')
+    imu3 = open('Evita_Gait1_0_01_12_2023_10_46_19_rawDataSensor03.csv', newline='')
     imu3Reader = csv.reader(imu3, delimiter=' ', quotechar='|')
-    imu4 = open('2024-01-24-17-04-37_MetaWearE7_2024-01-24T17.03.29.677_FEAC84C53DE7_Quaternion_100.000Hz_1.7.3.csv', newline='')
+    imu4 = open('Evita_Gait1_0_01_12_2023_10_46_19_rawDataSensor04.csv', newline='')
     imu4Reader = csv.reader(imu4, delimiter=' ', quotechar='|')
 
     imu1Data = []
@@ -63,19 +63,41 @@ def publish(client):
 
     sendData = []
     
-    for i in range(min(len(imu1Data),len(imu2Data),len(imu3Data), len(imu4Data))):
+    len1 = len(imu1Data)
+    len2 = len(imu2Data)
+    len3 = len(imu3Data)
+    len4 = len(imu4Data)
+    c1 = 0;
+    c2 = 0;
+    c3 = 0;
+    c4 = 0;
 
-        sendData.append(imu1Data[i])
-        sendData.append(imu2Data[i])
-        sendData.append(imu3Data[i])
-        sendData.append(imu4Data[i])
+    #for i in range(min(len(imu1Data),len(imu2Data),len(imu3Data), len(imu4Data))):
+    while(c1 < len1 or c2 < len2 or c3 < len3 or c4 < len4):
+        r = random.randint(1, 4)
+        if (r == 1):
+            if (c1 < len1):
+                sendData.append(imu1Data[c1])
+                c1 = c1 + 1;
+        elif (r == 2):
+            if (c2 < len2):
+                sendData.append(imu2Data[c2])
+                c2 = c2 + 1
+        elif (r == 3):
+            if (c3 < len3):
+                sendData.append(imu3Data[c3])
+                c3 = c3 + 1;
+        else:
+            if (c4 < len4):
+                sendData.append(imu4Data[c4])
+                c4 = c4 + 1
         
-        print(sendData)
         if(len(sendData) >=100):
             sendDataString = ""
 
             sendDataString = ", ".join(["\"" + item + "\"" for item in sendData])
             result = client.publish(topic, str(sendDataString))
+            time.sleep(1/4.0)
             sendData = []
 
 def run():

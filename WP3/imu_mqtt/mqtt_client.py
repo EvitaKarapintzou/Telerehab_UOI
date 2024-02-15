@@ -8,7 +8,7 @@ from datetime import datetime
 import os
 import time
 
-MQTT_BROKER_HOST = '195.130.118.252'
+MQTT_BROKER_HOST = '192.168.0.231'
 MQTT_BROKER_PORT = 1883
 MQTT_KEEP_ALIVE_INTERVAL = 60
 counter = 0
@@ -24,6 +24,7 @@ imu4FinalQueue = mp.Queue();
 scheduleQueue = mp.Queue();
 imus = []
 firstPacket = mp.Value('b', True)
+fileName = ""
 lastDataTime = mp.Value('d',time.time())
 startReceiving = mp.Value('b', False)
 manager = mp.Manager()
@@ -52,7 +53,7 @@ def read_configure_file():
                 imus = parts[1:] 
                 
 
-def get_data_tranch(q1,q2,q3,q4,):
+def get_data_tranch(q1,q2,q3,q4,counter):
     global imu1Listt, imu2Listt, imu3Listt, imu4Listt
     imu1List = []
     imu2List = []
@@ -61,45 +62,52 @@ def get_data_tranch(q1,q2,q3,q4,):
 
     while(not q1.empty()):
         item = q1.get()
-        item = item.replace("[", "")
-        item = item.replace("]", "")
-        item = item.strip()
-        imu1List.append(item)
-        imu1FinalQueue.put(item)
+        if 'time' not in item:
+            item = item.replace("[", "")
+            item = item.replace("]", "")
+            item = item.strip()
+            imu1List.append(item)
+            imu1FinalQueue.put(item)
 
     while(not q2.empty()):
         item = q2.get()
-        item = item.replace("[", "")
-        item = item.replace("]", "")
-        item = item.strip()
-        imu2List.append(item)
-        imu2FinalQueue.put(item)
+        if 'time' not in item:
+            item = item.replace("[", "")
+            item = item.replace("]", "")
+            item = item.strip()
+            imu2List.append(item)
+            imu2FinalQueue.put(item)
 
     while(not q3.empty()):
         item = q3.get()
-        item = item.replace("[", "")
-        item = item.replace("]", "")
-        item = item.strip()
-        imu3List.append(item)
-        imu3FinalQueue.put(item)
+        if 'time' not in item:
+            item = item.replace("[", "")
+            item = item.replace("]", "")
+            item = item.strip()
+            imu3List.append(item)
+            imu3FinalQueue.put(item)
     
     while(not q4.empty()):
         item = q4.get()
-        item = item.replace("[", "")
-        item = item.replace("]", "")
-        item = item.strip()
-        imu4List.append(item)
-        imu4FinalQueue.put(item)
+        if 'time' not in item:
+            item = item.replace("[", "")
+            item = item.replace("]", "")
+            item = item.strip()
+            imu4List.append(item)
+            imu4FinalQueue.put(item)
   
     writeInFiles(imu1List, imu2List, imu3List, imu4List)
-    get_metrics(imu1List, imu2List, imu3List, imu4List)
+    #get_metrics(imu1List, imu2List, imu3List, imu4List, counter)
+
+    
 
 def scheduler(scheduleQueue):
 	while(True):
-		time.sleep(5)
+		time.sleep(10)
 		scheduleQueue.put("GO");
 	
 def receive_imu_data(q,scheduleQueue):
+    counter = 0;
     while(True):
         while(not q.empty()):
             A = q.get()
@@ -118,8 +126,9 @@ def receive_imu_data(q,scheduleQueue):
                     imu4Queue.put(item)
 
             if(not scheduleQueue.empty()):
-                get_data_tranch(imu1Queue,imu2Queue,imu3Queue,imu4Queue)
+                get_data_tranch(imu1Queue,imu2Queue,imu3Queue,imu4Queue, counter)
                 scheduleQueue.get()
+                counter = counter + 1;
 
 def create_csv_files(imus, csv_file_path):
     currentTime = datetime.now()
@@ -166,12 +175,12 @@ def condition_checker():
     imu1List = []
     while True:
         if time.time() - lastDataTime.value >= 50 and startReceiving.value == True :
+            #print(scheduleQueue)
             write_to_files = True
             firstPacket.value = True
             print("Data has been saved!\n")
             startReceiving.value = False
             csv_file_path[:] = [] 
-            time.sleep(60)
         time.sleep(1)  
 
 read_configure_file()
