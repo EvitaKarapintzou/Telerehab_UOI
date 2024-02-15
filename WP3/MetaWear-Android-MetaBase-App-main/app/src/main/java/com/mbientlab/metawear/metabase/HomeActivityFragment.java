@@ -480,6 +480,8 @@ public class HomeActivityFragment extends AppFragmentBase {
                             devicesAdapter.notifyDataSetChanged();
 
                             File group = new File(AppState.groupsPath, customName);
+                            System.out.println("!!!!!!!!!!!!! PATH " + AppState.groupsPath);
+                            ///storage/emulated/0/Android/data/com.mbientlab.metawear.metabase/files/groups
                             createDirectory(group);
 
                             String[] files = new String[selected.size() + 1];
