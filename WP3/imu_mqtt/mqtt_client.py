@@ -7,8 +7,11 @@ import csv
 from datetime import datetime
 import os
 import time
+import sys
+import requests
 
-MQTT_BROKER_HOST = '192.168.0.231'
+#MQTT_BROKER_HOST = '195.130.118.252'  #orthopediki ip
+MQTT_BROKER_HOST = '192.168.0.231'  #nuc ip
 MQTT_BROKER_PORT = 1883
 MQTT_KEEP_ALIVE_INTERVAL = 60
 counter = 0
@@ -24,15 +27,35 @@ imu4FinalQueue = mp.Queue();
 scheduleQueue = mp.Queue();
 imus = []
 firstPacket = mp.Value('b', True)
-fileName = ""
 lastDataTime = mp.Value('d',time.time())
 startReceiving = mp.Value('b', False)
 manager = mp.Manager()
 csv_file_path = manager.list()
+jwt_token = ''
+
+urlLogin = 'https://telerehab-develop.biomed.ntua.gr/api/Login'
+urlProduceApiKey = 'https://telerehab-develop.biomed.ntua.gr/api/PatientDeviceSet/list'
+urlUploadSensorData = 'https://telerehab-develop.biomed.ntua.gr/api/SensorData'
+headers = {
+    'accept': '*/*',
+    'Content-Type': 'application/json-patch+json',
+}
+credentials = {
+    "username": "testDoctor",
+    "password": "TeleAdmin2023"
+}
+
+#get the deviceId firstly!!!
+sensorData = {
+    "deviceId": "16",    
+    "data": "tempData" 
+}
+
+deviceApiKey = ""
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    client.subscribe("location/123")
+    client.subscribe("location/1234")
 
 def on_message(client, userdata, msg):
     global counter, startReceiving, lastDataTime
@@ -53,7 +76,7 @@ def read_configure_file():
                 imus = parts[1:] 
                 
 
-def get_data_tranch(q1,q2,q3,q4,counter):
+def get_data_tranch(q1,q2,q3,q4,):
     global imu1Listt, imu2Listt, imu3Listt, imu4Listt
     imu1List = []
     imu2List = []
@@ -62,52 +85,45 @@ def get_data_tranch(q1,q2,q3,q4,counter):
 
     while(not q1.empty()):
         item = q1.get()
-        if 'time' not in item:
-            item = item.replace("[", "")
-            item = item.replace("]", "")
-            item = item.strip()
-            imu1List.append(item)
-            imu1FinalQueue.put(item)
+        item = item.replace("[", "")
+        item = item.replace("]", "")
+        item = item.strip()
+        imu1List.append(item)
+        imu1FinalQueue.put(item)
 
     while(not q2.empty()):
         item = q2.get()
-        if 'time' not in item:
-            item = item.replace("[", "")
-            item = item.replace("]", "")
-            item = item.strip()
-            imu2List.append(item)
-            imu2FinalQueue.put(item)
+        item = item.replace("[", "")
+        item = item.replace("]", "")
+        item = item.strip()
+        imu2List.append(item)
+        imu2FinalQueue.put(item)
 
     while(not q3.empty()):
         item = q3.get()
-        if 'time' not in item:
-            item = item.replace("[", "")
-            item = item.replace("]", "")
-            item = item.strip()
-            imu3List.append(item)
-            imu3FinalQueue.put(item)
+        item = item.replace("[", "")
+        item = item.replace("]", "")
+        item = item.strip()
+        imu3List.append(item)
+        imu3FinalQueue.put(item)
     
     while(not q4.empty()):
         item = q4.get()
-        if 'time' not in item:
-            item = item.replace("[", "")
-            item = item.replace("]", "")
-            item = item.strip()
-            imu4List.append(item)
-            imu4FinalQueue.put(item)
+        item = item.replace("[", "")
+        item = item.replace("]", "")
+        item = item.strip()
+        imu4List.append(item)
+        imu4FinalQueue.put(item)
   
     writeInFiles(imu1List, imu2List, imu3List, imu4List)
-    #get_metrics(imu1List, imu2List, imu3List, imu4List, counter)
-
-    
+    get_metrics(imu1List, imu2List, imu3List, imu4List)
 
 def scheduler(scheduleQueue):
 	while(True):
-		time.sleep(10)
+		time.sleep(5)
 		scheduleQueue.put("GO");
 	
 def receive_imu_data(q,scheduleQueue):
-    counter = 0;
     while(True):
         while(not q.empty()):
             A = q.get()
@@ -126,9 +142,8 @@ def receive_imu_data(q,scheduleQueue):
                     imu4Queue.put(item)
 
             if(not scheduleQueue.empty()):
-                get_data_tranch(imu1Queue,imu2Queue,imu3Queue,imu4Queue, counter)
+                get_data_tranch(imu1Queue,imu2Queue,imu3Queue,imu4Queue)
                 scheduleQueue.get()
-                counter = counter + 1;
 
 def create_csv_files(imus, csv_file_path):
     currentTime = datetime.now()
@@ -175,15 +190,58 @@ def condition_checker():
     imu1List = []
     while True:
         if time.time() - lastDataTime.value >= 50 and startReceiving.value == True :
-            #print(scheduleQueue)
             write_to_files = True
             firstPacket.value = True
             print("Data has been saved!\n")
             startReceiving.value = False
             csv_file_path[:] = [] 
+            time.sleep(60)
+            #python = sys.executable
+            #os.execl(python, python, *sys.argv)
         time.sleep(1)  
 
+def login():
+    global jwt_token, headers, credentials
+    response = requests.post(urlLogin, headers=headers, json=credentials)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        jwt_token = response_data.get('message')
+        print("JWT Token:", jwt_token)
+        headers['Authorization'] = jwt_token;
+    else:
+        print("Failed to authenticate(Login). Status code:", response.status_code)
+
+def getDeviceApiKey():
+    global deviceApiKey, headers
+    response = requests.get(urlProduceApiKey, headers=headers)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        deviceApiKey = response_data[0].get('apiKey')   # select the corresponding patientId, exerciseId and sessionId
+        print("apiKey:", deviceApiKey)
+        headers['Authorization'] = deviceApiKey
+        headers['Content-Type'] = 'application/json-patch+json'
+    else:
+        print("Failed to authenticate(getDeviceApiKey). Status code:", response.status_code)
+
+def uploadSensorData():
+    global deviceApiKey, headers, sensorData
+    
+    response = requests.post(urlUploadSensorData, headers=headers, json=sensorData)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        deviceApiKey = response_data.get('message')  
+        print("response of uploading!!!!", deviceApiKey)
+    else:
+        print("Failed to authenticate(uploadSensorData). Status code:", response.status_code)
+
 read_configure_file()
+
+#login()
+#getDeviceApiKey()
+#uploadSensorData()
 
 mbB = mp.Process(target=receive_imu_data,args=(queueData,scheduleQueue,));
 mbB.start();
