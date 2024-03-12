@@ -2,6 +2,8 @@
 
 2) Enable/Disable the metrics and api in the shared_variables.py
 
-3) Set the time to call metrics (in secs)
+3) Set the correct ip for the mqtt in the shared_variables.py
 
-4) Run [python or python3] main.py 
+4) Set the time to call metrics (in secs)
+
+5) Run [python or python3] main.py 
