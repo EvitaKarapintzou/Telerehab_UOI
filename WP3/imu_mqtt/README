@@ -1,0 +1,5 @@
+1) Change the configure file using the imus mac.
+
+2) Enable/Disable the metrics and api in the shared_variables.py
+
+3) Run [python or python3] main.py 
