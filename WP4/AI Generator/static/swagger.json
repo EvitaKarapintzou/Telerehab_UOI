@@ -1,0 +1,215 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "AI Generator API",
+      "version": "0.0.1"
+    },
+    "paths": {
+      "/ping": {
+        "get": {
+          "description": "Returns message showing app is up",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/optimal_intervation_plan_prediction": {
+        "post": {
+          "description": "Description of the optimal_intervation_plan_prediction",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "patient_onboarding_data(baseline)",
+              "in": "body",
+              "description": "description",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/optimalIntervationPlanPredictionData"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "400": {
+              "description": "Invalid request data"
+            }
+          }
+        }
+      },
+      "/next_weeks_program": {
+        "post": {
+          "description": "Description of the next_weeks_program",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "patient baseline data",
+              "in": "body",
+              "description": "description",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/nextWeeksProgram"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "400": {
+              "description": "Invalid request data"
+            }
+          }
+        }
+      },
+      "/risk_of_falls1": {
+        "post": {
+          "description": "Description of the risk of falls",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "baseline",
+              "in": "body",
+              "description": "description",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/riskOfFalls1"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "400": {
+              "description": "Invalid request data"
+            }
+          }
+        }
+      },
+      "/risk_of_falls2": {
+        "post": {
+          "description": "Description of the risk of falls",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "baseline",
+              "in": "body",
+              "description": "description",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/riskOfFalls2"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "400": {
+              "description": "Invalid request data"
+            }
+          }
+        }
+      },
+      "/risk_of_falls3": {
+        "post": {
+          "description": "Description of the risk of falls",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "baseline",
+              "in": "body",
+              "description": "description",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/riskOfFalls3"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "400": {
+              "description": "Invalid request data"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "optimalIntervationPlanPredictionData": {
+        "type": "object",
+        "properties": {
+          "patient_onboarding_data(baseline)": {
+            "type": "string"
+          }
+        }
+      },
+      "nextWeeksProgram": {
+        "type": "object",
+        "properties": {
+          "patient baseline data": {
+            "type": "string"
+          }
+        }
+      },
+      "riskOfFalls1": {
+        "type": "object",
+        "properties": {
+          "baseline": {
+            "type": "string"
+          }
+        }
+      },
+      "riskOfFalls2": {
+        "type": "object",
+        "properties": {
+          "baseline": {
+            "type": "string"
+          }
+        }
+      },
+      "riskOfFalls3": {
+        "type": "object",
+        "properties": {
+          "baseline": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+  
