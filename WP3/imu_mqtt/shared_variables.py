@@ -31,7 +31,7 @@ jwt_token = ""
 mqttState = mp.Value('c', b'I')  #  I -> "idle", R -> "receiving", S -> "stopReceiving", E -> "error"
 
 #set True if you want to upload the results using API
-enableConnectionToAPI = True
+enableConnectionToAPI = False
 #set True to enable the metrics
 enableMetrics = True
 #set the time the metrics are calculated in sec
