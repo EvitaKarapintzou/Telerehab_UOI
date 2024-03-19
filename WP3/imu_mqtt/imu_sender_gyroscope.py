@@ -70,6 +70,8 @@ def publish(client):
     c3 = 0;
     c4 = 0;
 
+    client.publish(topic, "start")
+
     #for i in range(min(len(imu1Data),len(imu2Data),len(imu3Data), len(imu4Data))):
     while(c1 < len1 or c2 < len2 or c3 < len3 or c4 < len4):
         r = random.randint(1, 4)
@@ -97,6 +99,7 @@ def publish(client):
             result = client.publish(topic, str(sendDataString))
             time.sleep(1/4.0)
             sendData = []
+    client.publish(topic, "stop")
 
 def run():
     client = connect_mqtt()
