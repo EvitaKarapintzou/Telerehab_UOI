@@ -1,7 +1,7 @@
 import time
 import json
 
-from shared_variables import imus, firstPacket, timeToCallMetrics, sensorDataToUpload, imu1Queue, imu2Queue, imu3Queue, imu4Queue, enableMetrics, imu1FinalQueue, imu2FinalQueue, imu3FinalQueue, imu4FinalQueue, csv_file_path, imus, counter, startReceiving, lastDataTime, enableConnectionToAPI
+from shared_variables import imus, firstPacket, timeToCallMetrics, sensorDataToUpload, imu1Queue, imu2Queue, imu3Queue, imu4Queue, mqttState, enableMetrics, imu1FinalQueue, imu2FinalQueue, imu3FinalQueue, imu4FinalQueue, csv_file_path, imus, counter, startReceiving, lastDataTime, enableConnectionToAPI
 from get_online_metrics_ex_1_pr_1 import get_metrics
 from csv_management import write_in_files
 from api_management import upload_sensor_data
@@ -97,14 +97,16 @@ def receive_imu_data(q,scheduleQueue):
                 scheduleQueue.get()
 
 def condition_checker():
-    global write_to_files, lastDataTime, firstPacket, startReceiving
+    global write_to_files, lastDataTime, firstPacket, startReceiving, mqttState
 
     while True:
-        if time.time() - lastDataTime.value >= 60 and startReceiving.value == True :
+        if (mqttState.value.decode() == "S" and startReceiving.value == True) or (time.time() - lastDataTime.value >= 60 and mqttState.value.decode() == "R" and startReceiving.value == True):
             write_to_files = True
             firstPacket.value = True
             print("Data has been saved!\n")
             startReceiving.value = False
+            newValue = 'I'
+            mqttState.value = newValue.encode() 
             if enableMetrics: 
                 print("The overall metrics!")
             
