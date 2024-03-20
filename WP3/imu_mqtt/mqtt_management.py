@@ -14,9 +14,9 @@ def on_message(client, userdata, msg):
     if 'start' in msg.payload.decode():
         new_value = "R"
         mqttState.value = new_value.encode()  
-        print("Exercise started!") 
+        print("\033[1m\033[93mExercise started!\033[0m") 
     elif 'stop' in msg.payload.decode():
         new_value = "S"
         mqttState.value = new_value.encode()  
-        print("Exercise finished!") 
+        print("\033[1m\033[93mExercise finished!\033[0m") 
     queueData.put(msg.payload.decode())
