@@ -3,8 +3,8 @@ from multiprocessing import Manager, Value
 import time
 import json
 
-MQTT_BROKER_HOST = '195.251.196.168' #orthopediki ip
-#MQTT_BROKER_HOST = '192.168.0.231' #nuc ip
+#MQTT_BROKER_HOST = '195.251.196.168' #orthopediki ip
+MQTT_BROKER_HOST = '192.168.0.231' #nuc ip
 MQTT_BROKER_PORT = 1883
 MQTT_KEEP_ALIVE_INTERVAL = 60
 

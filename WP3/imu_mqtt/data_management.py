@@ -51,7 +51,7 @@ def get_data_tranch(q1,q2,q3,q4,counter):
   
     if enableMetrics:
         returnedJson = get_metrics(imu1List, imu2List, imu3List, imu4List, counter)
-        print(returnedJson)
+        #print(returnedJson)
 
 def scheduler(scheduleQueue):
 	while(True):
