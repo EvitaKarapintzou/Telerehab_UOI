@@ -2,7 +2,9 @@ import time
 import json
 
 from shared_variables import imus, firstPacket, timeToCallMetrics, sensorDataToUpload, imu1Queue, imu2Queue, imu3Queue, imu4Queue, mqttState, enableMetrics, imu1FinalQueue, imu2FinalQueue, imu3FinalQueue, imu4FinalQueue, csv_file_path, imus, counter, startReceiving, lastDataTime, enableConnectionToAPI
-from get_online_metrics_ex_1_pr_1 import get_metrics
+#from get_online_metrics_ex_1_pr_1 import get_metrics
+from getMetricsSittingOld02 import get_metrics
+from getMetricsSittingOld02 import getMetricsSitting01
 from csv_management import write_in_files
 from api_management import upload_sensor_data
 
@@ -51,7 +53,7 @@ def get_data_tranch(q1,q2,q3,q4,counter):
   
     if enableMetrics:
         returnedJson = get_metrics(imu1List, imu2List, imu3List, imu4List, counter)
-        #print(returnedJson)
+        print(returnedJson)
 
 def scheduler(scheduleQueue):
 	while(True):
@@ -72,9 +74,9 @@ def receive_imu_data(q,scheduleQueue):
             imu3List.clear()
             imu4List.clear()
             for item in parts:
-              if '[' in item:
+              if '[' or '"' in item:
                   item = item[1:]
-              elif ']' in item:
+              elif ']' or '"' in item:
                   item = item[:len(item)-1]
               name = item.split()
               if(len(name) > 1):
@@ -108,14 +110,15 @@ def condition_checker():
             newValue = 'I'
             mqttState.value = newValue.encode() 
             if enableMetrics: 
-                print("The overall metrics!")
-            
+                print("The overall metrics!")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
                 imu1AllData = []
                 imu2AllData = []
                 imu3AllData = []
                 imu4AllData = []
                 for i in range (len(csv_file_path)):
                     with open(csv_file_path[i], 'r') as csvfile:
+                        next(csvfile)
+                        
                         for line in csvfile:
                             row = line.strip()
                             if i == 0:

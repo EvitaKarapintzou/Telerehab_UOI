@@ -33,13 +33,13 @@ def format_message(name, mac,row):
 
 def publish(client):
     msg_count = 1
-    imu1 = open('sensor01Quaternion.csv', newline='')
+    imu1 = open('head_E25AD03D0194_2024-02-16_14:01:11.csv', newline='')
     imu1Reader = csv.reader(imu1, delimiter=' ', quotechar='|')
-    imu2 = open('sensor02Quaternion.csv', newline='')
+    imu2 = open('back_E15561CB9161_2024-02-16_14:01:11.csv', newline='')
     imu2Reader = csv.reader(imu2, delimiter=' ', quotechar='|')
-    imu3 = open('sensor03Quaternion.csv', newline='')
+    imu3 = open('left_C8925E7DC6BD_2024-02-16_14:01:11.csv', newline='')
     imu3Reader = csv.reader(imu3, delimiter=' ', quotechar='|')
-    imu4 = open('sensor04Quaternion.csv', newline='')
+    imu4 = open('right_FEAC84C53DE7_2024-02-16_14:01:11.csv', newline='')
     imu4Reader = csv.reader(imu4, delimiter=' ', quotechar='|')
 
     imu1Data = []
@@ -48,13 +48,13 @@ def publish(client):
     imu4Data = []
 
     for row in imu1Reader:
-        imu1Data.append(format_message("MetaWear06", "FBCB666B9506", ', '.join(row)))
+        imu1Data.append(format_message("MetaWear94", "E25AD03D0194", ', '.join(row)))
         
     for row in imu2Reader:
-        imu2Data.append(format_message("MetaWearA4", "E524A8BDE1A4", ', '.join(row)))
+        imu2Data.append(format_message("MetaWear61", "E15561CB9161", ', '.join(row)))
 
     for row in imu3Reader:
-        imu3Data.append(format_message("MetaWearC5", "C172766109C5", ', '.join(row)))
+        imu3Data.append(format_message("MetaWearBD", "C8925E7DC6BD", ', '.join(row)))
 
     for row in imu4Reader:
         imu4Data.append(format_message("MetaWearE7", "FEAC84C53DE7", ', '.join(row)))

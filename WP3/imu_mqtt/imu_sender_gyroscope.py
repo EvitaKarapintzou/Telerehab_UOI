@@ -6,7 +6,7 @@ import random
 from paho.mqtt import client as mqtt_client
 
 
-broker = '195.251.196.168'
+broker = '192.168.0.231'
 port = 1883
 topic = "location/123"
 client_id = f'publish-{random.randint(0, 1000)}'
