@@ -1,9 +1,6 @@
 from crypt import methods
 from flask import Flask,jsonify,request
 from flask_swagger_ui import get_swaggerui_blueprint
-from werkzeug.utils import secure_filename
-import pandas as pd
-import os
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'

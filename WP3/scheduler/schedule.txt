@@ -1,0 +1,36 @@
+Receiving schedule!!!
+dayNumber 7 exerciseId 1
+dayNumber 1 exerciseId None
+dayNumber 2 exerciseId None
+dayNumber 3 exerciseId None
+dayNumber 4 exerciseId None
+dayNumber 5 exerciseId None
+dayNumber 6 exerciseId NoneReceiving schedule!!!
+dayNumber 7 exerciseId 1
+dayNumber 1 exerciseId None
+dayNumber 2 exerciseId None
+dayNumber 3 exerciseId None
+dayNumber 4 exerciseId None
+dayNumber 5 exerciseId None
+dayNumber 6 exerciseId NoneReceiving schedule!!!
+dayNumber 7 exerciseId 1
+dayNumber 1 exerciseId None
+dayNumber 2 exerciseId None
+dayNumber 3 exerciseId None
+dayNumber 4 exerciseId None
+dayNumber 5 exerciseId None
+dayNumber 6 exerciseId NoneReceiving schedule!!!
+dayNumber 7 exerciseId 1
+dayNumber 1 exerciseId None
+dayNumber 2 exerciseId None
+dayNumber 3 exerciseId None
+dayNumber 4 exerciseId None
+dayNumber 5 exerciseId None
+dayNumber 6 exerciseId NoneReceiving schedule!!!
+dayNumber 7 exerciseId 1
+dayNumber 1 exerciseId None
+dayNumber 2 exerciseId None
+dayNumber 3 exerciseId None
+dayNumber 4 exerciseId None
+dayNumber 5 exerciseId None
+dayNumber 6 exerciseId None
