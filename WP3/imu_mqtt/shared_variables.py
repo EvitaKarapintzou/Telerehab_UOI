@@ -31,7 +31,7 @@ jwt_token = ""
 mqttState = mp.Value('c', b'I')  #  I -> "idle", R -> "receiving", S -> "stopReceiving", E -> "error"
 
 #set True if you want to upload the results using API
-enableConnectionToAPI = False
+enableConnectionToAPI = True
 #set True to enable the metrics
 enableMetrics = True
 #set the time the metrics are calculated in sec
@@ -46,6 +46,7 @@ deviceApiKey = ""
 urlLogin = 'https://telerehab-develop.biomed.ntua.gr/api/Login'
 urlProduceApiKey = 'https://telerehab-develop.biomed.ntua.gr/api/PatientDeviceSet/list'
 urlUploadSensorData = 'https://telerehab-develop.biomed.ntua.gr/api/SensorData'
+urlGetSchedule = 'https://telerehab-develop.biomed.ntua.gr/api/PatientSchedule'
 
 headers = {
     'accept': '*/*',
