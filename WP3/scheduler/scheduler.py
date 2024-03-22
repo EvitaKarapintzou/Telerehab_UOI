@@ -38,13 +38,17 @@ def get_schedule(patientId):
     response = requests.get(urlGetSchedule + '/' + patientId + '/list', headers=headers)
     if response.status_code == 200:
         response_data = response.json()
-        message = response_data[0]['schedule']
+        schedule = response_data[0]['schedule']
+        weekNumber = response_data[0]['weekNumber']
+        activityType = response_data[0]['activityType']
+        studyWeek = response_data[0]['studyWeek']
         schedule_info = []
-        for item in message:
+        schedule_info.append("patientId " + str(patientId))
+        for item in schedule:
             schedule_info.append("dayNumber " + str(item['dayNumber']) + " exerciseId " + str(item['exerciseId']))
-        schedule_str = "\n".join(schedule_info)
+        schedule_info.append("weekNumber " + str(weekNumber) + " activityType " + str(activityType) + " studyWeek " + str(studyWeek))
+        schedule_str = " ".join(schedule_info)
         with open("/home/christoforos/Documents/GitHub/Telerehab_UOI/WP3/scheduler/schedule.txt", "a") as file:
-            file.write("Receiving schedule!!!\n")
             file.write(schedule_str)
     else:
         return "Failed to authenticate(upload_Sensor_data). Status code:" + str(response.status_code)
