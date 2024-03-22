@@ -72,7 +72,6 @@ def striplist(L):
             t = t.split(' ')
         if "(number" not in t:
             A.append([t[-7],t[-5],t[-4],t[-3],t[-2],t[-1]])
-        #print(t[-7])
     return A
 
 def get_metrics(imu1,imu2,imu3,imu4, counter):
@@ -115,10 +114,10 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     Limu4 = [[float(item) for item in sublist] for sublist in Limu4]
 
     if(len(Limu1) > 0):
-        returnedJson = getMetricsSitting01(Limu1, False) 
+        returnedJson = getMetricsSittingOld02(Limu1, False) 
         return returnedJson
 
-def getMetricsSitting01(Limu1, plotdiagrams):
+def getMetricsSittingOld02(Limu1, plotdiagrams):
    
     columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
@@ -164,21 +163,20 @@ def getMetricsSitting01(Limu1, plotdiagrams):
     fs = 50
     cutoff = 0.5
 
-    yaw_filtered = butter_lowpass_filter(euler_df_degrees['Yaw (degrees)'], cutoff, fs, order=5)  
-    
+    pitch_filtered = butter_lowpass_filter(euler_df_degrees['Pitch (degrees)'], cutoff, fs, order=5)
     if (plotdiagrams):
         plt.figure(figsize=(12, 6))
-        plt.plot(euler_df_degrees.index, euler_df_degrees['Yaw (degrees)'], label='Original Yaw', linewidth=1, alpha=0.5)
-        plt.plot(euler_df_degrees.index, yaw_filtered, label='Filtered Yaw', linewidth=2)
+        plt.plot(euler_df_degrees.index, euler_df_degrees['Pitch (degrees)'], label='Original Pitch', linewidth=1, alpha=0.5)
+        plt.plot(euler_df_degrees.index, pitch_filtered, label='Filtered Yaw', linewidth=2)
         plt.xlabel('Timestamp')
-        plt.ylabel('Yaw (degrees)')
-        plt.title('Yaw Signal Filtering')
+        plt.ylabel('Pitch (degrees)')
+        plt.title('Pitch Signal Filtering')
         plt.legend()
         plt.show()
 
-    peaks, _ = find_peaks(euler_df_degrees['Yaw (degrees)'])
+    peaks, _ = find_peaks(pitch_filtered)
 
-    valleys, _ = find_peaks(-euler_df_degrees['Yaw (degrees)'])
+    valleys, _ = find_peaks(-pitch_filtered)
 
     print("peaks ", peaks)
     print("valleys ", valleys)
@@ -186,40 +184,48 @@ def getMetricsSitting01(Limu1, plotdiagrams):
         return 0
     if(len(valleys) == 0):
         return 0
-    
+
     if valleys[0] > peaks[0]:
-        peaks = peaks[1:]  # Remove the first peak if it comes before the first valley
+        peaks = peaks[1:]  
     if peaks[-1] < valleys[-1]:
-        valleys = valleys[:-1]  # Remove the last valley if it comes after the last peak
-    
+        valleys = valleys[:-1]  
+        
     movement_pairs = []
 
     for i in range(min(len(peaks), len(valleys))):
         movement_pairs.append((valleys[i], peaks[i]))
 
+    print("Movement pairs (as index positions):", movement_pairs)
+
     if (plotdiagrams):
         plt.figure(figsize=(12, 6))
-        plt.plot(yaw_filtered, label='Filtered Yaw', linewidth=1)
-        plt.plot(peaks, yaw_filtered[peaks], "x", label='Maxima')
-        plt.plot(valleys, yaw_filtered[valleys], "o", label='Minima')
+        plt.plot(pitch_filtered, label='Filtered Pitch', linewidth=1)
+        plt.plot(peaks, pitch_filtered[peaks], "x", label='Maxima')
+        plt.plot(valleys, pitch_filtered[valleys], "o", label='Minima')
         plt.xlabel('Sample index')
-        plt.ylabel('Yaw (degrees)')
-        plt.title('Yaw Signal with Detected Movements')
+        plt.ylabel('Pitch (degrees)')
+        plt.title('Pitch Signal with Detected Movements')
         plt.legend()
         plt.show()
 
     movement_ranges = []
 
     for valley, peak in movement_pairs:
-        movement_range = yaw_filtered[peak] - yaw_filtered[valley]
+        movement_range = pitch_filtered[peak] - pitch_filtered[valley]
         movement_ranges.append(movement_range)
 
-    significant_movements = [(pair, mrange) for pair, mrange in zip(movement_pairs, movement_ranges)]
-                                                        
+    for i, movement_range in enumerate(movement_ranges):
+        print(f"Movement {i+1}: Range = {movement_range:.2f} degrees")
+    significant_movements = [(pair, mrange) for pair, mrange in zip(movement_pairs, movement_ranges) if mrange >= 5]
+
     filtered_pairs = [pair for pair, range in significant_movements]
     filtered_ranges = [mrange for pair, mrange in significant_movements]
-    
+
+    for i, (pair, mrange) in enumerate(significant_movements):
+        print(f"Significant Movement {i+1}: Pair = {pair}, Range = {mrange:.2f} degrees")
+
     movement_durations = []
+
     for start, end in filtered_pairs:
         start_time = df_Limu1.iloc[start].name
         end_time = df_Limu1.iloc[end].name
@@ -260,7 +266,6 @@ def getMetricsSitting01(Limu1, plotdiagrams):
         # ],
         "total_metrics": {
             "number_of_movements": int(len(filtered_pairs)),
-            "movements": int(min(len(peaks), len(valleys))),
             "pace_movements_per_second": float(pace),
             "mean_range_degrees": float(mean_range),
             "std_range_degrees": float(std_range),
