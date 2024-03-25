@@ -5,11 +5,16 @@ from shared_variables import imus, firstPacket, timeToCallMetrics, sensorDataToU
 #from get_online_metrics_ex_1_pr_1 import get_metrics
 #from SittingMetrics.MaintainingFocus_HeadUpandDown import get_metrics
 #from SittingMetrics.HeelRaises import get_metrics
-from SittingMetrics.MaintainingFocus_Headrotation import get_metrics
-from SittingMetrics.MaintainingFocus_Headrotation import getMetricsSittingOld01
+# from SittingMetrics.MaintainingFocus_Headrotation import get_metrics
+# from SittingMetrics.MaintainingFocus_Headrotation import getMetricsSittingOld01
+# from SittingMetrics.Trunk_rotation import get_metrics
+# from SittingMetrics.Trunk_rotation import getMetricsSittingNew01
+from SittingMetrics.Assisted_toe_raises import get_metrics
+from SittingMetrics.Assisted_toe_raises import getMetricsSittingNew02
 #from SittingMetrics.MaintainingFocus_HeadUpandDown import getMetricsSittingOld02
 #from getMetricsSittingOld02 import get_metrics
 #from getMetricsSittingOld02 import getMetricsSitting01
+
 from csv_management import write_in_files
 from api_management import upload_sensor_data
 
