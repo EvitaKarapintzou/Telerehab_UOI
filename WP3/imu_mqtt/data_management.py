@@ -11,6 +11,8 @@ from shared_variables import imus, firstPacket, timeToCallMetrics, sensorDataToU
 # from SittingMetrics.Trunk_rotation import getMetricsSittingNew01
 from SittingMetrics.Assisted_toe_raises import get_metrics
 from SittingMetrics.Assisted_toe_raises import getMetricsSittingNew02
+# from SittingMetrics.SeatedMarchingSpot import get_metrics
+# from SittingMetrics.SeatedMarchingSpot import getMetricsSittingNew04
 #from SittingMetrics.MaintainingFocus_HeadUpandDown import getMetricsSittingOld02
 #from getMetricsSittingOld02 import get_metrics
 #from getMetricsSittingOld02 import getMetricsSitting01

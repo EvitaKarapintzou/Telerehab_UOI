@@ -161,7 +161,7 @@ def getMetricsSittingNew02(Limu1, plotdiagrams):
     #     plt.show()
 
     quaternions = df_Limu1[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
-    quaternions_df = df_Limu1;
+    quaternions_df = df_Limu1
  
     fs = 30
     cutoff = 0.6
