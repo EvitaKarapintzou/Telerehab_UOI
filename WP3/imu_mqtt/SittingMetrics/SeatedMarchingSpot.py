@@ -342,6 +342,10 @@ def getMetricsSittingNew04(Limu1, Limu2, plotdiagrams):
     mean_duration2 = np.mean(movement_durations2)
     std_duration2 = np.std(movement_durations2, ddof=1)  
 
+    symmetry_index = (mean_combined_range1 - mean_combined_range2) / ((mean_combined_range1 + mean_combined_range2) / 2) #if (mean_combined_range1 + mean_combined_range2) != 0 else 0
+    peak_acceleration1 = np.max(movement_magnitude1) #if len(movement_magnitude1) > 0 else 0
+    peak_acceleration2 = np.max(movement_magnitude2) #if len(movement_magnitude2) > 0 else 0
+
 
 
     metrics_data1 = {
@@ -361,7 +365,9 @@ def getMetricsSittingNew04(Limu1, Limu2, plotdiagrams):
             "mean_combined_range_degrees": float(mean_combined_range1),
             "std_combined_range_degrees": float(std_combined_range1),
             "mean_duration_seconds": float(mean_duration1),
-            "std_duration_seconds": float(std_duration1)
+            "std_duration_seconds": float(std_duration1),
+            "symmetry": float(symmetry_index),
+            "acceleration1": float(peak_acceleration1)
 
             # "number_of_movements": int(len(filtered_pairs2)),
             # "pace_movements_per_second2": float(pace2),
@@ -389,7 +395,9 @@ def getMetricsSittingNew04(Limu1, Limu2, plotdiagrams):
     #         "mean_combined_range_degrees": float(mean_combined_range2),
     #         "std_combined_range_degrees": float(std_combined_range2),
     #         "mean_duration_seconds": float(mean_duration2),
-    #         "std_duration_seconds": float(std_duration2)
+    #         "std_duration_seconds": float(std_duration2),
+    #         "acceleration1": float(peak_acceleration1)
+
     #     }
     # }
 

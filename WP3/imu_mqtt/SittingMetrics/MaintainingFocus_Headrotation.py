@@ -144,7 +144,17 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
     euler_df = pd.DataFrame(euler_angles, columns=['Roll (rad)', 'Pitch (rad)', 'Yaw (rad)'])
     euler_angles_degrees = rotations.as_euler('xyz', degrees=True)
     euler_df_degrees = pd.DataFrame(euler_angles_degrees, columns=['Roll (degrees)', 'Pitch (degrees)', 'Yaw (degrees)'])
-   
+    angular_velocity = euler_angles_degrees.diff().abs() * fs
+    acceleration = angular_velocity.diff().abs() * fs
+    peak_acceleration = acceleration.max()
+    # For simplicity, let's assume symmetry calculation between 'Roll' movements as an example
+    # Symmetry index calculation: (Right - Left) / (0.5 * (Right + Left))
+    # Note: Adjust the calculation based on your specific symmetry definition and data
+    roll_right = euler_angles_degrees['Roll (degrees)'].where(euler_angles_degrees['Roll (degrees)'] > 0).mean()
+    roll_left = abs(euler_angles_degrees['Roll (degrees)'].where(euler_angles_degrees['Roll (degrees)'] < 0).mean())
+    movement_symmetry = (roll_right - roll_left) / (0.5 * (roll_right + roll_left))
+  
+
 
     if (plotdiagrams):
         plt.figure(figsize=(12, 8))
@@ -258,7 +268,6 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
         mean_duration = -1
         std_duration = -1        
 
-        
 
     # # Output the metrics
     # print(f"Number of movements: {len(filtered_pairs)}")
@@ -279,9 +288,10 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
             "mean_range_degrees": float(mean_range),
             "std_range_degrees": float(std_range),
             "mean_duration_seconds": float(mean_duration),
-            "std_duration_seconds": float(std_duration)
+            "std_duration_seconds": float(std_duration),
+            "peak_acceleration": peak_acceleration.to_dict(),
+            "movement_symmetry": movement_symmetry
         }
     }
 
     return json.dumps(metrics_data, indent=4)
-

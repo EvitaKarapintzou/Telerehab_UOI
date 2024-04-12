@@ -26,19 +26,19 @@ def plotIMUDATA(Limu, x, filename):
     plt.grid(True)  
 
 
-def interpolate_imu_data(imu_data, starttime, endtime, N):
-    """
-    Interpolate IMU data (w, x, y, z) between starttime and endtime into N samples.
+# def interpolate_imu_data(imu_data, starttime, endtime, N):
+      
+#     Interpolate IMU data (w, x, y, z) between starttime and endtime into N samples.
 
-    Parameters:
-    imu_data (list of lists): The IMU data in format [time, w, x, y, z, _, _].
-    starttime (float): The start time for interpolation.
-    endtime (float): The end time for interpolation.
-    N (int): Number of samples to interpolate.
+#     Parameters:
+#     imu_data (list of lists): The IMU data in format [time, w, x, y, z, _, _].
+#     starttime (float): The start time for interpolation.
+#     endtime (float): The end time for interpolation.
+#     N (int): Number of samples to interpolate.
 
-    Returns:
-    list of lists: Interpolated IMU data with N entries.
-    """
+#     Returns:
+#     list of lists: Interpolated IMU data with N entries.
+      
     
 # def butter_lowpass_filter(data, cutoff, fs, order=5):
 #     nyq = 0.5 * fs  
@@ -70,7 +70,7 @@ def striplist(L):
             t = t.split(',')
         else:
             t = t.split(' ')
-        if "(number" not in t:
+        if    (number    not in t:
             A.append([t[-7],t[-5],t[-4],t[-3],t[-2],t[-1]])
     return A
 
@@ -186,8 +186,8 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
 
     valleys, _ = find_peaks(-movement_magnitude)
 
-    print("peaks ", peaks)
-    print("valleys ", valleys)
+    print(   peaks    , peaks)
+    print(   valleys    , valleys)
     if(len(peaks) == 0):
         return 0
     if(len(valleys) == 0):
@@ -203,14 +203,14 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
     for i in range(min(len(peaks), len(valleys))):
         movement_pairs.append((valleys[i], peaks[i]))
 
-    print("Movement pairs (as index positions):", movement_pairs)
+    print(   Movement pairs (as index positions):   , movement_pairs)
 
     if (plotdiagrams):
         plt.figure(figsize=(12, 6))
         plt.plot(movement_magnitude, label='movement_magnitude', linewidth=1)
         # Plot peaks and valleys
-        plt.plot(peaks, movement_magnitude[peaks], "x", label='Maxima')
-        plt.plot(valleys, movement_magnitude[valleys], "o", label='Minima')
+        plt.plot(peaks, movement_magnitude[peaks],    x   , label='Maxima')
+        plt.plot(valleys, movement_magnitude[valleys],    o   , label='Minima')
         plt.xlabel('Sample index')
         plt.ylabel('movement_magnitude')
         plt.title('Fused W-Y signal with Detected Movements')
@@ -231,7 +231,7 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
 
     for i, (yaw_range, roll_range) in enumerate(zip(movement_ranges_yaw, movement_ranges_roll)):
             combined_range = np.sqrt(yaw_range**2 + roll_range**2)
-            print(f"Movement {i+1}: Yaw Range = {yaw_range:.2f} degrees, Roll Range = {roll_range:.2f} degrees, Combined Range = {combined_range:.2f} degrees")
+            print(f   Movement {i+1}: Yaw Range = {yaw_range:.2f} degrees, Roll Range = {roll_range:.2f} degrees, Combined Range = {combined_range:.2f} degrees   )
 
         # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
     significant_movements = [(pair, yaw, roll, np.sqrt(yaw**2 + roll**2)) for pair, yaw, roll in zip(movement_pairs, movement_ranges_yaw, movement_ranges_roll) if np.sqrt(yaw**2 + roll**2) >= 0.01]
@@ -242,7 +242,7 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
 
         # Print the significant movements and their combined ranges
     for i, (_, _, _, combined_range) in enumerate(significant_movements):
-            print(f"Significant Movement {i+1}: Combined Range = {combined_range:.2f} degrees")
+            print(f   Significant Movement {i+1}: Combined Range = {combined_range:.2f} degrees   )
 
         # Calculate durations for significant movements using timestamps
     movement_durations = []
@@ -291,24 +291,24 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
     std_duration = np.std(movement_durations, ddof=1)  # ddof=1 for sample standard deviation    
 
     # Output the metrics
-    #print(f"Number of movements: {len(filtered_pairs)}")
-    #print(f"Pace: {pace:.2f} movements per second")
-    #print(f"Mean Movement Range: {mean_range:.2f} degrees, STD: {std_range:.2f}")
-    #print(f"Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    #print(f   Number of movements: {len(filtered_pairs)}   )
+    #print(f   Pace: {pace:.2f} movements per second   )
+    #print(f   Mean Movement Range: {mean_range:.2f} degrees, STD: {std_range:.2f}   )
+    #print(f   Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}   )
+    print(   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   )
 
     metrics_data = {
-            # "movements": [
-            #     {"id": i+1, "duration_seconds": float(duration), "range_degrees": float(mrange)}
+            #    movements   : [
+            #     {   id   : i+1,    duration_seconds   : float(duration),    range_degrees   : float(mrange)}
             #     for i, ((_, _), mrange, duration) in enumerate(zip(filtered_pairs, filtered_ranges, movement_durations))
             # ],
-            "total_metrics": {
-                "number_of_movements": int(len(filtered_pairs)),
-                "pace_movements_per_second": float(pace),
-                "mean_range_degrees": float(mean_combined_range),
-                "std_range_degrees": float(std_combined_range),
-                "mean_duration_seconds": float(mean_duration),
-                "std_duration_seconds": float(std_duration)
+               total_metrics   : {
+                   number_of_movements   : int(len(filtered_pairs)),
+                   pace_movements_per_second   : float(pace),
+                   mean_range_degrees   : float(mean_combined_range),
+                   std_range_degrees   : float(std_combined_range),
+                   mean_duration_seconds   : float(mean_duration),
+                   std_duration_seconds   : float(std_duration)
             }
         }
         
