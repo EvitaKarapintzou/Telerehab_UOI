@@ -1,6 +1,8 @@
 from crypt import methods
 from flask import Flask,jsonify,request
 from flask_swagger_ui import get_swaggerui_blueprint
+import sys
+import os
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -88,4 +90,7 @@ def risk_of_falls3():
 
 
 if __name__=="__main__":
-    app.run(host="0.0.0.0",port=8080)
+    url = os.getenv('URL', 'http://0.0.0.0:8080')
+    host = url.split('//')[1].split(':')[0]
+    port = int(url.split(':')[-1])
+    app.run(host=host, port=port)
