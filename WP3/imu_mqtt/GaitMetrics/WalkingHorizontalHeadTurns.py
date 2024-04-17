@@ -261,8 +261,7 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     # plt.title('Combined XYZ Movement Magnitude with Detected Peaks and Valleys')
     # plt.legend()
     # plt.show()
-    heel_strike1= len(peaks1)/4
-    toe_off1 = len(valleys1)/4
+    
 
     #IMU2
     peaks2, _ = find_peaks(movement_magnitude2)
@@ -298,9 +297,6 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     #     plt.title('Fused W-Y signal with Detected Movements')
     #     plt.legend()
     #     plt.show()
-
-    heel_strike2= len(peaks2)/4
-    toe_off2 = len(valleys2)/4
 
     #=============IMU1-Right Leg====================#
     movement_ranges_yaw1 = []
@@ -411,24 +407,28 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     #print(f"Mean Movement Range: {mean_range:.2f} degrees, STD: {std_range:.2f}")
     #print(f"Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}")
     
-    heel_strikes_times_Right, properties1 = find_peaks(movement_magnitude1, prominence=0.6)  # Adjust the prominence as needed
+    heel_strikes_times_Right, properties1 = find_peaks(movement_magnitude1, prominence = 0.6)  # Adjust the prominence as needed
     print(heel_strikes_times_Right)
-    toe_off_times_Right, properties1 = find_peaks(-movement_magnitude1, prominence=0.6)  # Adjust the prominence as needed
+    toe_off_times_Right, properties1 = find_peaks(-movement_magnitude1, prominence = 0.6)  # Adjust the prominence as needed
     print(toe_off_times_Right)
-    heel_strikes_times_Left, properties2 = find_peaks(movement_magnitude2, prominence=0.4)  # Adjust the prominence as needed
+    heel_strikes_times_Left, properties2 = find_peaks(movement_magnitude2, prominence = 0.4)  # Adjust the prominence as needed
     print(heel_strikes_times_Left)
-    toe_off_times_Left, properties2 = find_peaks(-movement_magnitude2, prominence=0.4)  # Adjust the prominence as needed
+    toe_off_times_Left, properties2 = find_peaks(-movement_magnitude2, prominence = 0.4)  # Adjust the prominence as needed
     print(toe_off_times_Left)
-    # t1 = peaks1/100
-    # t2 = heel_strike2/100
-    # t3 = toe_off1/100
-    # t4 = toe_off2/100 
-    t1 = peaks1 / 100
-    print(t1)
-    # t2 = heel_strike2 / sampling_rate
-    t3 = valleys1 / 100  # Assuming toe_off1 is actually valleys1
-    print(t3)
-    # t4 = toe_off2 / sampling_rate
+
+    t1 = heel_strikes_times_Right
+    t2 = heel_strikes_times_Left
+    t3 = toe_off_times_Right  
+    t4 = toe_off_times_Left
+
+    t1_series = pd.Series(t1)
+    print(t1_series)
+    t2_series = pd.Series(t2)
+    print(t2_series)
+    t3_series = pd.Series(t3)
+    print(t3_series)
+    t4_series = pd.Series(t4)
+    print(t4_series)
 
     # time_vector = np.linspace(0, len(linear_df1) / 100, len(Limu1))
     # plt.figure(figsize=(12, 6))
@@ -446,37 +446,143 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     # plt.legend()
     # plt.show()
 
-    metrics_data = {
-            # "movements": [
-            #     {"id": i+1, "duration_seconds": float(duration), "range_degrees": float(mrange)}
-            #     for i, ((_, _), mrange, duration) in enumerate(zip(filtered_pairs, filtered_ranges, movement_durations))
-            # ],
-            "total_metrics": {
-                 "RIGHT IMU": {
-                "number of heelstrikes": int(heel_strike1),
-                "number of ToeOffs": int(toe_off1),
-                "Number of Steps with Right Leg": int(heel_strike1/2),
-                "Number of Steps": int(max(heel_strike1,toe_off2)),
-                "number_of_movements Right IMU": int(len(filtered_pairs1)),
-                "pace_movements_per_second Right IMU": float(pace1),
-                "mean_range_degrees Right IMU": float(mean_combined_range1),
-                "std_range_degrees Right IMU": float(std_combined_range1),
-                "mean_duration_seconds Right IMU": float(mean_duration1),
-                "std_duration_seconds Right IMU": float(std_duration1)
-                            },
-                 "LEFT IMU":{
-                "number of heelstrikes": int(heel_strike2),
-                "number of ToeOffs": int(toe_off2),
-                "Number of Steps with Left Leg": int(heel_strike2/2),
-                "number_of_movements Left IMU": int(len(filtered_pairs2)),
-                "pace_movements_per_second Left IMU": float(pace2),
-                "mean_range_degrees Left IMU": float(mean_combined_range2),
-                "std_range_degrees Left IMU": float(std_combined_range2),
-                "mean_duration_seconds Left IMU": float(mean_duration2),
-                "std_duration_seconds Left IMU": float(std_duration2)
+    ###GAIT CYCLE###
+
+    # Right single support time = t4|nextcycle - t2
+    right_single_support_time = t4_series.shift(-1) - t2_series
+    # Left single support time =  t1|nextcycle - t3
+    left_single_support_time = t1_series.shift(-1) - t3_series
+    # Double support time = (t4 -t1) + (t3-t2)
+    double_support_time = (t4_series - t1_series) + (t3_series - t2_series)
+    # Right stance phase duration = t3 -t1
+    right_stance_phase_duration = t3_series - t1_series
+    # Left stance phase duration =  t4|nextcycle - t2
+    left_stance_phase_duration = t4_series.shift(-1) - t2_series
+    # Right load response time = t4 - t1
+    right_load_response_time = t4_series - t1_series
+    # Right gait cycle time = t1|nextcycle - t1
+    right_gait_cycle_time = t1_series.shift(-1) - t1_series
+    # Left loading response time = t3 - t2
+    left_load_response_time = t3_series - t2_series
+    # Left gait cycle = t4|nextcycle - t4
+    left_gait_cycle_time = t4_series.shift(-1) - t4_series
+    # Cadence = 1/ t4|nextcycle - t1
+    cadence = 1/ (t4_series.shift(-1) - t1_series)
+    # Right single support time percentage over gait cycle =  Right single support time/Right gait cycle time
+    right_single_support_time_percentage = (right_single_support_time / right_gait_cycle_time) * 100
+    # Left single support time percentage over gait cycle = Left single support time/Right gait cycle time
+    left_single_support_time_percentage = (left_single_support_time / right_gait_cycle_time) * 100
+    # Double support time percentage over gait cycle =  Double support time/Right gait cycle time
+    double_support_time_percentage = (double_support_time / right_gait_cycle_time) * 100
+    # Right stance phase time percentage over gait cycle = Right stance phase duration/Right gait cycle time 
+    right_stance_phase_percentage = (right_stance_phase_duration / right_gait_cycle_time) * 100
+    # Left stance phase time percentage over gait cycle = Left stance phase duration/Right gait cycle time
+    left_stance_phase_percentage = (left_stance_phase_duration / right_gait_cycle_time) * 100
+    # Right loading response percentage time over gait cycle = Right load response time/Right gait cycle time
+    right_loading_response_percentage = (right_load_response_time / right_gait_cycle_time) * 100
+    # Left loading response percentage phase time over gait cycle = Left loading response time/Right gait cycle time
+    left_loading_response_percentage = (left_load_response_time / right_gait_cycle_time) * 100
+
+    metrics = {
+     
+         "Gait Cycle":{
+                "Right Single Support Time": right_single_support_time.tolist(),
+                "Left Single Support Time": left_single_support_time.tolist(),
+                "Double Support Time": double_support_time.tolist(),
+                "Right Stance Phase Duration": right_stance_phase_duration.tolist(),
+                "Left Stance Phase Duration": left_stance_phase_duration.tolist(),
+                "Right Load Response Time": right_load_response_time.tolist(),
+                "Right Gait Cycle Time": right_gait_cycle_time.tolist(),
+                "Left Load Response Time": left_load_response_time.tolist(),
+                "Left Gait Cycle Time": left_gait_cycle_time.tolist(),
+                "Cadence": cadence.tolist(),
+                "Right Single Support Percentage": right_single_support_time_percentage.tolist(),
+                "Left Single Support Percentage": left_single_support_time_percentage.tolist(),
+                "Double Support Percentage": double_support_time_percentage.tolist(),
+                "Right Stance Phase Percentage": right_stance_phase_percentage.tolist(),
+                "Left Stance Phase Percentage": left_stance_phase_percentage.tolist(),
+                "Right Loading Response Percentage": right_loading_response_percentage.tolist(),
+                "Left Loading Response Percentage": left_loading_response_percentage.tolist()   
                             }
-            }
-        }
+    }
+    
+    save_metrics_to_txt(metrics, 'gait_metrics.txt')
+
+
+def save_metrics_to_txt(metrics, file_path):
+    """
+    Save gait cycle metrics to a text file.
+
+    Args:
+    metrics (dict): Dictionary containing gait cycle metrics.
+    file_path (str): Path to the file where the metrics will be saved.
+    """
+    with open(file_path, 'w') as file:
+        for key, value in metrics.items():
+            if isinstance(value, dict):  # Check if the value is a dictionary
+                file.write(f"{key}:\n")
+                for sub_key, sub_value in value.items():
+                    file.write(f"  {sub_key}: {sub_value}\n")
+            else:
+                file.write(f"{key}: {value}\n")
+            file.write("\n")  # Add a newline for better separation
+
+def calculate_correlation(metric1, metric2):
+    # Calculate the correlation between two metrics
+    correlation = metric1.corr(metric2)
+    return correlation
+
+
+    # metrics_data = {
+    #         # "movements": [
+    #         #     {"id": i+1, "duration_seconds": float(duration), "range_degrees": float(mrange)}
+    #         #     for i, ((_, _), mrange, duration) in enumerate(zip(filtered_pairs, filtered_ranges, movement_durations))
+    #         # ],
+    #         "total_metrics": {
+    #              "RIGHT IMU": {
+    #             "number of heelstrikes": int(heel_strike1),
+    #             "number of ToeOffs": int(toe_off1),
+    #             "Number of Steps with Right Leg": int(heel_strike1/2),
+    #             "Number of Steps": int(max(heel_strike1,toe_off2)),
+    #             "number_of_movements Right IMU": int(len(filtered_pairs1)),
+    #             "pace_movements_per_second Right IMU": float(pace1),
+    #             "mean_range_degrees Right IMU": float(mean_combined_range1),
+    #             "std_range_degrees Right IMU": float(std_combined_range1),
+    #             "mean_duration_seconds Right IMU": float(mean_duration1),
+    #             "std_duration_seconds Right IMU": float(std_duration1)
+    #                         },
+    #              "LEFT IMU":{
+    #             "number of heelstrikes": int(heel_strike2),
+    #             "number of ToeOffs": int(toe_off2),
+    #             "Number of Steps with Left Leg": int(heel_strike2/2),
+    #             "number_of_movements Left IMU": int(len(filtered_pairs2)),
+    #             "pace_movements_per_second Left IMU": float(pace2),
+    #             "mean_range_degrees Left IMU": float(mean_combined_range2),
+    #             "std_range_degrees Left IMU": float(std_combined_range2),
+    #             "mean_duration_seconds Left IMU": float(mean_duration2),
+    #             "std_duration_seconds Left IMU": float(std_duration2)
+    #                         },
+    #             #  "Gait Cycle":{
+    #             # "Right Single Support Time": right_single_support_time,
+    #             # "Left Single Support Time": left_single_support_time,
+    #             # "Double Support Time": double_support_time,
+    #             # "Right Stance Phase Duration": right_stance_phase_duration,
+    #             # "Left Stance Phase Duration": left_stance_phase_duration,
+    #             # "Right Load Response Time": right_load_response_time,
+    #             # "Right Gait Cycle Time": right_gait_cycle_time,
+    #             # "Left Load Response Time": left_load_response_time,
+    #             # "Left Gait Cycle Time": left_gait_cycle_time,
+    #             # "Cadence": cadence,
+    #             # "Right Single Support Percentage": right_single_support_time_percentage,
+    #             # "Left Single Support Percentage": left_single_support_time_percentage,
+    #             # "Double Support Percentage": double_support_time_percentage,
+    #             # "Right Stance Phase Percentage": right_stance_phase_percentage,
+    #             # "Left Stance Phase Percentage": left_stance_phase_percentage,
+    #             # "Right Loading Response Percentage": right_loading_response_percentage,
+    #             # "Left Loading Response Percentage": left_loading_response_percentage   
+    #             #             }
+    #         }
+    #     }
         
 
-    return json.dumps(metrics_data, indent=4)
+    # return json.dumps(metrics_data, indent=4)
