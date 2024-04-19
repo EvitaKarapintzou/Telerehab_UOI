@@ -160,6 +160,22 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     df_Limu2 = df_Limu2.sort_values(by='Timestamp')
     df_Limu2.set_index('Timestamp', inplace=True)
 
+    start_time = df_Limu1.index.min()
+    end_time = df_Limu1.index.max()
+    interval_length = pd.Timedelta(seconds=10)
+    
+    current_time = start_time
+    while current_time + interval_length <= end_time:
+        interval_end_time = current_time + interval_length
+        
+        # Filter data within the current interval for both datasets
+        interval_data1 = df_Limu1.loc[current_time:interval_end_time]
+        interval_data2 = df_Limu2.loc[current_time:interval_end_time]
+
+        # Calculate metrics for the interval (you can implement your metric calculation here)
+        metrics = getMetricsGaitNew02(interval_data1, interval_data2)  # Placeholder for the real calculation function
+
+   
 
     # if (plotdiagrams):
     #     plt.figure(figsize=(10, 6))
@@ -506,20 +522,21 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
                             }
     }
     
-    save_metrics_to_txt(metrics, 'gait_metrics.txt')
+    # save_metrics_to_txt(metrics, 'gait_metrics.txt')
+
+         # Save the metrics to a file
+    datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    file_path = f"{datetime_string}_gait_metrics.txt"
+    save_metrics_to_txt(metrics, file_path)
+
+        # Move to the next interval
+    current_time += interval_length
 
 
 def save_metrics_to_txt(metrics, file_path):
-    """
-    Save gait cycle metrics to a text file.
-
-    Args:
-    metrics (dict): Dictionary containing gait cycle metrics.
-    file_path (str): Path to the file where the metrics will be saved.
-    """
     with open(file_path, 'w') as file:
         for key, value in metrics.items():
-            if isinstance(value, dict):  # Check if the value is a dictionary
+            if isinstance(value, dict):  
                 file.write(f"{key}:\n")
                 for sub_key, sub_value in value.items():
                     file.write(f"  {sub_key}: {sub_value}\n")
