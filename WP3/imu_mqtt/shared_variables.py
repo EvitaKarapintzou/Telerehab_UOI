@@ -3,8 +3,8 @@ from multiprocessing import Manager, Value
 import time
 import json
 
-#MQTT_BROKER_HOST = '195.251.196.168' #orthopediki ip
-MQTT_BROKER_HOST = '192.168.0.231' #nuc ip
+MQTT_BROKER_HOST = '195.251.196.168' #orthopediki ip
+#MQTT_BROKER_HOST = '192.168.0.231' #nuc ip
 MQTT_BROKER_PORT = 1883
 MQTT_KEEP_ALIVE_INTERVAL = 60
 
@@ -20,6 +20,8 @@ imu2FinalQueue = manager.Queue()
 imu3FinalQueue = manager.Queue()
 imu4FinalQueue = manager.Queue()
 scheduleQueue = manager.Queue()
+isFoundFirstTimestamp = mp.Value('b', False)
+firstTimestamp = mp.Value('l', -1)
 counter = 0
 firstPacket = mp.Value('b', True)
 lastDataTime = mp.Value('d',time.time())
@@ -31,11 +33,13 @@ jwt_token = ""
 mqttState = mp.Value('c', b'I')  #  I -> "idle", R -> "receiving", S -> "stopReceiving", E -> "error"
 
 #set True if you want to upload the results using API
-enableConnectionToAPI = True
+enableConnectionToAPI = False
 #set True to enable the metrics
-enableMetrics = True
+enableMetrics = False
 #set the time the metrics are calculated in sec
 timeToCallMetrics = 10
+#set True if you want to enable the interpolation
+enableInterpolation = True
 
 patientId = 1
 sessionId = 5

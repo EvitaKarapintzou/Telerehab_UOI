@@ -1,7 +1,7 @@
 import requests
 import datetime 
 
-from shared_variables import urlLogin, urlProduceApiKey, urlUploadSensorData, urlGetSchedule, headers, credentials, patientId, deviceApiKey 
+from shared_variables import urlLogin, urlProduceApiKey, urlGetSchedule, headers, credentials, patientId, deviceApiKey 
 
 def login():
     global jwt_token, headers, credentials
@@ -48,14 +48,11 @@ def get_schedule(patientId):
             schedule_info.append("dayNumber " + str(item['dayNumber']) + " exerciseId " + str(item['exerciseId']))
         schedule_info.append("weekNumber " + str(weekNumber) + " activityType " + str(activityType) + " studyWeek " + str(studyWeek))
         schedule_str = " ".join(schedule_info)
+        #schedule_str = schedule_info + "\n"
         with open("/home/christoforos/Documents/GitHub/Telerehab_UOI/WP3/scheduler/schedule.txt", "a") as file:
             file.write(schedule_str)
     else:
         return "Failed to authenticate(upload_Sensor_data). Status code:" + str(response.status_code)
-
-
-now = datetime.datetime.now()
-print("The current time is:", now)
 
 login()
 get_device_api_key()

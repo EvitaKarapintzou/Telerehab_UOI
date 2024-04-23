@@ -6,11 +6,12 @@ sessionId = 5
 exerciseId = 1
 deviceApiKey = ""
 
+pureApi = "https://telerehab-develop.biomed.ntua.gr/api"
 #APIs
-urlLogin = 'https://telerehab-develop.biomed.ntua.gr/api/Login'
-urlProduceApiKey = 'https://telerehab-develop.biomed.ntua.gr/api/PatientDeviceSet/list'
-urlUploadSensorData = 'https://telerehab-develop.biomed.ntua.gr/api/SensorData'
-urlGetSchedule = 'https://telerehab-develop.biomed.ntua.gr/api/PatientSchedule'
+urlLogin = pureApi + '/Login'
+urlProduceApiKey = pureApi + '/PatientDeviceSet/list'
+urlUploadSensorData = pureApi + '/SensorData'
+urlGetSchedule = pureApi + '/PatientSchedule'
 
 headers = {
     'accept': '*/*',
