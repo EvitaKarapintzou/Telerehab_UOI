@@ -1,6 +1,6 @@
 1) Change the configure file using the imus mac.
 
-2) Enable/Disable the metrics and api in the shared_variables.py
+2) Enable/Disable the metrics, api and interpolation in the shared_variables.py
 
 3) Set the correct ip for the mqtt in the shared_variables.py
 
