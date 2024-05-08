@@ -3,8 +3,8 @@ from multiprocessing import Manager, Value
 import time
 import json
 
-MQTT_BROKER_HOST = '195.251.196.168' #orthopediki ip
-#MQTT_BROKER_HOST = '192.168.0.231' #nuc ip
+#MQTT_BROKER_HOST = '195.251.196.168' #orthopediki ip
+MQTT_BROKER_HOST = '192.168.0.231' #nuc ip
 MQTT_BROKER_PORT = 1883
 MQTT_KEEP_ALIVE_INTERVAL = 60
 
@@ -33,13 +33,13 @@ jwt_token = ""
 mqttState = mp.Value('c', b'I')  #  I -> "idle", R -> "receiving", S -> "stopReceiving", E -> "error"
 
 #set True if you want to upload the results using API
-enableConnectionToAPI = False
+enableConnectionToAPI = True
 #set True to enable the metrics
-enableMetrics = False
+enableMetrics = True
 #set the time the metrics are calculated in sec
-timeToCallMetrics = 10
+timeToCallMetrics = 15
 #set True if you want to enable the interpolation
-enableInterpolation = True
+enableInterpolation = False
 
 patientId = 1
 sessionId = 5

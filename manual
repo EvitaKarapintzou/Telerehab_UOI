@@ -1,0 +1,13 @@
+WP3:
+
+1) Στην Mqqt_management     #print("Message Received. ", msg.payload.decode(), " ", counter)
+μπορουμε να τυπώσουμε ότι έρχεται από το κινητό.
+
+2) #set True if you want to upload the results using API
+enableConnectionToAPI = True
+#set True to enable the metrics
+enableMetrics = True
+#set the time the metrics are calculated in sec
+timeToCallMetrics = 10
+
+Μέσα στο shared_variables αλλάζουμε τις παραμέτρους

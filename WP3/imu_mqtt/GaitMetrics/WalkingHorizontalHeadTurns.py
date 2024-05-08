@@ -162,7 +162,7 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
 
     start_time = df_Limu1.index.min()
     end_time = df_Limu1.index.max()
-    interval_length = pd.Timedelta(seconds=10)
+    interval_length = pd.Timedelta(seconds=5)
     
     current_time = start_time
     while current_time + interval_length <= end_time:
@@ -423,13 +423,13 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     #print(f"Mean Movement Range: {mean_range:.2f} degrees, STD: {std_range:.2f}")
     #print(f"Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}")
     
-    heel_strikes_times_Right, properties1 = find_peaks(movement_magnitude1, prominence = 0.6)  # Adjust the prominence as needed
+    heel_strikes_times_Right, properties1 = find_peaks(movement_magnitude1, prominence = 0.0)  # Adjust the prominence as needed
     print(heel_strikes_times_Right)
-    toe_off_times_Right, properties1 = find_peaks(-movement_magnitude1, prominence = 0.6)  # Adjust the prominence as needed
+    toe_off_times_Right, properties1 = find_peaks(-movement_magnitude1, prominence = 0.0) # Adjust the prominence as needed
     print(toe_off_times_Right)
-    heel_strikes_times_Left, properties2 = find_peaks(movement_magnitude2, prominence = 0.4)  # Adjust the prominence as needed
+    heel_strikes_times_Left, properties2 = find_peaks(movement_magnitude2, prominence = 0.1)  # Adjust the prominence as needed
     print(heel_strikes_times_Left)
-    toe_off_times_Left, properties2 = find_peaks(-movement_magnitude2, prominence = 0.4)  # Adjust the prominence as needed
+    toe_off_times_Left, properties2 = find_peaks(-movement_magnitude2, prominence = 0.1)  # Adjust the prominence as needed
     print(toe_off_times_Left)
 
     t1 = heel_strikes_times_Right
@@ -531,9 +531,19 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
 
         # Move to the next interval
     current_time += interval_length
-
+    return json.dumps(metrics, indent=4)
 
 def save_metrics_to_txt(metrics, file_path):
+
+    directory = "Gait Metrics Data"
+    
+    # Create the directory if it does not exist
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+    # Append the directory to the file path
+    file_path = os.path.join(directory, file_path)
+
     with open(file_path, 'w') as file:
         for key, value in metrics.items():
             if isinstance(value, dict):  
@@ -543,6 +553,8 @@ def save_metrics_to_txt(metrics, file_path):
             else:
                 file.write(f"{key}: {value}\n")
             file.write("\n")  # Add a newline for better separation
+
+        
 
 def calculate_correlation(metric1, metric2):
     # Calculate the correlation between two metrics

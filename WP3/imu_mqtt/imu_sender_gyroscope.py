@@ -33,9 +33,9 @@ def format_message(name, mac,row):
 
 def publish(client):
     msg_count = 1
-    imu1 = open('right_FEAC84C53DE7_2024-03-29_14:56:45.csv', newline='')
+    imu1 = open('right_FEAC84C53DE7_2024-04-17_17:27:56.csv', newline='')
     imu1Reader = csv.reader(imu1, delimiter=' ', quotechar='|')
-    imu2 = open('left_C8925E7DC6BD_2024-03-29_14:56:45.csv', newline='')
+    imu2 = open('left_C8925E7DC6BD_2024-04-17_17:27:56.csv', newline='')
     imu2Reader = csv.reader(imu2, delimiter=' ', quotechar='|')
     imu3 = open('back_E15561CB9161_2024-03-29_14:56:45.csv', newline='')
     imu3Reader = csv.reader(imu3, delimiter=' ', quotechar='|')

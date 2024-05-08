@@ -13,11 +13,11 @@ from scipy.signal import argrelextrema
 
 
 
-#imu_data_back = pd.read_csv(r'C:\Users\xrysa\OneDrive\Υπολογιστής\ALLData\Gaitlinear1\Gaitlinear\NewGait1\01_normal_2024-03-29_16_02_13\back_E15561CB9161_2024-03-29_16_02_13.csv')
-#imu_data_head = pd.read_csv(r'C:\Users\xrysa\OneDrive\Υπολογιστής\ALLData\Standing data\OldStanding4\01_OldStanding4_2024-04-01_12_49_11\Head_E15561CB9161_2024-04-01_13_30_07.csv')
+# imu_data_back = pd.read_csv(r'/home/uoi/Documents/GitHub/Telerehab_UOI/WP3/imu_mqtt/results/2024-04-25_11:22:54/E15561CB9161_2024-04-25_11:22:54.csv')
+# imu_data_head = pd.read_csv(r'/home/uoi/Documents/GitHub/Telerehab_UOI/WP3/imu_mqtt/results/2024-04-25_11:22:54/C8925E7DC6BD_2024-04-25_11:22:54.csv')
 
-imu_data_left = pd.read_csv(r'/home/uoi/Documents/GitHub/Telerehab_UOI/WP3/imu_mqtt/results/Gaitlinear/NewGait2/01_Walk_2024-03-29_14:56:45/left_C8925E7DC6BD_2024-03-29_14:56:45.csv')
-imu_data_right = pd.read_csv(r'/home/uoi/Documents/GitHub/Telerehab_UOI/WP3/imu_mqtt/results/Gaitlinear/NewGait2/01_Walk_2024-03-29_14:56:45/right_FEAC84C53DE7_2024-03-29_14:56:45.csv')
+#imu_data_left = pd.read_csv(r'/home/uoi/Documents/GitHub/Telerehab_UOI/WP3/imu_mqtt/results/linear_sidestepping_interp/left_FEAC84C53DE7_2024-04-25_12:39:54.csv')
+imu_data_right = pd.read_csv(r'/home/uoi/Documents/GitHub/Telerehab_UOI/WP3/imu_mqtt/results/2024-04-25_13:19:26/E25AD03D0194_2024-04-25_13:19:26.csv')
 #print(imu_data_back)
 
 
@@ -136,14 +136,14 @@ imu_data_right = pd.read_csv(r'/home/uoi/Documents/GitHub/Telerehab_UOI/WP3/imu_
 
 
 
-plt.figure(figsize=(14, 10))
+plt.figure(figsize=(14, 12))
 
 
 plt.subplot(3, 1, 1)
 #plt.plot(imu_data_back['Elapsed(s)'], imu_data_back['W(number)'],label='X Component Back', color='blue')
-plt.plot(imu_data_right['Elapsed(s)'], imu_data_right['W(number)'],label='X Component Right', color='darkgreen')
-plt.plot(imu_data_left['Elapsed(s)'], imu_data_left['W(number)'], label='X Component Left', color='darkviolet')
-#plt.plot(imu_data_head['Elapsed(s)'], imu_data_head['W(number)'], label='W Component Head', color='r')
+plt.plot(imu_data_right['W(number)'],label='X Component Right', color='darkgreen')
+# plt.plot(imu_data_left['W(number)'], label='X Component Left', color='darkviolet')
+# #plt.plot(imu_data_head['Elapsed(s)'], imu_data_head['W(number)'], label='W Component Head', color='r')
 plt.title('X Value over Time of 1st Gait')
 plt.xlabel('Elapsed Time (s)')
 plt.ylabel('X Value')
@@ -163,9 +163,9 @@ plt.legend()
 
 plt.subplot(3, 1, 2)
 #plt.plot(imu_data_back['Elapsed(s)'], imu_data_back['X(number)'], label='Y Component Back', color='blue')
-plt.plot(imu_data_right['Elapsed(s)'], imu_data_right['X(number)'], label='Y Component Right', color='darkgreen')
-plt.plot(imu_data_left['Elapsed(s)'], imu_data_left['X(number)'], label='Y Component Left', color='darkviolet')
-#plt.plot(imu_data_head['Elapsed(s)'], imu_data_head['X(number)'], label='X Component Head', color='r')
+plt.plot(imu_data_right['X(number)'], label='Y Component Right', color='darkgreen')
+# plt.plot(imu_data_left['X(number)'], label='Y Component Left', color='darkviolet')
+# #plt.plot(imu_data_head['Elapsed(s)'], imu_data_head['X(number)'], label='X Component Head', color='r')
 plt.title('Y Value over Time of 1st Gait')
 plt.xlabel('Elapsed Time (s)')
 plt.ylabel('Y Value')
@@ -174,8 +174,8 @@ plt.legend()
 
 plt.subplot(3, 1, 3)
 #plt.plot(imu_data_back['Elapsed(s)'], imu_data_back['Y (number)'], label='Z Component Back', color='blue')
-plt.plot(imu_data_right['Elapsed(s)'], imu_data_right['Y (number)'], label='Z Component Right', color='darkgreen')
-plt.plot(imu_data_left['Elapsed(s)'], imu_data_left['Y (number)'], label='Z Component Left', color='darkviolet')
+plt.plot(imu_data_right['Y (number)'], label='Z Component Right', color='darkgreen')
+# plt.plot(imu_data_left['Y (number)'], label='Z Component Left', color='darkviolet')
 #plt.plot(imu_data_head['Elapsed(s)'], imu_data_head['Y (number)'], label='Y Component Head', color='r')
 plt.title('Z Value over Time of 1st Gait')
 plt.xlabel('Elapsed Time (s)')

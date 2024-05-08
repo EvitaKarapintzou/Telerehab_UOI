@@ -26,7 +26,7 @@ def plotIMUDATA(Limu, x, filename):
     plt.grid(True)  
 
 
-def interpolate_imu_data(imu_data, starttime, endtime, N):
+# def interpolate_imu_data(imu_data, starttime, endtime, N):
     """
     Interpolate IMU data (w, x, y, z) between starttime and endtime into N samples.
 
@@ -40,12 +40,7 @@ def interpolate_imu_data(imu_data, starttime, endtime, N):
     list of lists: Interpolated IMU data with N entries.
     """
     
-# def butter_lowpass_filter(data, cutoff, fs, order=5):
-#     nyq = 0.5 * fs  
-#     normal_cutoff = cutoff / nyq
-#     b, a = butter(order, normal_cutoff, btype='low', analog=False)
-#     y = filtfilt(b, a, data)
-#     return y
+
 def butter_lowpass_filter(data, cutoff, fs, order=5):
     nyq = 0.5 * fs  
     normal_cutoff = cutoff / nyq
@@ -107,7 +102,9 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     mean = statistics.mean([dt1, dt2, dt3, dt4])
     std = statistics.stdev([dt1, dt2, dt3, dt4])
 
+
     Limu1 = [[float(item) for item in sublist] for sublist in Limu1]
+    
 
     Limu2 = [[float(item) for item in sublist] for sublist in Limu2]
     Limu3 = [[float(item) for item in sublist] for sublist in Limu3]
@@ -125,7 +122,16 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
     df_Limu1 = df_Limu1.sort_values(by='Timestamp')
     df_Limu1.set_index('Timestamp', inplace=True)
     
+    start_time = df_Limu1.index.min()
+    end_time = df_Limu1.index.max()
+    interval_length = pd.Timedelta(seconds=5)
+    
+    current_time = start_time
+    while current_time + interval_length <= end_time:
+        interval_end_time = current_time + interval_length
+        
 
+    
     if (plotdiagrams):
         plt.figure(figsize=(10, 6))
         plt.xlabel('Timestamp')
@@ -141,18 +147,20 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
     quaternions = df_Limu1[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
     rotations = R.from_quat(quaternions)
     euler_angles = rotations.as_euler('xyz', degrees=False)
-    euler_df = pd.DataFrame(euler_angles, columns=['Roll (rad)', 'Pitch (rad)', 'Yaw (rad)'])
+    
     euler_angles_degrees = rotations.as_euler('xyz', degrees=True)
     euler_df_degrees = pd.DataFrame(euler_angles_degrees, columns=['Roll (degrees)', 'Pitch (degrees)', 'Yaw (degrees)'])
-    angular_velocity = euler_angles_degrees.diff().abs() * fs
+    # euler_df_degrees.set_index(df_Limu1.index, inplace=False)
+  
+    fs = 50
+    cutoff = 0.5
+    
+    angular_velocity = euler_df_degrees.diff().abs() * fs
     acceleration = angular_velocity.diff().abs() * fs
     peak_acceleration = acceleration.max()
-    # For simplicity, let's assume symmetry calculation between 'Roll' movements as an example
-    # Symmetry index calculation: (Right - Left) / (0.5 * (Right + Left))
-    # Note: Adjust the calculation based on your specific symmetry definition and data
-    roll_right = euler_angles_degrees['Roll (degrees)'].where(euler_angles_degrees['Roll (degrees)'] > 0).mean()
-    roll_left = abs(euler_angles_degrees['Roll (degrees)'].where(euler_angles_degrees['Roll (degrees)'] < 0).mean())
-    movement_symmetry = (roll_right - roll_left) / (0.5 * (roll_right + roll_left))
+    # roll_right = euler_df_degrees['Roll (degrees)'].where(euler_df_degrees['Roll (degrees)'] > 0).mean()
+    # roll_left = abs(euler_df_degrees['Roll (degrees)'].where(euler_df_degrees['Roll (degrees)'] < 0).mean())
+    # movement_symmetry = (roll_right - roll_left) / (0.5 * (roll_right + roll_left))
   
 
 
@@ -170,8 +178,6 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
         plt.tight_layout()  
         plt.show()
 
-    fs = 50
-    cutoff = 0.5
 
 
     yaw_filtered = butter_lowpass_filter(euler_df_degrees['Yaw (degrees)'], cutoff, fs, order=5)
@@ -269,19 +275,8 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
         std_duration = -1        
 
 
-    # # Output the metrics
-    # print(f"Number of movements: {len(filtered_pairs)}")
-    # print(f"Pace: {pace:.2f} movements per second")
-    # print(f"Mean Movement Range: {mean_range:.2f} degrees, STD: {std_range:.2f}")
-    # print(f"Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
 
     metrics_data = {
-        # "movements": [
-        #     {"id": i+1, "duration_seconds": float(duration), "range_degrees": float(mrange)}
-        #     for i, ((_, _), mrange, duration) in enumerate(zip(filtered_pairs, filtered_ranges, movement_durations))
-        # ],
         "total_metrics": {
             "number_of_movements": int(len(filtered_pairs)),
             "pace_movements_per_second": float(pace),
@@ -289,9 +284,40 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
             "std_range_degrees": float(std_range),
             "mean_duration_seconds": float(mean_duration),
             "std_duration_seconds": float(std_duration),
-            "peak_acceleration": peak_acceleration.to_dict(),
-            "movement_symmetry": movement_symmetry
+            "peak_acceleration": peak_acceleration.to_dict()
+            # "movement_symmetry": movement_symmetry
         }
     }
 
+    datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"{datetime_string}_HeadRotation_metrics.txt"
+
+    # Save the metrics to a file
+    save_metrics_to_txt(metrics_data, filename)
+
     return json.dumps(metrics_data, indent=4)
+
+    
+def save_metrics_to_txt(metrics, file_path):
+    main_directory = "Sitting Metrics Data"
+    sub_directory = "HeadRotation Metrics Data"
+
+    directory = os.path.join(main_directory, sub_directory)
+    
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+   
+    full_path = os.path.join(directory, file_path)
+
+    with open(full_path, 'w') as file:
+        for key, value in metrics.items():
+            if isinstance(value, dict):  
+                file.write(f"{key}:\n")
+                for sub_key, sub_value in value.items():
+                    file.write(f"  {sub_key}: {sub_value}\n")
+            else:
+                file.write(f"{key}: {value}\n")
+            file.write("\n")  
+
+

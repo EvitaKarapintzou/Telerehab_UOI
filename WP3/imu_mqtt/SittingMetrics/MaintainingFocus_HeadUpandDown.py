@@ -26,7 +26,7 @@ def plotIMUDATA(Limu, x, filename):
     plt.grid(True)  
 
 
-def interpolate_imu_data(imu_data, starttime, endtime, N):
+# def interpolate_imu_data(imu_data, starttime, endtime, N):
     """
     Interpolate IMU data (w, x, y, z) between starttime and endtime into N samples.
 
@@ -40,12 +40,7 @@ def interpolate_imu_data(imu_data, starttime, endtime, N):
     list of lists: Interpolated IMU data with N entries.
     """
     
-# def butter_lowpass_filter(data, cutoff, fs, order=5):
-#     nyq = 0.5 * fs  
-#     normal_cutoff = cutoff / nyq
-#     b, a = butter(order, normal_cutoff, btype='low', analog=False)
-#     y = filtfilt(b, a, data)
-#     return y
+
 def butter_lowpass_filter(data, cutoff, fs, order=5):
     nyq = 0.5 * fs  
     normal_cutoff = cutoff / nyq
@@ -107,6 +102,7 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     mean = statistics.mean([dt1, dt2, dt3, dt4])
     std = statistics.stdev([dt1, dt2, dt3, dt4])
 
+    #Head
     Limu1 = [[float(item) for item in sublist] for sublist in Limu1]
 
     Limu2 = [[float(item) for item in sublist] for sublist in Limu2]
@@ -125,6 +121,14 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
     df_Limu1 = df_Limu1.sort_values(by='Timestamp')
     df_Limu1.set_index('Timestamp', inplace=True)
     
+    start_time = df_Limu1.index.min()
+    end_time = df_Limu1.index.max()
+    interval_length = pd.Timedelta(seconds=5)
+    
+    current_time = start_time
+    while current_time + interval_length <= end_time:
+        interval_end_time = current_time + interval_length
+        
 
     if (plotdiagrams):
         plt.figure(figsize=(10, 6))
@@ -252,18 +256,8 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
         mean_duration = -1
         std_duration = -1        
 
-    # Output the metrics
-    #print(f"Number of movements: {len(filtered_pairs)}")
-    #print(f"Pace: {pace:.2f} movements per second")
-    #print(f"Mean Movement Range: {mean_range:.2f} degrees, STD: {std_range:.2f}")
-    #print(f"Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
     metrics_data = {
-        # "movements": [
-        #     {"id": i+1, "duration_seconds": float(duration), "range_degrees": float(mrange)}
-        #     for i, ((_, _), mrange, duration) in enumerate(zip(filtered_pairs, filtered_ranges, movement_durations))
-        # ],
+      
         "total_metrics": {
             "number_of_movements": int(len(filtered_pairs)),
             "pace_movements_per_second": float(pace),
@@ -273,6 +267,34 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
             "std_duration_seconds": float(std_duration)
         }
     }
+    datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"{datetime_string}_HeadUpandDown_metrics.txt"
+
+    # Save the metrics to a file
+    save_metrics_to_txt(metrics_data, filename)
 
     return json.dumps(metrics_data, indent=4)
+
+    
+def save_metrics_to_txt(metrics, file_path):
+    main_directory = "Sitting Metrics Data"
+    sub_directory = "HeadUpandDown Metrics Data"
+
+    directory = os.path.join(main_directory, sub_directory)
+    
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+   
+    full_path = os.path.join(directory, file_path)
+
+    with open(full_path, 'w') as file:
+        for key, value in metrics.items():
+            if isinstance(value, dict):  
+                file.write(f"{key}:\n")
+                for sub_key, sub_value in value.items():
+                    file.write(f"  {sub_key}: {sub_value}\n")
+            else:
+                file.write(f"{key}: {value}\n")
+            file.write("\n")  
 

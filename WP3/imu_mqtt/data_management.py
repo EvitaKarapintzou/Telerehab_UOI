@@ -4,21 +4,21 @@ import numpy as np
 
 from shared_variables import enableInterpolation, isFoundFirstTimestamp, firstTimestamp, imus, firstPacket, timeToCallMetrics, sensorDataToUpload, imu1Queue, imu2Queue, imu3Queue, imu4Queue, mqttState, enableMetrics, imu1FinalQueue, imu2FinalQueue, imu3FinalQueue, imu4FinalQueue, csv_file_path, imus, counter, startReceiving, lastDataTime, enableConnectionToAPI, feedbackData
 #from get_online_metrics_ex_1_pr_1 import get_metrics
-#from SittingMetrics.MaintainingFocus_HeadUpandDown import get_metrics
-#from SittingMetrics.HeelRaises import get_metrics
-# from SittingMetrics.MaintainingFocus_Headrotation import get_metrics
-# from SittingMetrics.MaintainingFocus_Headrotation import getMetricsSittingOld01
+# from SittingMetrics.MaintainingFocus_HeadUpandDown import get_metrics
+# from SittingMetrics.HeelRaises import get_metrics
+from SittingMetrics.MaintainingFocus_Headrotation import get_metrics
+from SittingMetrics.MaintainingFocus_Headrotation import getMetricsSittingOld01
 # from SittingMetrics.Trunk_rotation import get_metrics
 # from SittingMetrics.Trunk_rotation import getMetricsSittingNew01
 # from SittingMetrics.Assisted_toe_raises import get_metrics
 # from SittingMetrics.Assisted_toe_raises import getMetricsSittingNew02
 # from SittingMetrics.SeatedMarchingSpot import get_metrics
 # from SittingMetrics.SeatedMarchingSpot import getMetricsSittingNew04
-#from SittingMetrics.MaintainingFocus_HeadUpandDown import getMetricsSittingOld02
+# from SittingMetrics.MaintainingFocus_HeadUpandDown import getMetricsSittingOld02
 #from getMetricsSittingOld02 import get_metrics
 #from getMetricsSittingOld02 import getMetricsSitting01
-from GaitMetrics.WalkingHorizontalHeadTurns import getMetricsGaitNew02
-from GaitMetrics.WalkingHorizontalHeadTurns import get_metrics
+# from GaitMetrics.WalkingHorizontalHeadTurns import getMetricsGaitNew02
+# from GaitMetrics.WalkingHorizontalHeadTurns import get_metrics
 from csv_management import write_in_files
 from api_management import upload_sensor_data
 
@@ -96,6 +96,8 @@ def receive_imu_data(q,scheduleQueue):
               elif ']' or '"' in item:
                   item = item[:len(item)-1]
               name = item.split()
+              if '"' in name[len(name) - 1]:
+                  name[len(name) - 1] = name[len(name) - 1].replace('"', '')
               if(len(name) > 1):
                 if(name[1] == str(imus[0])):
                     imu1Queue.put(item)

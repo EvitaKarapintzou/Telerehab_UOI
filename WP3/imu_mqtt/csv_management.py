@@ -43,7 +43,28 @@ def write_in_a_specific_file(deviceData, csv_file_path):
         with open(device, 'a', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
             allData = allData[1:len(allData)-1]
-            csv_writer.writerow(allData.split())
+            dataToFile = allData.split()
+            if '"' in dataToFile[len(dataToFile) - 1]:
+                  dataToFile[len(dataToFile) - 1] = dataToFile[len(dataToFile) - 1].replace('"', '')
+            
+            
+            formatted_row = [
+                    f"{float(num):.11f}" if is_number(num) and ('.' in num or (float(num) % 1 != 0)) else num
+                    for num in dataToFile
+                ]            
+            csv_writer.writerow(formatted_row)
+
+            #csv_writer.writerow(dataToFile)
+
+
+def is_number(s):
+    try:
+        float(s) 
+        return True
+    except ValueError:
+        return False
+
+
 
 def write_in_files(imu1List, imu2List, imu3List, imu4List):
     write_in_a_specific_file(imu1List, csv_file_path)
