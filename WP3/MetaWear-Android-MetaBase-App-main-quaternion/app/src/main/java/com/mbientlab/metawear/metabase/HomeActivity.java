@@ -139,7 +139,7 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
     @Override
     protected void onResume() {
         super.onResume();
-        moveTaskToBack(true);
+        moveTaskToBack(true);//comment this if you want to change the number of the connected IMUs
         if (!appInBackground) {
             appInBackground = false;
         }

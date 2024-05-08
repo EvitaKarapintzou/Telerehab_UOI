@@ -139,7 +139,7 @@ public class HomeActivity extends AppCompatActivity implements ActivityBus, Serv
     @Override
     protected void onResume() {
         super.onResume();
-        moveTaskToBack(true);
+        moveTaskToBack(true);//Comment this if you want to see the app and reconfigure sensors (number, etc.)
         if (!appInBackground) {
             appInBackground = false;
         }
