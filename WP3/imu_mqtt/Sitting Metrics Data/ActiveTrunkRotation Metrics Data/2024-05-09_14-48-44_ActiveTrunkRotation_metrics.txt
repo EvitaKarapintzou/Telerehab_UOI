@@ -1,0 +1,10 @@
+total_metrics:
+  number_of_movements: 2
+  pace_movements_per_second: 133333.33333333334
+  mean_combined_range_degrees: 20.634164296166226
+  std_combined_range_degrees: 6.686805656930261
+  mean_duration_seconds: 1.5e-06
+  std_duration_seconds: 7.071067811865475e-07
+  Peak Acceleration: {'Roll (degrees)': 73988.63289484028, 'Pitch (degrees)': 103884.70236656751, 'Yaw (degrees)': 91874.19423362652}
+  Peak Angular Velocity: {'Roll (degrees)': 1507.2367937549639, 'Pitch (degrees)': 2081.195591555796, 'Yaw (degrees)': 1840.0739506712114}
+

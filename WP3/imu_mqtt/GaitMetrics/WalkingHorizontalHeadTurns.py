@@ -121,14 +121,14 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
 
     Limu1 = [[float(item) for item in sublist] for sublist in Limu1]
     Limu2 = [[float(item) for item in sublist] for sublist in Limu2]
-    #Limu3 = [[float(item) for item in sublist] for sublist in Limu3]
+    Limu3 = [[float(item) for item in sublist] for sublist in Limu3]
     #Limu4 = [[float(item) for item in sublist] for sublist in Limu4]
 
-    if len(Limu1) > 0 and len(Limu2) > 0:
-        returnedJson = getMetricsGaitNew02(Limu1, Limu2, False) 
+    if len(Limu1) > 0 and len(Limu2) > 0 and len(Limu3) > 0:
+        returnedJson = getMetricsGaitNew02(Limu1, Limu2, Limu3, False) 
         return returnedJson
     
-def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
+def getMetricsGaitNew02(Limu1, Limu2, Limu3, plotdiagrams):
 
     # linear1 = df_Limu1[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
     # linear1_df = df_Limu1
@@ -160,20 +160,41 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     df_Limu2 = df_Limu2.sort_values(by='Timestamp')
     df_Limu2.set_index('Timestamp', inplace=True)
 
-    start_time = df_Limu1.index.min()
-    end_time = df_Limu1.index.max()
-    interval_length = pd.Timedelta(seconds=5)
+    #Limu3
+    df_Limu3 = pd.DataFrame(Limu3, columns=columns)
+    df_Limu3['Timestamp'] = pd.to_datetime(df_Limu3['Timestamp'])
+    df_Limu3 = df_Limu3.sort_values(by='Timestamp')
+    df_Limu3.set_index('Timestamp', inplace=True)
     
-    current_time = start_time
-    while current_time + interval_length <= end_time:
-        interval_end_time = current_time + interval_length
-        
-        # Filter data within the current interval for both datasets
-        interval_data1 = df_Limu1.loc[current_time:interval_end_time]
-        interval_data2 = df_Limu2.loc[current_time:interval_end_time]
+    # quaternions3 = df_Limu3[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
+    # rotations3 = R.from_quat(quaternions3)
+    # euler_angles3 = rotations3.as_euler('xyz', degrees=False)
+    # euler_df3 = pd.DataFrame(euler_angles3, columns=['Roll (rad)', 'Pitch (rad)', 'Yaw (rad)'])
+    # euler_angles_degrees3 = rotations3.as_euler('xyz', degrees=True)
+    # euler_df_degrees3 = pd.DataFrame(euler_angles_degrees3, columns=['Roll (degrees)', 'Pitch (degrees)', 'Yaw (degrees)'])
+   
+    # quaternions_df3 = df_Limu3;
 
-        # Calculate metrics for the interval (you can implement your metric calculation here)
-        metrics = getMetricsGaitNew02(interval_data1, interval_data2)  # Placeholder for the real calculation function
+
+    # W_filtered3 = butter_lowpass_filter(quaternions_df3['W(number)'], cutoff, fs, order=5)
+    # Y_filtered3 = butter_lowpass_filter(quaternions_df3['Y (number)'], cutoff, fs, order=5)
+
+
+
+    # start_time = df_Limu1.index.min()
+    # end_time = df_Limu1.index.max()
+    # interval_length = pd.Timedelta(seconds=5)
+    
+    # current_time = start_time
+    # while current_time + interval_length <= end_time:
+    #     interval_end_time = current_time + interval_length
+        
+    #     # Filter data within the current interval for both datasets
+    #     interval_data1 = df_Limu1.loc[current_time:interval_end_time]
+    #     interval_data2 = df_Limu2.loc[current_time:interval_end_time]
+
+    #     # Calculate metrics for the interval (you can implement your metric calculation here)
+    #     metrics = getMetricsGaitNew02(interval_data1, interval_data2)  # Placeholder for the real calculation function
 
    
 
@@ -191,6 +212,7 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     
     linear_df1 = df_Limu1;
     linear_df2 = df_Limu2;
+    linear_df3 = df_Limu3;
    
     fs = 30
     cutoff = 0.425
@@ -203,6 +225,10 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     Z_filtered2 = butter_lowpass_filter(linear_df2['Z (number)'], cutoff, fs, order=5)
     X_filtered2 = butter_lowpass_filter(linear_df2['X(number)'], cutoff, fs, order=5)
     Y_filtered2 = butter_lowpass_filter(linear_df2['Y (number)'], cutoff, fs, order=5)
+
+    Z_filtered3 = butter_lowpass_filter(linear_df3['Z (number)'], cutoff, fs, order=5)
+    X_filtered3 = butter_lowpass_filter(linear_df3['X(number)'], cutoff, fs, order=5)
+    Y_filtered3 = butter_lowpass_filter(linear_df3['Y (number)'], cutoff, fs, order=5)
 
     # # Plotting the original and filtered signals
     # plt.figure(figsize=(14, 8))
@@ -229,6 +255,7 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
         # Calculate the magnitude of movement considering both yaw and roll
     movement_magnitude1 = np.sqrt(np.square(X_filtered1) + np.square(Y_filtered1) + np.square(Z_filtered1))
     movement_magnitude2 = np.sqrt(np.square(X_filtered2) + np.square(Y_filtered2) + np.square(Z_filtered2))
+    movement_magnitude3 = np.sqrt(np.square(X_filtered3) + np.square(Y_filtered3) + np.square(Z_filtered3))
 
     # movement_magnitude1 = np.sqrt(np.square(X_filtered1) + np.square(Z_filtered1))
     # movement_magnitude2 = np.sqrt(np.square(X_filtered2) + np.square(Z_filtered2))
@@ -313,6 +340,29 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     #     plt.title('Fused W-Y signal with Detected Movements')
     #     plt.legend()
     #     plt.show()
+
+    #IMU3
+    peaks3, _ = find_peaks(movement_magnitude3)
+    valleys3, _ = find_peaks(-movement_magnitude3)
+
+    print("peaks Left IMU ", peaks3)
+    print("valleys Left IMU", valleys3)
+    if(len(peaks3) == 0):
+        return 0
+    if(len(valleys3) == 0):
+        return 0
+
+    if valleys3[0] > peaks3[0]:
+        peaks3 = peaks3[1:]  
+    if peaks3[-1] < valleys3[-1]:
+        valleys3 = valleys3[:-1]  
+        
+    movement_pairs3 = []
+
+    for i in range(min(len(peaks3), len(valleys3))):
+        movement_pairs3.append((valleys3[i], peaks3[i]))
+
+    print("Movement pairs for Left Leg (as index positions):", movement_pairs2)
 
     #=============IMU1-Right Leg====================#
     movement_ranges_yaw1 = []
@@ -417,11 +467,58 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     mean_duration2 = np.mean(movement_durations2)
     std_duration2 = np.std(movement_durations2, ddof=1)  # ddof=1 for sample standard deviation    
 
-    # Output the metrics
-    #print(f"Number of movements: {len(filtered_pairs)}")
-    #print(f"Pace: {pace:.2f} movements per second")
-    #print(f"Mean Movement Range: {mean_range:.2f} degrees, STD: {std_range:.2f}")
-    #print(f"Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}")
+#=============IMU3-HEAD====================#
+    movement_ranges_yaw3 = []
+    movement_ranges_pitch3 = []
+    movement_ranges_roll3 = []
+
+    for valley3, peak3 in movement_pairs3:
+            yaw_range3 = abs(Z_filtered3[peak3] - Z_filtered3[valley3])
+            movement_ranges_yaw3.append(yaw_range3)
+
+            pitch_range3 = abs(X_filtered3[peak3] - X_filtered3[valley3])
+            movement_ranges_pitch3.append(pitch_range3)
+            
+            roll_range3 = abs(Y_filtered3[peak3] - Y_filtered3[valley3])
+            movement_ranges_roll3.append(roll_range3)
+
+    combined_movement_ranges3 = [np.sqrt(yaw3**2 + pitch3**2 + roll3**2) for yaw3, pitch3, roll3 in zip(movement_ranges_yaw3, movement_ranges_roll3, movement_ranges_pitch3)]
+
+    for i, (yaw_range3, roll_range3, pitch_range3) in enumerate(zip(movement_ranges_yaw3, movement_ranges_roll3, movement_ranges_pitch3)):
+            combined_range3 = np.sqrt(yaw_range3**2 + roll_range3**2 + pitch_range3**2)
+            print(f"MovementLeft {i+1}: Yaw Range Head = {yaw_range3:.2f} degrees, Pitch Range Head = {pitch_range3:.2f} degrees, Roll Range Head = {roll_range3:.2f} degrees, Combined Range Head = {combined_range3:.2f} degrees")
+
+        # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
+    significant_movements3 = [(pair3, yaw3, pitch3, roll3, np.sqrt(yaw3**2 + pitch3**2 + roll3**2)) for pair3, yaw3, pitch3, roll3 in zip(movement_pairs3, movement_ranges_yaw3, movement_ranges_pitch3 ,movement_ranges_roll3) if np.sqrt(yaw3**2 + pitch3**2 + roll3**2) >= 0.01]
+
+    filtered_pairs3 = [item[0] for item in significant_movements3]
+    filtered_combined_ranges3 = [item[3] for item in significant_movements3]
+
+        # Print the significant movements and their combined ranges
+    for i, (_, _, _, _, combined_range3) in enumerate(significant_movements3):
+            print(f"Significant Movement Head {i+1}: Combined Range Head = {combined_range3:.2f} degrees")
+
+        # Calculate durations for significant movements using timestamps
+    movement_durations3 = []
+
+    for start, end in filtered_pairs3:
+        start_time3 = df_Limu3.iloc[start].name  # Assuming the DataFrame index is datetime or similar
+        end_time3 = df_Limu3.iloc[end].name
+        duration3 = (end_time3 - start_time3).total_seconds()
+        movement_durations3.append(duration3)
+
+    # Calculate pace: total number of movements divided by the total observation period in seconds
+    total_duration_seconds3 = (df_Limu3.index[-1] - df_Limu3.index[0]).total_seconds()
+    pace3 = len(filtered_pairs3) / total_duration_seconds3  # Movements per second
+
+    # Calculate mean and STD for combined ranges and durations
+    mean_combined_range3 = np.mean(filtered_combined_ranges3)
+    std_combined_range3 = np.std(filtered_combined_ranges3, ddof=1)  # ddof=1 for sample standard deviation
+
+    mean_duration3 = np.mean(movement_durations3)
+    std_duration3 = np.std(movement_durations3, ddof=1)  # ddof=1 for sample standard deviation    
+    peak_acceleration3 = np.max(movement_magnitude3) #if len(movement_magnitude2) > 0 else 0
+    steps = min(len(movement_pairs1), len(movement_pairs2)) 
     
     heel_strikes_times_Right, properties1 = find_peaks(movement_magnitude1, prominence = 0.0)  # Adjust the prominence as needed
     print(heel_strikes_times_Right)
@@ -499,9 +596,10 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
     # Left loading response percentage phase time over gait cycle = Left loading response time/Right gait cycle time
     left_loading_response_percentage = (left_load_response_time / right_gait_cycle_time) * 100
 
-    metrics = {
-     
-         "Gait Cycle":{
+    metrics_data = {
+        "total_metrics": {
+             "Gait Cycle":{
+                "Number of steps": int(steps/3),
                 "Right Single Support Time": right_single_support_time.tolist(),
                 "Left Single Support Time": left_single_support_time.tolist(),
                 "Double Support Time": double_support_time.tolist(),
@@ -519,99 +617,54 @@ def getMetricsGaitNew02(Limu1, Limu2, plotdiagrams):
                 "Left Stance Phase Percentage": left_stance_phase_percentage.tolist(),
                 "Right Loading Response Percentage": right_loading_response_percentage.tolist(),
                 "Left Loading Response Percentage": left_loading_response_percentage.tolist()   
-                            }
+                            },
+             "HEAD METRICS":{
+                "number_of_movements": int(len(filtered_pairs3)),
+                "pace_movements_per_second": float(pace3),
+                "mean_combined_range_degrees": float(mean_combined_range3),
+                "std_combined_range_degrees": float(std_combined_range3),
+                "mean_duration_seconds": float(mean_duration3),
+                "std_duration_seconds": float(std_duration3),
+                "acceleration1": float(peak_acceleration3),
+                }
     }
-    
-    # save_metrics_to_txt(metrics, 'gait_metrics.txt')
+    }
 
-         # Save the metrics to a file
+
+
     datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    file_path = f"{datetime_string}_gait_metrics.txt"
-    save_metrics_to_txt(metrics, file_path)
+    filename = f"{datetime_string}_WalkingHorizontal_metrics.txt"
 
-        # Move to the next interval
-    current_time += interval_length
-    return json.dumps(metrics, indent=4)
+    # Save the metrics to a file
+    save_metrics_to_txt(metrics_data, filename)
 
-def save_metrics_to_txt(metrics, file_path):
+    return json.dumps(metrics_data, indent=4)
 
-    directory = "Gait Metrics Data"
     
-    # Create the directory if it does not exist
+def save_metrics_to_txt(metrics, file_path):
+    main_directory = "Gait Metrics Data"
+    sub_directory = "WalkingHorizontal Metrics Data"
+
+    directory = os.path.join(main_directory, sub_directory)
+    
     if not os.path.exists(directory):
         os.makedirs(directory)
     
-    # Append the directory to the file path
-    file_path = os.path.join(directory, file_path)
+   
+    full_path = os.path.join(directory, file_path)
 
-    with open(file_path, 'w') as file:
-        for key, value in metrics.items():
-            if isinstance(value, dict):  
-                file.write(f"{key}:\n")
+   
+    with open(full_path, 'w') as file:
+        for main_key, main_value in metrics.items():
+            file.write(f"{main_key}:\n")
+            for key, value in main_value.items():
+                file.write(f"  {key}:\n")
                 for sub_key, sub_value in value.items():
-                    file.write(f"  {sub_key}: {sub_value}\n")
-            else:
-                file.write(f"{key}: {value}\n")
-            file.write("\n")  # Add a newline for better separation
+                    file.write(f"    {sub_key}: {sub_value}\n")
+                file.write("\n") 
+         
 
-        
-
-def calculate_correlation(metric1, metric2):
-    # Calculate the correlation between two metrics
-    correlation = metric1.corr(metric2)
-    return correlation
-
-
-    # metrics_data = {
-    #         # "movements": [
-    #         #     {"id": i+1, "duration_seconds": float(duration), "range_degrees": float(mrange)}
-    #         #     for i, ((_, _), mrange, duration) in enumerate(zip(filtered_pairs, filtered_ranges, movement_durations))
-    #         # ],
-    #         "total_metrics": {
-    #              "RIGHT IMU": {
-    #             "number of heelstrikes": int(heel_strike1),
-    #             "number of ToeOffs": int(toe_off1),
-    #             "Number of Steps with Right Leg": int(heel_strike1/2),
-    #             "Number of Steps": int(max(heel_strike1,toe_off2)),
-    #             "number_of_movements Right IMU": int(len(filtered_pairs1)),
-    #             "pace_movements_per_second Right IMU": float(pace1),
-    #             "mean_range_degrees Right IMU": float(mean_combined_range1),
-    #             "std_range_degrees Right IMU": float(std_combined_range1),
-    #             "mean_duration_seconds Right IMU": float(mean_duration1),
-    #             "std_duration_seconds Right IMU": float(std_duration1)
-    #                         },
-    #              "LEFT IMU":{
-    #             "number of heelstrikes": int(heel_strike2),
-    #             "number of ToeOffs": int(toe_off2),
-    #             "Number of Steps with Left Leg": int(heel_strike2/2),
-    #             "number_of_movements Left IMU": int(len(filtered_pairs2)),
-    #             "pace_movements_per_second Left IMU": float(pace2),
-    #             "mean_range_degrees Left IMU": float(mean_combined_range2),
-    #             "std_range_degrees Left IMU": float(std_combined_range2),
-    #             "mean_duration_seconds Left IMU": float(mean_duration2),
-    #             "std_duration_seconds Left IMU": float(std_duration2)
-    #                         },
-    #             #  "Gait Cycle":{
-    #             # "Right Single Support Time": right_single_support_time,
-    #             # "Left Single Support Time": left_single_support_time,
-    #             # "Double Support Time": double_support_time,
-    #             # "Right Stance Phase Duration": right_stance_phase_duration,
-    #             # "Left Stance Phase Duration": left_stance_phase_duration,
-    #             # "Right Load Response Time": right_load_response_time,
-    #             # "Right Gait Cycle Time": right_gait_cycle_time,
-    #             # "Left Load Response Time": left_load_response_time,
-    #             # "Left Gait Cycle Time": left_gait_cycle_time,
-    #             # "Cadence": cadence,
-    #             # "Right Single Support Percentage": right_single_support_time_percentage,
-    #             # "Left Single Support Percentage": left_single_support_time_percentage,
-    #             # "Double Support Percentage": double_support_time_percentage,
-    #             # "Right Stance Phase Percentage": right_stance_phase_percentage,
-    #             # "Left Stance Phase Percentage": left_stance_phase_percentage,
-    #             # "Right Loading Response Percentage": right_loading_response_percentage,
-    #             # "Left Loading Response Percentage": left_loading_response_percentage   
-    #             #             }
-    #         }
-    #     }
-        
-
-    # return json.dumps(metrics_data, indent=4)
+# def calculate_correlation(metric1, metric2):
+#     # Calculate the correlation between two metrics
+#     correlation = metric1.corr(metric2)
+#     return correlation

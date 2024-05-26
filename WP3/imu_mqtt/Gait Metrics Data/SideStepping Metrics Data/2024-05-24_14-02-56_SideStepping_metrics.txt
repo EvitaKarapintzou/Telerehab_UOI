@@ -1,0 +1,21 @@
+total_metrics:
+  Gait Cycle:
+    Steps: 4
+    Right Single Support Time: [246.0, 217.0, 111.0, 172.0, nan, nan]
+    Left Single Support Time: [75.0, 95.0, 67.0, 52.0, 76.0, 70.0, 62.0, 81.0, 62.0, 60.0, 61.0, 100.0, 175.0, nan]
+    Double Support Time: [-3.0, 7.0, 3.0, 57.0, 34.0, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Duration: [-32, -24, -22, -7, -34, -19, -17, -36, -19, -17, -23, -28, -39, -86]
+    Left Stance Phase Duration: [246.0, 217.0, 111.0, 172.0, nan, nan]
+    Right Load Response Time: [19.0, 193.0, 308.0, 349.0, 412.0, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Gait Cycle Time: [43.0, 71.0, 45.0, 45.0, 42.0, 51.0, 45.0, 45.0, 43.0, 43.0, 38.0, 72.0, 136.0, nan]
+    Left Load Response Time: [-22.0, -186.0, -305.0, -292.0, -378.0, -415.0, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Gait Cycle Time: [217.0, 186.0, 86.0, 108.0, nan]
+    Cadence: [0.00423728813559322, 0.002638522427440633, 0.0025380710659898475, 0.002188183807439825, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Single Support Percentage: [572.093023255814, 305.6338028169014, 246.66666666666669, 382.22222222222223, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Single Support Percentage: [174.41860465116278, 133.80281690140845, 148.88888888888889, 115.55555555555554, 180.95238095238096, 137.2549019607843, 137.77777777777777, 180.0, 144.1860465116279, 139.53488372093022, 160.5263157894737, 138.88888888888889, 128.6764705882353, nan]
+    Double Support Percentage: [-6.976744186046512, 9.859154929577464, 6.666666666666667, 126.66666666666666, 80.95238095238095, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Percentage: [-74.4186046511628, -33.80281690140845, -48.888888888888886, -15.555555555555555, -80.95238095238095, -37.254901960784316, -37.77777777777778, -80.0, -44.18604651162791, -39.53488372093023, -60.526315789473685, -38.88888888888889, -28.676470588235293, nan]
+    Left Stance Phase Percentage: [572.093023255814, 305.6338028169014, 246.66666666666669, 382.22222222222223, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Loading Response Percentage: [44.18604651162791, 271.83098591549293, 684.4444444444445, 775.5555555555555, 980.952380952381, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Loading Response Percentage: [-51.162790697674424, -261.9718309859155, -677.7777777777777, -648.8888888888889, -900.0, -813.7254901960783, nan, nan, nan, nan, nan, nan, nan, nan]
+

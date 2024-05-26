@@ -26,26 +26,21 @@ def plotIMUDATA(Limu, x, filename):
     plt.grid(True)  
 
 
-def interpolate_imu_data(imu_data, starttime, endtime, N):
-    """
-    Interpolate IMU data (w, x, y, z) between starttime and endtime into N samples.
+# def interpolate_imu_data(imu_data, starttime, endtime, N):
+#     """
+#     Interpolate IMU data (w, x, y, z) between starttime and endtime into N samples.
 
-    Parameters:
-    imu_data (list of lists): The IMU data in format [time, w, x, y, z, _, _].
-    starttime (float): The start time for interpolation.
-    endtime (float): The end time for interpolation.
-    N (int): Number of samples to interpolate.
+#     Parameters:
+#     imu_data (list of lists): The IMU data in format [time, w, x, y, z, _, _].
+#     starttime (float): The start time for interpolation.
+#     endtime (float): The end time for interpolation.
+#     N (int): Number of samples to interpolate.
 
-    Returns:
-    list of lists: Interpolated IMU data with N entries.
-    """
+#     Returns:
+#     list of lists: Interpolated IMU data with N entries.
+#     """
     
-# def butter_lowpass_filter(data, cutoff, fs, order=5):
-#     nyq = 0.5 * fs  
-#     normal_cutoff = cutoff / nyq
-#     b, a = butter(order, normal_cutoff, btype='low', analog=False)
-#     y = filtfilt(b, a, data)
-#     return y
+
 def butter_lowpass_filter(data, cutoff, fs, order=5):
     nyq = 0.5 * fs  
     normal_cutoff = cutoff / nyq
@@ -158,7 +153,7 @@ def getMetricsStandingOld03(Limu1, plotdiagrams):
         plt.legend()
         plt.xticks(rotation=45)
         plt.tight_layout()  
-        plt.show()
+        # plt.show()
 
     fs = 50
     cutoff = 0.5
@@ -177,7 +172,7 @@ def getMetricsStandingOld03(Limu1, plotdiagrams):
         plt.ylabel('Magnitude of Movement')
         plt.title('Combined Yaw and Roll Movement Magnitude')
         plt.legend()
-        plt.show()
+        # plt.show()
 
     peaks, _ = find_peaks(movement_magnitude)
     valleys, _ = find_peaks(-movement_magnitude)
@@ -213,7 +208,7 @@ def getMetricsStandingOld03(Limu1, plotdiagrams):
         plt.ylabel('movement_magnitude')
         plt.title('movement_magnitude signal with Detected Movements')
         plt.legend()
-        plt.show()
+        # plt.show()
 
     movement_ranges_yaw = []
     movement_ranges_roll = []
@@ -232,7 +227,7 @@ def getMetricsStandingOld03(Limu1, plotdiagrams):
         print(f"Movement {i+1}: Yaw Range = {yaw_range:.2f} degrees, Roll Range = {roll_range:.2f} degrees, Combined Range = {combined_range:.2f} degrees")
 
     significant_movements = [(pair, yaw, roll, np.sqrt(yaw**2 + roll**2)) for pair, yaw, roll in zip(movement_pairs, movement_ranges_yaw, movement_ranges_roll) if np.sqrt(yaw**2 + roll**2) >= 8]
-    print("Hereee****", significant_movements)
+    # print("Hereee****", significant_movements)
     filtered_pairs = [item[0] for item in significant_movements]
     filtered_combined_ranges = [item[3] for item in significant_movements]
 
@@ -258,7 +253,7 @@ def getMetricsStandingOld03(Limu1, plotdiagrams):
     # print(f"Pace: {pace:.2f} movements per second")
     # print(f"Mean Combined Movement Range: {mean_combined_range:.2f} degrees, STD: {std_combined_range:.2f}")
     # print(f"Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     metrics_data = {
         # "movements": [
@@ -280,4 +275,33 @@ def getMetricsStandingOld03(Limu1, plotdiagrams):
             "std_duration_seconds": float(std_duration)
         }
     }
+    datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"{datetime_string}_BendingOver_metrics.txt"
+
+    # Save the metrics to a file
+    save_metrics_to_txt(metrics_data, filename)
+
     return json.dumps(metrics_data, indent=4)
+
+    
+def save_metrics_to_txt(metrics, file_path):
+    main_directory = "Standing Metrics Data"
+    sub_directory = "BendingOver Metrics Data"
+
+    directory = os.path.join(main_directory, sub_directory)
+    
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+   
+    full_path = os.path.join(directory, file_path)
+
+    with open(full_path, 'w') as file:
+        for key, value in metrics.items():
+            if isinstance(value, dict):  
+                file.write(f"{key}:\n")
+                for sub_key, sub_value in value.items():
+                    file.write(f"  {sub_key}: {sub_value}\n")
+            else:
+                file.write(f"{key}: {value}\n")
+            file.write("\n")

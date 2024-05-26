@@ -1,0 +1,21 @@
+total_metrics:
+  Gait Cycle:
+    Steps: 3
+    Right Single Support Time: []
+    Left Single Support Time: [54.0, 118.0, 37.0, 51.0, 70.0, 67.0, nan]
+    Double Support Time: [nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Duration: [75.0, 58.0, 103.0, 11.0, 28.0, 20.0, nan]
+    Left Stance Phase Duration: []
+    Right Load Response Time: [nan, nan, nan, nan, nan, nan, nan]
+    Right Gait Cycle Time: [129.0, 176.0, 140.0, 62.0, 98.0, 87.0, nan]
+    Left Load Response Time: [nan, nan, nan, nan, nan, nan]
+    Left Gait Cycle Time: []
+    Cadence: [nan, nan, nan, nan, nan, nan, nan]
+    Right Single Support Percentage: [nan, nan, nan, nan, nan, nan, nan]
+    Left Single Support Percentage: [41.86046511627907, 67.04545454545455, 26.42857142857143, 82.25806451612904, 71.42857142857143, 77.01149425287356, nan]
+    Double Support Percentage: [nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Percentage: [58.139534883720934, 32.95454545454545, 73.57142857142858, 17.741935483870968, 28.57142857142857, 22.988505747126435, nan]
+    Left Stance Phase Percentage: [nan, nan, nan, nan, nan, nan, nan]
+    Right Loading Response Percentage: [nan, nan, nan, nan, nan, nan, nan]
+    Left Loading Response Percentage: [nan, nan, nan, nan, nan, nan, nan]
+

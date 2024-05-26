@@ -1,0 +1,21 @@
+total_metrics:
+  Gait Cycle:
+    Steps: 6
+    Right Single Support Time: [219.0, 146.0, 91.0, nan, nan]
+    Left Single Support Time: [83.0, 60.0, 73.0, 75.0, 69.0, 72.0, 63.0, 80.0, 66.0, 70.0, 89.0, nan]
+    Double Support Time: [28.0, 43.0, 1.0, 10.0, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Duration: [-43, -18, -34, -16, -24, -26, -18, -25, -22, -24, -14, -40]
+    Left Stance Phase Duration: [219.0, 146.0, 91.0, nan, nan]
+    Right Load Response Time: [202.0, 310.0, 353.0, 370.0, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Gait Cycle Time: [40.0, 42.0, 39.0, 59.0, 45.0, 46.0, 45.0, 55.0, 44.0, 46.0, 75.0, nan]
+    Left Load Response Time: [-174.0, -267.0, -352.0, -360.0, -356.0, nan, nan, nan, nan, nan, nan, nan]
+    Left Gait Cycle Time: [148.0, 85.0, 56.0, nan]
+    Cadence: [0.002857142857142857, 0.002531645569620253, 0.0024449877750611247, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Single Support Percentage: [547.5, 347.61904761904765, 233.33333333333334, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Single Support Percentage: [207.50000000000003, 142.85714285714286, 187.17948717948718, 127.11864406779661, 153.33333333333334, 156.52173913043478, 140.0, 145.45454545454547, 150.0, 152.17391304347828, 118.66666666666667, nan]
+    Double Support Percentage: [70.0, 102.38095238095238, 2.564102564102564, 16.94915254237288, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Percentage: [-107.5, -42.857142857142854, -87.17948717948718, -27.11864406779661, -53.333333333333336, -56.52173913043478, -40.0, -45.45454545454545, -50.0, -52.17391304347826, -18.666666666666668, nan]
+    Left Stance Phase Percentage: [547.5, 347.61904761904765, 233.33333333333334, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Loading Response Percentage: [505.0, 738.0952380952382, 905.1282051282051, 627.1186440677966, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Loading Response Percentage: [-434.99999999999994, -635.7142857142857, -902.5641025641025, -610.1694915254237, -791.1111111111111, nan, nan, nan, nan, nan, nan, nan]
+

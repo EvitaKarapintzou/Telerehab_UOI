@@ -1,0 +1,6 @@
+total_metrics:
+  ***************LIMU1*************: {'number_of_movements': 0, 'pace_movements_per_second': 0.0, 'mean_combined_range_degrees': nan, 'std_combined_range_degrees': nan, 'mean_duration_seconds': nan, 'std_duration_seconds': nan}
+
+  ***************LIMU2*************: {'number_of_movements': 0, 'pace_movements_per_second': 0.0, 'mean_combined_range_degrees': nan, 'std_combined_range_degrees': nan, 'mean_duration_seconds': nan, 'std_duration_seconds': nan}
+
+

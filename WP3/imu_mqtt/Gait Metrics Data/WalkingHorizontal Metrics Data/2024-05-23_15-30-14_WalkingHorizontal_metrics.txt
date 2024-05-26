@@ -1,0 +1,29 @@
+total_metrics:
+  Gait Cycle:
+    Right Single Support Time: [31.0, nan]
+    Left Single Support Time: [108.0, 94.0, 99.0, 85.0, 57.0, 112.0, 104.0, 183.0, 145.0, nan, nan]
+    Double Support Time: [-203.0, -172.0, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Duration: [-27.0, -50.0, -33.0, -45.0, -7.0, -32.0, -23.0, -59.0, -83.0, -13.0, nan]
+    Left Stance Phase Duration: [31.0, nan]
+    Right Load Response Time: [35.0, 161.0, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Gait Cycle Time: [81.0, 44.0, 66.0, 40.0, 50.0, 80.0, 81.0, 124.0, 62.0, nan]
+    Left Load Response Time: [-238.0, -333.0, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Gait Cycle Time: [207.0, nan]
+    Cadence: [0.004132231404958678, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Single Support Percentage: [38.2716049382716, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Single Support Percentage: [133.33333333333331, 213.63636363636363, 150.0, 212.5, 113.99999999999999, 140.0, 128.39506172839506, 147.58064516129033, 233.8709677419355, nan, nan]
+    Double Support Percentage: [-250.6172839506173, -390.90909090909093, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Percentage: [-33.33333333333333, -113.63636363636364, -50.0, -112.5, -14.000000000000002, -40.0, -28.39506172839506, -47.58064516129033, -133.8709677419355, nan, nan]
+    Left Stance Phase Percentage: [38.2716049382716, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Loading Response Percentage: [43.20987654320987, 365.90909090909093, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Loading Response Percentage: [-293.8271604938272, -756.8181818181819, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+
+  HEAD METRICS:
+    number_of_movements: 5
+    pace_movements_per_second: 333333.3333333333
+    mean_combined_range_degrees: 0.046441768271516096
+    std_combined_range_degrees: 0.04975400286276147
+    mean_duration_seconds: 8e-07
+    std_duration_seconds: 1.3038404810405298e-06
+    acceleration1: 0.17618450996452295
+

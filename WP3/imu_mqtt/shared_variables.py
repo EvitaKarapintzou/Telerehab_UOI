@@ -79,3 +79,5 @@ feedbackData = {
 }
 
 sensorDataToUpload["data"] = json.dumps(feedbackData)
+
+appStatus = "down"

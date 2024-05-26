@@ -26,3 +26,15 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.loop_forever()
+'''
+topic = "IMUsettings"
+message = "myIMUsettings"  # Change this to your desired message
+
+client.publish(topic, message)
+while (appStatus == 'down'):
+    client.publish(topic, message)
+    time.sleep(1)
+
+message = "[DA:C1:9F:1B:6E:40, Linear], [EB:0B:A9:F4:5E:4E, Quaternion], [EF:0F:A9:3D:48:AA, OFF], [ED:B1:65:CE:EF:D4, Quaternion]";
+client.publish(topic, message)
+'''
