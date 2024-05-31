@@ -125,10 +125,10 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     #Limu4 = [[float(item) for item in sublist] for sublist in Limu4]
 
     if len(Limu1) > 0 and len(Limu2) > 0 and len(Limu3) > 0:
-        returnedJson = getMetricsGaitOld01(Limu1, Limu2, Limu3, False) 
+        returnedJson = getMetricsStretchingNew03(Limu1, Limu2, Limu3, False) 
         return returnedJson
     
-def getMetricsGaitOld01(Limu1, Limu2, Limu3, plotdiagrams):
+def getMetricsStretchingNew03(Limu1, Limu2, Limu3, plotdiagrams):
 
     # linear1 = df_Limu1[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
     # linear1_df = df_Limu1
@@ -467,7 +467,7 @@ def getMetricsGaitOld01(Limu1, Limu2, Limu3, plotdiagrams):
     mean_duration2 = np.mean(movement_durations2)
     std_duration2 = np.std(movement_durations2, ddof=1)  # ddof=1 for sample standard deviation    
 
-#=============IMU3-HEAD====================#
+#=============IMU3-BACK====================#
     movement_ranges_yaw3 = []
     movement_ranges_pitch3 = []
     movement_ranges_roll3 = []
@@ -486,7 +486,7 @@ def getMetricsGaitOld01(Limu1, Limu2, Limu3, plotdiagrams):
 
     for i, (yaw_range3, roll_range3, pitch_range3) in enumerate(zip(movement_ranges_yaw3, movement_ranges_roll3, movement_ranges_pitch3)):
             combined_range3 = np.sqrt(yaw_range3**2 + roll_range3**2 + pitch_range3**2)
-            print(f"MovementHead {i+1}: Yaw Range Head = {yaw_range3:.2f} degrees, Pitch Range Head = {pitch_range3:.2f} degrees, Roll Range Head = {roll_range3:.2f} degrees, Combined Range Head = {combined_range3:.2f} degrees")
+            print(f"MovementBack {i+1}: Yaw Range Back = {yaw_range3:.2f} degrees, Pitch Range Back = {pitch_range3:.2f} degrees, Roll Range Back = {roll_range3:.2f} degrees, Combined Range Back = {combined_range3:.2f} degrees")
 
         # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
     significant_movements3 = [(pair3, yaw3, pitch3, roll3, np.sqrt(yaw3**2 + pitch3**2 + roll3**2)) for pair3, yaw3, pitch3, roll3 in zip(movement_pairs3, movement_ranges_yaw3, movement_ranges_pitch3 ,movement_ranges_roll3) if np.sqrt(yaw3**2 + pitch3**2 + roll3**2) >= 0.01]
@@ -496,7 +496,7 @@ def getMetricsGaitOld01(Limu1, Limu2, Limu3, plotdiagrams):
 
         # Print the significant movements and their combined ranges
     for i, (_, _, _, _, combined_range3) in enumerate(significant_movements3):
-            print(f"Significant Movement Head {i+1}: Combined Range Head = {combined_range3:.2f} degrees")
+            print(f"Significant Movement Back {i+1}: Combined Range Back = {combined_range3:.2f} degrees")
 
         # Calculate durations for significant movements using timestamps
     movement_durations3 = []
@@ -619,7 +619,7 @@ def getMetricsGaitOld01(Limu1, Limu2, Limu3, plotdiagrams):
                 "Right Loading Response Percentage": right_loading_response_percentage.tolist(),
                 "Left Loading Response Percentage": left_loading_response_percentage.tolist()   
                             },
-             "HEAD METRICS":{
+             "BACK METRICS":{
                 "number_of_movements": int(len(filtered_pairs3)),
                 "pace_movements_per_second": float(pace3),
                 "mean_combined_range_degrees": float(mean_combined_range3),
@@ -634,7 +634,7 @@ def getMetricsGaitOld01(Limu1, Limu2, Limu3, plotdiagrams):
 
 
     datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f"{datetime_string}_WalkingVertical_metrics.txt"
+    filename = f"{datetime_string}_Calf_metrics.txt"
 
     # Save the metrics to a file
     save_metrics_to_txt(metrics_data, filename)
@@ -643,8 +643,8 @@ def getMetricsGaitOld01(Limu1, Limu2, Limu3, plotdiagrams):
 
     
 def save_metrics_to_txt(metrics, file_path):
-    main_directory = "Gait Metrics Data"
-    sub_directory = "WalkingVertical Metrics Data"
+    main_directory = "Stretching Metrics Data"
+    sub_directory = "Calf Metrics Data"
 
     directory = os.path.join(main_directory, sub_directory)
     

@@ -1,0 +1,30 @@
+total_metrics:
+  Gait Cycle:
+    Number of steps: 3
+    Right Single Support Time: [75.0, 145.0, nan]
+    Left Single Support Time: [50.0, 52.0, 61.0, 119.0, 85.0, 87.0, 356.0, 252.0, nan, nan]
+    Double Support Time: [-44.0, -51.0, -104.0, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Duration: [-14.0, -18.0, -23.0, -19.0, -34.0, -33.0, -30.0, -130.0, -62.0, nan]
+    Left Stance Phase Duration: [75.0, 145.0, nan]
+    Right Load Response Time: [-40.0, 29.0, 173.0, nan, nan, nan, nan, nan, nan]
+    Right Gait Cycle Time: [36.0, 34.0, 38.0, 100.0, 51.0, 54.0, 326.0, 122.0, nan]
+    Left Load Response Time: [-4.0, -80.0, -277.0, nan, nan, nan, nan, nan, nan, nan]
+    Left Gait Cycle Time: [105.0, 178.0, nan]
+    Cadence: [0.015384615384615385, 0.004830917874396135, nan, nan, nan, nan, nan, nan, nan]
+    Right Single Support Percentage: [208.33333333333334, 426.4705882352941, nan, nan, nan, nan, nan, nan, nan]
+    Left Single Support Percentage: [138.88888888888889, 152.94117647058823, 160.5263157894737, 119.0, 166.66666666666669, 161.11111111111111, 109.20245398773005, 206.55737704918033, nan, nan]
+    Double Support Percentage: [-122.22222222222223, -150.0, -273.6842105263158, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Percentage: [-38.88888888888889, -52.94117647058824, -60.526315789473685, -19.0, -66.66666666666666, -61.111111111111114, -9.202453987730062, -106.55737704918033, nan, nan]
+    Left Stance Phase Percentage: [208.33333333333334, 426.4705882352941, nan, nan, nan, nan, nan, nan, nan]
+    Right Loading Response Percentage: [-111.11111111111111, 85.29411764705883, 455.2631578947368, nan, nan, nan, nan, nan, nan]
+    Left Loading Response Percentage: [-11.11111111111111, -235.29411764705884, -728.9473684210526, nan, nan, nan, nan, nan, nan, nan]
+
+  HEAD METRICS:
+    number_of_movements: 8
+    pace_movements_per_second: 571428.5714285715
+    mean_combined_range_degrees: 0.04894489889507791
+    std_combined_range_degrees: 0.045999113186473393
+    mean_duration_seconds: 0.0
+    std_duration_seconds: 0.0
+    acceleration1: 0.4684115201416351
+

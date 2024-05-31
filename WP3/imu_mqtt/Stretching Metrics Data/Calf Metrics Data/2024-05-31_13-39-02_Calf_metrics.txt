@@ -1,0 +1,30 @@
+total_metrics:
+  Gait Cycle:
+    Number of steps: 13
+    Right Single Support Time: [405.0, 1858.0, 1324.0, 322.0, nan]
+    Left Single Support Time: [130.0, 49.0, 53.0, 61.0, 119.0, 85.0, 87.0, 356.0, 241.0, 129.0, 137.0, 155.0, 159.0, 169.0, 121.0, 176.0, 165.0, 132.0, 130.0, 159.0, 105.0, 85.0, 99.0, 111.0, 165.0, 158.0, 95.0, 98.0, 126.0, 182.0, 199.0, 186.0, 160.0, 110.0, 51.0, 56.0, 151.0, 118.0, 113.0, nan]
+    Double Support Time: [93.0, 168.0, 359.0, 27.0, 108.0, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Duration: [-52, -11, -19, -23, -19, -34, -33, -30, -130, -50, -50, -40, -52, -63, -52, -27, -93, -54, -43, -61, -67, -19, -22, -32, -34, -89, -34, -28, -29, -73, -50, -108, -65, -63, -14, -13, -25, -61, -48, -30]
+    Left Stance Phase Duration: [405.0, 1858.0, 1324.0, 322.0, nan]
+    Right Load Response Time: [350.0, 532.0, 2173.0, 3085.0, 3319.0, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Gait Cycle Time: [78.0, 38.0, 34.0, 38.0, 100.0, 51.0, 54.0, 326.0, 111.0, 79.0, 87.0, 115.0, 107.0, 106.0, 69.0, 149.0, 72.0, 78.0, 87.0, 98.0, 38.0, 66.0, 77.0, 79.0, 131.0, 69.0, 61.0, 70.0, 97.0, 109.0, 149.0, 78.0, 95.0, 47.0, 37.0, 43.0, 126.0, 57.0, 65.0, nan]
+    Left Load Response Time: [-257.0, -364.0, -1814.0, -3058.0, -3211.0, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Gait Cycle Time: [260.0, 1679.0, 946.0, 272.0, nan]
+    Cadence: [0.001639344262295082, 0.0004522840343735866, 0.0003206155819172812, 0.0002978850163836759, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Single Support Percentage: [519.2307692307693, 4889.473684210526, 3894.1176470588234, 847.3684210526314, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Single Support Percentage: [166.66666666666669, 128.94736842105263, 155.88235294117646, 160.5263157894737, 119.0, 166.66666666666669, 161.11111111111111, 109.20245398773005, 217.11711711711712, 163.29113924050634, 157.47126436781608, 134.7826086956522, 148.5981308411215, 159.43396226415095, 175.36231884057972, 118.12080536912752, 229.16666666666666, 169.23076923076923, 149.42528735632183, 162.24489795918367, 276.3157894736842, 128.78787878787878, 128.57142857142858, 140.50632911392404, 125.95419847328245, 228.9855072463768, 155.7377049180328, 140.0, 129.89690721649484, 166.9724770642202, 133.55704697986576, 238.46153846153845, 168.42105263157893, 234.04255319148936, 137.83783783783784, 130.2325581395349, 119.84126984126983, 207.01754385964915, 173.84615384615384, nan]
+    Double Support Percentage: [119.23076923076923, 442.1052631578948, 1055.8823529411764, 71.05263157894737, 108.0, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Percentage: [-66.66666666666666, -28.947368421052634, -55.88235294117647, -60.526315789473685, -19.0, -66.66666666666666, -61.111111111111114, -9.202453987730062, -117.11711711711712, -63.29113924050633, -57.47126436781609, -34.78260869565217, -48.598130841121495, -59.43396226415094, -75.36231884057972, -18.120805369127517, -129.16666666666669, -69.23076923076923, -49.42528735632184, -62.244897959183675, -176.3157894736842, -28.78787878787879, -28.57142857142857, -40.50632911392405, -25.954198473282442, -128.9855072463768, -55.73770491803278, -40.0, -29.896907216494846, -66.97247706422019, -33.557046979865774, -138.46153846153845, -68.42105263157895, -134.04255319148936, -37.83783783783784, -30.23255813953488, -19.841269841269842, -107.01754385964912, -73.84615384615385, nan]
+    Left Stance Phase Percentage: [519.2307692307693, 4889.473684210526, 3894.1176470588234, 847.3684210526314, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Loading Response Percentage: [448.71794871794873, 1400.0, 6391.176470588235, 8118.421052631579, 3319.0, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Loading Response Percentage: [-329.48717948717945, -957.8947368421053, -5335.294117647059, -8047.368421052632, -3211.0, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+
+  HEAD METRICS:
+    number_of_movements: 27
+    pace_movements_per_second: 457627.11864406784
+    mean_combined_range_degrees: 0.04522340434544014
+    std_combined_range_degrees: 0.035141542973615235
+    mean_duration_seconds: 1.4814814814814815e-07
+    std_duration_seconds: 3.6201399289824564e-07
+    acceleration1: 0.339380099968282
+
