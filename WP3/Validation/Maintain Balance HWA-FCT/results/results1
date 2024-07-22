@@ -1,0 +1,22 @@
+Mean Yaw FCT-Eye closed: -0.24513659308783017, STD Yaw FCT-Eye closed: 0.020497171682573243
+Mean Yaw FCT-Eye open: -0.22530226014901938, STD Yaw FCT-Eye open: 0.019743954861145944
+Mean Yaw HWA-Eye closed: -0.3002361387744872, STD Yaw HWA-Eye closed: 0.023233801529100217
+Mean Yaw HWA-Eye open: -0.42398615047422217, STD Yaw HWA-Eye open: 0.05616244944958061
+Mean Roll FCT-Eye closed: 0.9021116863679355, STD Roll FCT-Eye closed: 0.013886939415662741
+Mean Roll FCT-Eye open: 0.721831036232188, STD Roll FCT-Eye open: 0.00786463187655603
+Mean Roll HWA-Eye closed: 0.7220944878862083, STD Roll HWA-Eye closed: 0.013165029831563632
+Mean Roll HWA-Eye open: 0.6899460391926372, STD Roll HWA-Eye open: 0.011272427351389471
+ICC for Yaw: 0.999763840617939
+ICC for Roll: 0.9998475210425517
+FCT-Eye closed vs FCT-Eye open (Yaw) - Correlation: 0.57, RMSE: 0.18
+FCT-Eye closed vs HWA-Eye closed (Yaw) - Correlation: -0.04, RMSE: 0.18
+FCT-Eye closed vs HWA-Eye open (Yaw) - Correlation: -0.41, RMSE: 0.21
+FCT-Eye open vs HWA-Eye closed (Yaw) - Correlation: 0.02, RMSE: 0.02
+FCT-Eye open vs HWA-Eye open (Yaw) - Correlation: -0.36, RMSE: 0.04
+HWA-Eye closed vs HWA-Eye open (Yaw) - Correlation: 0.56, RMSE: 0.03
+FCT-Eye closed vs FCT-Eye open (Roll) - Correlation: 0.57, RMSE: 0.18
+FCT-Eye closed vs HWA-Eye closed (Roll) - Correlation: -0.04, RMSE: 0.18
+FCT-Eye closed vs HWA-Eye open (Roll) - Correlation: -0.41, RMSE: 0.21
+FCT-Eye open vs HWA-Eye closed (Roll) - Correlation: 0.02, RMSE: 0.02
+FCT-Eye open vs HWA-Eye open (Roll) - Correlation: -0.36, RMSE: 0.04
+HWA-Eye closed vs HWA-Eye open (Roll) - Correlation: 0.56, RMSE: 0.03

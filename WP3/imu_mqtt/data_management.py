@@ -25,14 +25,15 @@ from shared_variables import enableInterpolation, isFoundFirstTimestamp, firstTi
 #from getMetricsSittingOld02 import getMetricsSitting01
 # from GaitMetrics.WalkingHorizontalHeadTurns import getMetricsGaitNew02
 # from GaitMetrics.WalkingHorizontalHeadTurns import get_metrics
-#from GaitMetrics.SideStepping import get_metrics
+from GaitMetrics.SideStepping import get_metrics
+# from GaitMetrics.sidestep import get_metrics
 # from StretchingMetrics.HipExternal import get_metrics
 # from StretchingMetrics.LateralTrunkFlexion import get_metrics
-from StretchingMetrics.Calf import get_metrics
+# from StretchingMetrics.Calf import get_metrics
 # from StandingMetrics.MaintainBalance import get_metrics
 # from StandingMetrics.BendingOver import get_metrics
-#from StandingMetrics.SwivelTurning import get_metrics
-#from StandingMetrics.LateralWeightShifts import get_metrics
+# from StandingMetrics.SwivelTurning import get_metrics
+# from StandingMetrics.LateralWeightShifts import get_metrics
 # from StandingMetrics.AnteroposteriorDirection import get_metrics
 from csv_management import write_in_files
 from api_management import upload_sensor_data

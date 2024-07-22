@@ -115,7 +115,7 @@ def getMetricsSittingNew01(Limu1, plotdiagrams):
    
     columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'])
+    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
     df_Limu1 = df_Limu1.sort_values(by='Timestamp')
     df_Limu1.set_index('Timestamp', inplace=True)
     
@@ -225,7 +225,7 @@ def getMetricsSittingNew01(Limu1, plotdiagrams):
         combined_range = np.sqrt(yaw_range**2 + roll_range**2)
         print(f"Movement {i+1}: Yaw Range = {yaw_range:.2f} degrees, Roll Range = {roll_range:.2f} degrees, Combined Range = {combined_range:.2f} degrees")
 
-    significant_movements = [(pair, yaw, roll, np.sqrt(yaw**2 + roll**2)) for pair, yaw, roll in zip(movement_pairs, movement_ranges_yaw, movement_ranges_roll) if np.sqrt(yaw**2 + roll**2) >= 8]
+    significant_movements = [(pair, yaw, roll, np.sqrt(yaw**2 + roll**2)) for pair, yaw, roll in zip(movement_pairs, movement_ranges_yaw, movement_ranges_roll) if np.sqrt(yaw**2 + roll**2) >= 1]
     filtered_pairs = [item[0] for item in significant_movements]
     filtered_combined_ranges = [item[3] for item in significant_movements]
 
@@ -251,10 +251,12 @@ def getMetricsSittingNew01(Limu1, plotdiagrams):
         "total_metrics": {
             "number_of_movements": int(len(filtered_pairs)),
             "pace_movements_per_second": float(pace),
-            "mean_combined_range_degrees": float(mean_combined_range),
-            "std_combined_range_degrees": float(std_combined_range),
-            "mean_duration_seconds": float(mean_duration),
-            "std_duration_seconds": float(std_duration)
+            "mean_movement_range_degrees": float(mean_combined_range),
+            "std_movement_range_degrees": float(std_combined_range),
+            "mean_movement_duration_seconds": float(mean_duration),
+            "std_movement_duration_seconds": float(std_duration),
+            "Exersice_duration" : total_duration_seconds,
+            "movement_duration": movement_durations
         }
     }
     datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

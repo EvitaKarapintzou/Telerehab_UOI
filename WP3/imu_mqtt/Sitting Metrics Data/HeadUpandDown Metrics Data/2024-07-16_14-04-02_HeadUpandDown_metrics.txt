@@ -1,0 +1,9 @@
+total_metrics:
+  number_of_movements: 16
+  pace_movements_per_second: 0.26229508196721313
+  mean_movement_range_degrees: 35.36264350660279
+  std_movement_range_degrees: 8.5467876581554
+  mean_movement_duration_seconds: 1.875e-10
+  std_movement_duration_seconds: 4.0311288741492753e-10
+  Degrees per movement: ['Significant Movement 1: Pair = (145, 254), Range = 35.44 degrees', 'Significant Movement 2: Pair = (395, 462), Range = 37.79 degrees', 'Significant Movement 3: Pair = (527, 599), Range = 43.57 degrees', 'Significant Movement 4: Pair = (688, 812), Range = 45.12 degrees', 'Significant Movement 5: Pair = (895, 990), Range = 44.50 degrees', 'Significant Movement 6: Pair = (1069, 1143), Range = 40.16 degrees', 'Significant Movement 7: Pair = (1231, 1307), Range = 36.57 degrees', 'Significant Movement 8: Pair = (1359, 1417), Range = 27.85 degrees', 'Significant Movement 9: Pair = (1486, 1540), Range = 19.99 degrees', 'Significant Movement 10: Pair = (1594, 1658), Range = 36.00 degrees', 'Significant Movement 11: Pair = (1727, 1788), Range = 23.60 degrees', 'Significant Movement 12: Pair = (1823, 1882), Range = 24.98 degrees', 'Significant Movement 13: Pair = (1935, 1997), Range = 28.35 degrees', 'Significant Movement 14: Pair = (2083, 2173), Range = 47.90 degrees', 'Significant Movement 15: Pair = (2285, 2393), Range = 42.83 degrees', 'Significant Movement 16: Pair = (2475, 2559), Range = 31.15 degrees']
+

@@ -102,8 +102,9 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     mean = statistics.mean([dt1, dt2, dt3, dt4])
     std = statistics.stdev([dt1, dt2, dt3, dt4])
 
-    #Head
+
     Limu1 = [[float(item) for item in sublist] for sublist in Limu1]
+    
 
     Limu2 = [[float(item) for item in sublist] for sublist in Limu2]
     Limu3 = [[float(item) for item in sublist] for sublist in Limu3]
@@ -117,7 +118,7 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
    
     columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'])
+    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
     df_Limu1 = df_Limu1.sort_values(by='Timestamp')
     df_Limu1.set_index('Timestamp', inplace=True)
     
@@ -130,6 +131,7 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
         interval_end_time = current_time + interval_length
         
 
+    
     if (plotdiagrams):
         plt.figure(figsize=(10, 6))
         plt.xlabel('Timestamp')
@@ -145,11 +147,23 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
     quaternions = df_Limu1[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
     rotations = R.from_quat(quaternions)
     euler_angles = rotations.as_euler('xyz', degrees=False)
-    euler_df = pd.DataFrame(euler_angles, columns=['Roll (rad)', 'Pitch (rad)', 'Yaw (rad)'])
+    
     euler_angles_degrees = rotations.as_euler('xyz', degrees=True)
     euler_df_degrees = pd.DataFrame(euler_angles_degrees, columns=['Roll (degrees)', 'Pitch (degrees)', 'Yaw (degrees)'])
-   
+    # euler_df_degrees.set_index(df_Limu1.index, inplace=False)
+  
+    fs = 50
+    cutoff = 0.5
     
+    angular_velocity = euler_df_degrees.diff().abs() * fs
+    acceleration = angular_velocity.diff().abs() * fs
+    peak_acceleration = acceleration.max()
+    # roll_right = euler_df_degrees['Roll (degrees)'].where(euler_df_degrees['Roll (degrees)'] > 0).mean()
+    # roll_left = abs(euler_df_degrees['Roll (degrees)'].where(euler_df_degrees['Roll (degrees)'] < 0).mean())
+    # movement_symmetry = (roll_right - roll_left) / (0.5 * (roll_right + roll_left))
+  
+
+
     if (plotdiagrams):
         plt.figure(figsize=(12, 8))
         plt.plot(euler_df_degrees.index, euler_df_degrees['Roll (degrees)'], label='Roll', linewidth=1)
@@ -164,23 +178,26 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
         plt.tight_layout()  
         plt.show()
 
-    fs = 50
-    cutoff = 0.5
 
+
+    # yaw_filtered = butter_lowpass_filter(euler_df_degrees['Yaw (degrees)'], cutoff, fs, order=5)
     pitch_filtered = butter_lowpass_filter(euler_df_degrees['Pitch (degrees)'], cutoff, fs, order=5)
-    if (plotdiagrams):
-        plt.figure(figsize=(12, 6))
-        plt.plot(euler_df_degrees.index, euler_df_degrees['Pitch (degrees)'], label='Original Pitch', linewidth=1, alpha=0.5)
-        plt.plot(euler_df_degrees.index, pitch_filtered, label='Filtered Yaw', linewidth=2)
-        plt.xlabel('Timestamp')
-        plt.ylabel('Pitch (degrees)')
-        plt.title('Pitch Signal Filtering')
-        plt.legend()
-        plt.show()
+
+    # if (plotdiagrams):
+    #     plt.figure(figsize=(12, 6))
+    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Yaw (degrees)'], label='Original Yaw', linewidth=1, alpha=0.5)
+    #     plt.plot(euler_df_degrees.index, yaw_filtered, label='Filtered Yaw', linewidth=2)
+    #     plt.xlabel('Timestamp')
+    #     plt.ylabel('Yaw (degrees)')
+    #     plt.title('Yaw Signal Filtering')
+    #     plt.legend()
+    #     plt.show()
 
     peaks, _ = find_peaks(pitch_filtered)
 
     valleys, _ = find_peaks(-pitch_filtered)
+
+
 
     print("peaks ", peaks)
     print("valleys ", valleys)
@@ -201,16 +218,19 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
 
     print("Movement pairs (as index positions):", movement_pairs)
 
-    if (plotdiagrams):
-        plt.figure(figsize=(12, 6))
-        plt.plot(pitch_filtered, label='Filtered Pitch', linewidth=1)
-        plt.plot(peaks, pitch_filtered[peaks], "x", label='Maxima')
-        plt.plot(valleys, pitch_filtered[valleys], "o", label='Minima')
-        plt.xlabel('Sample index')
-        plt.ylabel('Pitch (degrees)')
-        plt.title('Pitch Signal with Detected Movements')
-        plt.legend()
-        plt.show()
+    
+    # if (plotdiagrams):
+    #     plt.figure(figsize=(12, 6))
+    #     plt.plot(yaw_filtered, label='Filtered Yaw', linewidth=1)
+
+    #     plt.plot(peaks, yaw_filtered[peaks], "x", label='Maxima')
+    #     plt.plot(valleys, yaw_filtered[valleys], "o", label='Minima')
+
+    #     plt.xlabel('Sample index')
+    #     plt.ylabel('Yaw (degrees)')
+    #     plt.title('Yaw Signal with Detected Movements')
+    #     plt.legend()
+    #     plt.show()
 
     movement_ranges = []
 
@@ -224,30 +244,39 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
 
     filtered_pairs = [pair for pair, range in significant_movements]
     filtered_ranges = [mrange for pair, mrange in significant_movements]
-
+    
+    movement_details = []
     for i, (pair, mrange) in enumerate(significant_movements):
         print(f"Significant Movement {i+1}: Pair = {pair}, Range = {mrange:.2f} degrees")
 
-    movement_durations = []
+        movement_detail = f"Significant Movement {i+1}: Pair = {pair}, Range = {mrange:.2f} degrees"
+        print(movement_detail)
+        movement_details.append(movement_detail)  # Append to list
 
+    movement_durations = []
     for start, end in filtered_pairs:
         start_time = df_Limu1.iloc[start].name
         end_time = df_Limu1.iloc[end].name
         duration = (end_time - start_time).total_seconds()
+        print(duration)
         movement_durations.append(duration)
+        print(movement_durations)
+
+
 
     total_duration_seconds = (df_Limu1.index[-1] - df_Limu1.index[0]).total_seconds()
+    print(total_duration_seconds)
     if (total_duration_seconds > 0):
-        pace = len(filtered_pairs) / total_duration_seconds  
+        pace = len(filtered_pairs) / total_duration_seconds  # Movements per second
     else:
-        pace = -1;
+        pace = -1
 
     if (len(filtered_ranges) > 0):
         mean_range = np.mean(filtered_ranges)
         std_range = np.std(filtered_ranges, ddof=1) 
     else:
-        mean_range = -1;
-        std_range = -1;
+        mean_range = -1
+        std_range = -1
 
     if (len(movement_durations) > 0):
         mean_duration = np.mean(movement_durations)
@@ -256,17 +285,23 @@ def getMetricsSittingOld02(Limu1, plotdiagrams):
         mean_duration = -1
         std_duration = -1        
 
+   
+
     metrics_data = {
-      
         "total_metrics": {
             "number_of_movements": int(len(filtered_pairs)),
             "pace_movements_per_second": float(pace),
-            "mean_range_degrees": float(mean_range),
-            "std_range_degrees": float(std_range),
-            "mean_duration_seconds": float(mean_duration),
-            "std_duration_seconds": float(std_duration)
+            "mean_movement_range_degrees": float((mean_range)),
+            "std_movement_range_degrees": float(std_range),
+            "mean_movement_duration_seconds": float(mean_duration),
+            "std_movement_duration_seconds": float(std_duration),
+            "Degrees per movement": movement_details,
+            "Exersice_duration" : total_duration_seconds,
+            "movement_duration": movement_durations
         }
-    }
+        }
+    
+
     datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"{datetime_string}_HeadUpandDown_metrics.txt"
 
@@ -297,4 +332,5 @@ def save_metrics_to_txt(metrics, file_path):
             else:
                 file.write(f"{key}: {value}\n")
             file.write("\n")  
+
 

@@ -12,6 +12,8 @@ from scipy.signal import butter, filtfilt
 import json
 import scipy
 from scipy.fft import fft, fftfreq
+from scipy.interpolate import UnivariateSpline
+
 
 def plotIMUDATA(Limu, x, filename):
 
@@ -25,48 +27,10 @@ def plotIMUDATA(Limu, x, filename):
     plt.grid(True)  
     plt.show()
 
+# Define thresholds
+intersection_distance_threshold = 0.2  # seconds
+signal_magnitude_threshold = 0.15  # magnitude
 
-# def interpolate_imu_data(imu_data, starttime, endtime, N):
-#     """
-#     Interpolate IMU data (w, x, y, z) between starttime and endtime into N samples.
-
-#     Parameters:
-#     imu_data (list of lists): The IMU data in format [time, w, x, y, z, _, _].
-#     starttime (float): The start time for interpolation.
-#     endtime (float): The end time for interpolation.
-#     N (int): Number of samples to interpolate.
-
-#     Returns:
-#     list of lists: Interpolated IMU data with N entries.
-#     """
-#     # Convert imu_data to a NumPy array for easier slicing
-#     imu_data_np = np.array(imu_data)
-
-#     # Filter data to only include entries within starttime and endtime
-#     filtered_data = imu_data_np[(imu_data_np[:,0] >= starttime) & (imu_data_np[:,0] <= endtime)]
-
-#     # Extract time and quaternion components
-#     times = filtered_data[:, 0]
-#     # quaternions = filtered_data[:, 1:7]  # Assuming w, x, y, z are in columns 1-4
-#     linear = filtered_data[:, 1:6]
-
-#     # Generate N evenly spaced new timestamps between starttime and endtime
-#     new_times = np.linspace(starttime, endtime, N)
-
-#     # Initialize a list to hold interpolated data
-#     interpolated_data = []
-
-#     # Interpolate each quaternion component
-#     for i in range(6):  # For  x, y, z
-#         interp_func = interp1d(times, linear[:, i], kind='linear')
-#         interpolated_component = interp_func(new_times)
-#         interpolated_data.append(interpolated_component)
-
-#     # Transpose and combine the interpolated data with new timestamps
-#     interpolated_data = np.array(interpolated_data).T
-#     interpolated_data_with_time = np.column_stack((new_times, interpolated_data))
-
-#     return interpolated_data_with_time.tolist()
 
 def butter_lowpass_filter(data, cutoff, fs, order=5):
     nyq = 0.5 * fs  
@@ -130,491 +94,463 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
         return returnedJson
     
 
-def calculate_steps_with_fft(signal, fs, low_freq, high_freq):
-    N = len(signal)
-    yf = fft(signal)
-    xf = fftfreq(N, 1 / fs)
-
-    # Apply a Hamming window to the signal to reduce spectral leakage
-    windowed_signal = signal * np.hamming(N)
-
-    yf = fft(windowed_signal)
-    xf = fftfreq(N, 1 / fs)
-
-    # Filter the FFT output to keep only the frequencies of interest
-    indices = np.where((xf >= low_freq) & (xf <= high_freq))
-    filtered_signal = np.abs(yf[indices])
-
-    # Apply a threshold to eliminate low-intensity noise peaks
-    threshold = np.mean(filtered_signal) + 2 * np.std(filtered_signal)
-    significant_peaks = filtered_signal[filtered_signal > threshold]
-
-    if len(significant_peaks) == 0:
-        print("No significant peaks found in the FFT.")
-        return None
-
-    # Find the peak frequency within the filtered signal
-    peak_index = np.argmax(significant_peaks)
-    peak_freq = xf[indices][np.argmax(filtered_signal)]
-
-
-    # Calculate steps based on peak frequency
-    stepsF = peak_freq * (N / fs)
-    return stepsF
     
 def getMetricsGaitNew01(Limu1, Limu2, plotdiagrams):
 
-    # linear1 = df_Limu1[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
-    # linear1_df = df_Limu1
-    # linear2 = df_Limu2[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
-    # linear2_df = df_Limu2
-
     
-    # if plotdiagrams:
-    #     # Adjust this section to plot both Limu1 and Limu2 data
-    #     plt.figure(figsize=(12, 6))
-    #     plt.plot(linear1_df.index, movement_magnitude_1, label='Limu1 Movement Magnitude', linewidth=2)
-    #     plt.plot(linear2_df.index, movement_magnitude_2, label='Limu2 Movement Magnitude', linewidth=2, linestyle='--')
-    #     plt.xlabel('Timestamp')
-    #     plt.ylabel('Magnitude of Movement')
-    #     plt.title('Combined X and Z Movement Magnitude for Limu1 and Limu2')
-    #     plt.legend()
-    #     plt.show()
-
-    #Limu1
+    # #Limu1-LEFT
     columns = ['Timestamp', 'elapsed(time)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'])
-    df_Limu1 = df_Limu1.sort_values(by='Timestamp')
-    df_Limu1.set_index('Timestamp', inplace=True)
+    # df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
+    # df_Limu1 = df_Limu1.sort_values(by='Timestamp')
+    # df_Limu1.set_index('Timestamp', inplace=True)
     
-    #Limu2
+    # #Limu2-RIGHT
     df_Limu2 = pd.DataFrame(Limu2, columns=columns)
-    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'])
-    df_Limu2 = df_Limu2.sort_values(by='Timestamp')
-    df_Limu2.set_index('Timestamp', inplace=True)
+    # df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'], unit='ms')
+    # df_Limu2 = df_Limu2.sort_values(by='Timestamp')
+    # df_Limu2.set_index('Timestamp', inplace=True)
 
-    
-    # quaternions3 = df_Limu3[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
-    # rotations3 = R.from_quat(quaternions3)
-    # euler_angles3 = rotations3.as_euler('xyz', degrees=False)
-    # euler_df3 = pd.DataFrame(euler_angles3, columns=['Roll (rad)', 'Pitch (rad)', 'Yaw (rad)'])
-    # euler_angles_degrees3 = rotations3.as_euler('xyz', degrees=True)
-    # euler_df_degrees3 = pd.DataFrame(euler_angles_degrees3, columns=['Roll (degrees)', 'Pitch (degrees)', 'Yaw (degrees)'])
-   
-    # quaternions_df3 = df_Limu3;
+    # Convert the Timestamp column to datetime
+    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
+    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'], unit='ms')
+
+    # Sort dataframes by Timestamp and remove duplicates
+    df_Limu1 = df_Limu1.sort_values(by='Timestamp').drop_duplicates(subset='Timestamp').reset_index(drop=True)
+    df_Limu2 = df_Limu2.sort_values(by='Timestamp').drop_duplicates(subset='Timestamp').reset_index(drop=True)
+
+    # Ensure timestamps are strictly increasing
+    df_Limu1 = df_Limu1[df_Limu1['Timestamp'].diff().dt.total_seconds() > 0]
+    df_Limu2 = df_Limu2[df_Limu2['Timestamp'].diff().dt.total_seconds() > 0]
+
+    # Find the common time period
+    start_time = max(df_Limu1['Timestamp'].min(), df_Limu2['Timestamp'].min())
+    end_time = min(df_Limu1['Timestamp'].max(), df_Limu2['Timestamp'].max())
+
+    # Crop the dataframes to the common time period
+    df_Limu1 = df_Limu1[(df_Limu1['Timestamp'] >= start_time) & (df_Limu1['Timestamp'] <= end_time)].reset_index(drop=True)
+    df_Limu2 = df_Limu2[(df_Limu2['Timestamp'] >= start_time) & (df_Limu2['Timestamp'] <= end_time)].reset_index(drop=True)
+
+    print("Start Time:", start_time)
+    print("End Time:", end_time)
+    # print("Left IMU Data Period After Cropping:", left_imu['Timestamp'].min(), "to", left_imu['Timestamp'].max())
+    # print("Right IMU Data Period After Cropping:", right_imu['Timestamp'].min(), "to", right_imu['Timestamp'].max())
 
 
-    # W_filtered3 = butter_lowpass_filter(quaternions_df3['W(number)'], cutoff, fs, order=5)
-    # Y_filtered3 = butter_lowpass_filter(quaternions_df3['Y (number)'], cutoff, fs, order=5)
-
-
-
-    # start_time = df_Limu1.index.min()
-    # end_time = df_Limu1.index.max()
-    # interval_length = pd.Timedelta(seconds=5)
-    
-    # current_time = start_time
-    # while current_time + interval_length <= end_time:
-    #     interval_end_time = current_time + interval_length
-        
-    #     # Filter data within the current interval for both datasets
-    #     interval_data1 = df_Limu1.loc[current_time:interval_end_time]
-    #     interval_data2 = df_Limu2.loc[current_time:interval_end_time]
-
-    #     # Calculate metrics for the interval (you can implement your metric calculation here)
-    #     metrics = getMetricsGaitNew02(interval_data1, interval_data2)  # Placeholder for the real calculation function
-
-   
-
-    # if (plotdiagrams):
-    #     plt.figure(figsize=(10, 6))
-    #     plt.xlabel('Timestamp')
-    #     plt.ylabel('Linear Components')
-    #     plt.title('Linear Components (X, Y, Z) over Time')
-    #     plt.legend()
-    #     plt.xticks(rotation=45)
-    #     plt.tight_layout()
-
-    #     plt.savefig('linear_components_plot!!!!!!!.png')
-    #     plt.show()
     
     linear_df1 = df_Limu1;
     linear_df2 = df_Limu2;
     
-   
-    fs = 30
-    cutoff = 0.425
+    # Calculate the magnitude of the linear acceleration
+    linear_df1['Magnitude'] = np.sqrt(linear_df1['X(number)']**2 + linear_df1['Y (number)']**2 + linear_df1['Z (number)']**2)
+    linear_df2['Magnitude'] = np.sqrt(linear_df2['X(number)']**2 + linear_df2['Y (number)']**2 + linear_df2['Z (number)']**2)
 
-        # Apply the filter to the Yaw data
-    Z_filtered1 = butter_lowpass_filter(linear_df1['Z (number)'], cutoff, fs, order=5)
-    X_filtered1 = butter_lowpass_filter(linear_df1['X(number)'], cutoff, fs, order=5)
-    Y_filtered1 = butter_lowpass_filter(linear_df1['Y (number)'], cutoff, fs, order=5)
-
-    Z_filtered2 = butter_lowpass_filter(linear_df2['Z (number)'], cutoff, fs, order=5)
-    X_filtered2 = butter_lowpass_filter(linear_df2['X(number)'], cutoff, fs, order=5)
-    Y_filtered2 = butter_lowpass_filter(linear_df2['Y (number)'], cutoff, fs, order=5)
+    # Apply a low-pass filter to the magnitude signals
+    fs = 100  # Sampling frequency (Hz)
+    cutoff = 3.0  # Cutoff frequency (Hz)
 
 
-    # # Plotting the original and filtered signals
-    # plt.figure(figsize=(14, 8))
-    # plt.plot(linear_df1.index, linear_df1['X(number)'], label='X -Right Leg', linewidth=1, alpha=0.5)
-    # plt.plot(linear_df1.index, X_filtered1, label='Filtered X-Right Leg', linewidth=2)
-    # plt.plot(linear_df2.index, linear_df2['X(number)'], label='X -Left Leg', linewidth=1, alpha=0.5)
-    # plt.plot(linear_df2.index, X_filtered2, label='Filtered X -Left Leg', linewidth=2)
+    #     # Apply the filter to the Yaw data
+    # Z_filtered1 = butter_lowpass_filter(linear_df1['Z (number)'], cutoff, fs, order=5)
+    # X_filtered1 = butter_lowpass_filter(linear_df1['X(number)'], cutoff, fs, order=5)
+    # Y_filtered1 = butter_lowpass_filter(linear_df1['Y (number)'], cutoff, fs, order=5)
+
+    # Z_filtered2 = butter_lowpass_filter(linear_df2['Z (number)'], cutoff, fs, order=5)
+    # X_filtered2 = butter_lowpass_filter(linear_df2['X(number)'], cutoff, fs, order=5)
+    # Y_filtered2 = butter_lowpass_filter(linear_df2['Y (number)'], cutoff, fs, order=5)
+
+
+    linear_df1['Filtered_Magnitude'] = butter_lowpass_filter(linear_df1['Magnitude'], cutoff, fs)
+    linear_df2['Filtered_Magnitude'] = butter_lowpass_filter(linear_df2['Magnitude'], cutoff, fs)
+
+# Convert Timestamps to nanoseconds for spline fitting
+    left_timestamps_ns = linear_df1['Timestamp'].astype(np.int64)
+    right_timestamps_ns = linear_df2['Timestamp'].astype(np.int64)
+
+# Create a common time series at 100 Hz within this timeframe
+    common_time = pd.date_range(start=start_time, end=end_time, freq='10ms')  # 100 Hz = 10ms intervals
+    common_time_ns = common_time.astype(np.int64)
+
+# Fit a spline to the filtered magnitude signal of each leg
+    left_spline_filtered_magnitude = UnivariateSpline(left_timestamps_ns, linear_df1['Filtered_Magnitude'], s=0)
+    right_spline_filtered_magnitude = UnivariateSpline(right_timestamps_ns, linear_df2['Filtered_Magnitude'], s=0)
+
+# Sample the spline at the time points of the common time series
+    left_filtered_magnitude_interpolated = left_spline_filtered_magnitude(common_time_ns)
+    right_filtered_magnitude_interpolated = right_spline_filtered_magnitude(common_time_ns)
+
+    # # Plot the original, filtered, and spline-interpolated magnitude data for the left leg
+    # plt.figure(figsize=(14, 6))
+    # plt.plot(linear_df1['Timestamp'], linear_df1['Magnitude'], 'o', label='Left IMU Magnitude Original', color='blue')
+    # plt.plot(linear_df1['Timestamp'], linear_df1['Filtered_Magnitude'], label='Left IMU Magnitude Filtered', color='green')
+    # plt.plot(common_time, left_filtered_magnitude_interpolated, label='Left IMU Magnitude Spline', color='cyan')
     # plt.xlabel('Timestamp')
-    # plt.ylabel('X(number)')
-    # plt.title('X Signal Filtering')
+    # plt.ylabel('Linear Acceleration (Magnitude)')
+    # plt.title('Left IMU Magnitude - Original, Filtered, and Spline')
     # plt.legend()
+    # plt.grid(True)
     # plt.show()
 
-    # # Plotting the original and filtered signals
-    # plt.figure(figsize=(12, 6))
-    # plt.plot(quaternions_df2.index, quaternions_df2['Z (number)'], label='Z', linewidth=1, alpha=0.5)
-    # plt.plot(quaternions_df2.index, Z_filtered2, label='Filtered Z', linewidth=2)
+    # # Plot the original, filtered, and spline-interpolated magnitude data for the right leg
+    # plt.figure(figsize=(14, 6))
+    # plt.plot(linear_df2['Timestamp'], linear_df2['Magnitude'], 'o', label='Right IMU Magnitude Original', color='red')
+    # plt.plot(linear_df2['Timestamp'], linear_df2['Filtered_Magnitude'], label='Right IMU Magnitude Filtered', color='orange')
+    # plt.plot(common_time, right_filtered_magnitude_interpolated, label='Right IMU Magnitude Spline', color='purple')
     # plt.xlabel('Timestamp')
-    # plt.ylabel('Z(number)')
-    # plt.title('Z Signal filtering Filtering for IMU2')
+    # plt.ylabel('Linear Acceleration (Magnitude)')
+    # plt.title('Right IMU Magnitude - Original, Filtered, and Spline')
     # plt.legend()
+    # plt.grid(True)
     # plt.show()
 
-        # Calculate the magnitude of movement considering both yaw and roll
-    movement_magnitude1 = np.sqrt(np.square(X_filtered1) + np.square(Y_filtered1) + np.square(Z_filtered1))
-    movement_magnitude2 = np.sqrt(np.square(X_filtered2) + np.square(Y_filtered2) + np.square(Z_filtered2))
-    
-    # movement_magnitude1 = np.sqrt(np.square(X_filtered1) + np.square(Z_filtered1))
-    # movement_magnitude2 = np.sqrt(np.square(X_filtered2) + np.square(Z_filtered2))
-
-
-    # # Plot the combined metric over time
-    # plt.figure(figsize=(12, 6))
-    # plt.plot(linear_df1.index, movement_magnitude, label='Movement Magnitude-Right Leg', linewidth=2)
-    # plt.plot(linear_df2.index, movement_magnitude2, label='Movement Magnitude-Left Leg', linewidth=2)
+    # # Plot the spline-interpolated magnitude data for both legs
+    # plt.figure(figsize=(14, 6))
+    # plt.plot(common_time, left_filtered_magnitude_interpolated, label='Left IMU Magnitude Spline', color='blue')
+    # plt.plot(common_time, right_filtered_magnitude_interpolated, label='Right IMU Magnitude Spline', color='red')
     # plt.xlabel('Timestamp')
-    # plt.ylabel('Magnitude of Movement')
-    # plt.title('Combined Y and Z Movement Magnitude')
+    # plt.ylabel('Linear Acceleration (Magnitude)')
+    # plt.title('Spline-Interpolated Linear Acceleration Magnitude - Left and Right IMU')
     # plt.legend()
+    # plt.grid(True)
     # plt.show()
 
-    #IMU1
-    peaks1, _ = find_peaks(movement_magnitude1)
-    valleys1, _ = find_peaks(-movement_magnitude1)
+    # Determine the time periods when the "left" spline is greater than the "right" and vice versa
+    left_greater = left_filtered_magnitude_interpolated > right_filtered_magnitude_interpolated
+    right_greater = right_filtered_magnitude_interpolated > left_filtered_magnitude_interpolated
 
-    print("peaks Right IMU ", peaks1)
-    print("valleys Right IMU", valleys1)
-    if(len(peaks1) == 0):
-        return 0
-    if(len(valleys1) == 0):
-        return 0
+    # # Create a step-wise plot for the comparison
+    # plt.figure(figsize=(14, 6))
+    # plt.plot(common_time, left_filtered_magnitude_interpolated, label='Left IMU Magnitude Spline', color='blue', alpha=0.5)
+    # plt.plot(common_time, right_filtered_magnitude_interpolated, label='Right IMU Magnitude Spline', color='red', alpha=0.5)
 
-    if valleys1[0] > peaks1[0]:
-        peaks1 = peaks1[1:]  
-    if peaks1[-1] < valleys1[-1]:
-        valleys1 = valleys1[:-1]  
-    
-    movement_pairs1 = []
+    # # Highlight the periods where left is greater than right and vice versa
+    # plt.fill_between(common_time, left_filtered_magnitude_interpolated, right_filtered_magnitude_interpolated,
+    #                 where=left_greater, facecolor='blue', alpha=0.3, label='Left > Right')
+    # plt.fill_between(common_time, left_filtered_magnitude_interpolated, right_filtered_magnitude_interpolated,
+    #                 where=right_greater, facecolor='red', alpha=0.3, label='Right > Left')
 
-    for i in range(min(len(peaks1), len(valleys1))):
-        movement_pairs1.append((valleys1[i], peaks1[i]))
-
-    print("Movement pairs for Right Leg (as index positions):", movement_pairs1)
-
-    # #For evaluation for XYZ peaks and valleys
-    # plt.figure(figsize=(12, 6))
-    # plt.plot(linear_df1.index, movement_magnitude1, label='Movement Magnitude - Right Leg', linewidth=2)
-    # plt.scatter(linear_df1.index[peaks1], movement_magnitude1[peaks1], c='red', label='Peaks', marker='x')
-    # plt.scatter(linear_df1.index[valleys1], movement_magnitude1[valleys1], c='blue', label='Valleys', marker='o')
     # plt.xlabel('Timestamp')
-    # plt.ylabel('Magnitude of Movement')
-    # plt.title('Combined XYZ Movement Magnitude with Detected Peaks and Valleys')
+    # plt.ylabel('Linear Acceleration (Magnitude)')
+    # plt.title('Spline-Interpolated Linear Acceleration Magnitude - Left and Right IMU with Highlighted Intervals')
     # plt.legend()
+    # plt.grid(True)
     # plt.show()
-    
 
-    #IMU2
-    peaks2, _ = find_peaks(movement_magnitude2)
-    valleys2, _ = find_peaks(-movement_magnitude2)
+    # Detect intersection points
+    proximity_threshold = 0.01  # Adjust this threshold based on your data
 
-    print("peaks Left IMU ", peaks2)
-    print("valleys Left IMU", valleys2)
-    if(len(peaks2) == 0):
-        return 0
-    if(len(valleys2) == 0):
-        return 0
+    # Detect intersection points and points where the curves are really close# Detect intersection points and points where the curves are really close
+    intersection_indices = np.where(
+        (np.diff(np.sign(left_filtered_magnitude_interpolated - right_filtered_magnitude_interpolated)) != 0) |
+        (np.abs(left_filtered_magnitude_interpolated[:-1] - right_filtered_magnitude_interpolated[:-1]) < proximity_threshold))[0]
+    intersection_times = common_time[intersection_indices]
 
-    if valleys2[0] > peaks2[0]:
-        peaks2 = peaks2[1:]  
-    if peaks2[-1] < valleys2[-1]:
-        valleys2 = valleys2[:-1]  
+    # Omit closely spaced intersecting points
+    filtered_intersection_indices = []
+    filtered_intersection_times = []
+
+    for i, time in enumerate(intersection_times):
+        if i == 0 or not filtered_intersection_times or (time - filtered_intersection_times[-1]).total_seconds() > intersection_distance_threshold:
+            if (left_filtered_magnitude_interpolated[intersection_indices[i]] > signal_magnitude_threshold) or \
+            (right_filtered_magnitude_interpolated[intersection_indices[i]] > signal_magnitude_threshold):
+                filtered_intersection_indices.append(intersection_indices[i])
+                filtered_intersection_times.append(time)
+
+    intersection_indices = filtered_intersection_indices
+    intersection_times = pd.to_datetime(filtered_intersection_times)
+
+    # Function to find local extrema (minima and maxima) between two points using find_peaks
+    def find_extrema_between(signal, start_idx, end_idx):
+        local_segment = signal[start_idx:end_idx]
+        peaks, _ = find_peaks(local_segment)
+        troughs, _ = find_peaks(-local_segment)
         
-    movement_pairs2 = []
+        # Ensure that there is only one extrema per region
+        local_max = start_idx + peaks[np.argmax(local_segment[peaks])] if len(peaks) > 0 else None
+        local_min = start_idx + troughs[np.argmin(local_segment[troughs])] if len(troughs) > 0 else None
+        
+        return local_min, local_max
 
-    for i in range(min(len(peaks2), len(valleys2))):
-        movement_pairs2.append((valleys2[i], peaks2[i]))
+    # Find local minima and maxima between intersection points
+    left_minima_indices = []
+    left_maxima_indices = []
+    right_minima_indices = []
+    right_maxima_indices = []
 
-    print("Movement pairs for Left Leg (as index positions):", movement_pairs2)
+    for i in range(len(intersection_indices) - 1):
+        start_idx = intersection_indices[i]
+        end_idx = intersection_indices[i + 1]
 
-    # if (plotdiagrams):
-    #     plt.figure(figsize=(12, 6))
-    #     plt.plot(movement_magnitude, label='movement_magnitude', linewidth=1)
-    #     # Plot peaks and valleys
-    #     plt.plot(peaks, movement_magnitude[peaks], "x", label='Maxima')
-    #     plt.plot(valleys, movement_magnitude[valleys], "o", label='Minima')
-    #     plt.xlabel('Sample index')
-    #     plt.ylabel('movement_magnitude')
-    #     plt.title('Fused W-Y signal with Detected Movements')
-    #     plt.legend()
-    #     plt.show()
-
-    #=============IMU1-Right Leg====================#
-    movement_ranges_yaw1 = []
-    movement_ranges_pitch1 = []
-    movement_ranges_roll1 = []
-
-    for valley1, peak1 in movement_pairs1:
-            yaw_range1 = abs(Z_filtered1[peak1] - Z_filtered1[valley1])
-            movement_ranges_yaw1.append(yaw_range1)
-
-            pitch_range1 = abs(X_filtered1[peak1] - X_filtered1[valley1])
-            movement_ranges_pitch1.append(pitch_range1)
-            
-            roll_range1 = abs(Y_filtered1[peak1] - Y_filtered1[valley1])
-            movement_ranges_roll1.append(roll_range1)
-
-    combined_movement_ranges1 = [np.sqrt(yaw1**2 + pitch1**2 + roll1**2) for yaw1, pitch1, roll1 in zip(movement_ranges_yaw1, movement_ranges_roll1, movement_ranges_pitch1)]
-
-    for i, (yaw_range1, roll_range1, pitch_range1) in enumerate(zip(movement_ranges_yaw1, movement_ranges_roll1, movement_ranges_pitch1)):
-            combined_range1 = np.sqrt(yaw_range1**2 + roll_range1**2 + pitch_range1**2)
-            print(f"MovementRight {i+1}: Yaw Range Right = {yaw_range1:.2f} degrees, Pitch Range Right = {pitch_range1:.2f} degrees, Roll Range Right = {roll_range1:.2f} degrees, Combined Range Right = {combined_range1:.2f} degrees")
-
-        # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
-    significant_movements1 = [(pair1, yaw1, pitch1, roll1, np.sqrt(yaw1**2 + pitch1**2 + roll1**2)) for pair1, yaw1, pitch1, roll1 in zip(movement_pairs1, movement_ranges_yaw1, movement_ranges_pitch1 ,movement_ranges_roll1) if np.sqrt(yaw1**2 + pitch1**2 + roll1**2) >= 0.01]
-
-    filtered_pairs1 = [item[0] for item in significant_movements1]
-    filtered_combined_ranges1 = [item[3] for item in significant_movements1]
-
-        # Print the significant movements and their combined ranges
-    for i, (_, _, _, _, combined_range1) in enumerate(significant_movements1):
-            print(f"Significant Movement Right Leg {i+1}: Combined Range Right = {combined_range1:.2f} degrees")
-
-        # Calculate durations for significant movements using timestamps
-    movement_durations1 = []
-
-    for start, end in filtered_pairs1:
-        start_time1 = df_Limu1.iloc[start].name  # Assuming the DataFrame index is datetime or similar
-        end_time1 = df_Limu1.iloc[end].name
-        duration1 = (end_time1 - start_time1).total_seconds()
-        movement_durations1.append(duration1)
-
-    # Calculate pace: total number of movements divided by the total observation period in seconds
-    total_duration_seconds1 = (df_Limu1.index[-1] - df_Limu1.index[0]).total_seconds()
-    pace1 = len(filtered_pairs1) / total_duration_seconds1  # Movements per second
-
-    # Calculate mean and STD for combined ranges and durations
-    mean_combined_range1 = np.mean(filtered_combined_ranges1)
-    std_combined_range1 = np.std(filtered_combined_ranges1, ddof=1)  # ddof=1 for sample standard deviation
-
-    mean_duration1 = np.mean(movement_durations1)
-    std_duration1 = np.std(movement_durations1, ddof=1)  # ddof=1 for sample standard deviation    
+        left_min_idx, left_max_idx = find_extrema_between(left_filtered_magnitude_interpolated, start_idx, end_idx)
+        right_min_idx, right_max_idx = find_extrema_between(right_filtered_magnitude_interpolated, start_idx, end_idx)
+        
+        if left_min_idx is not None:
+            left_minima_indices.append(left_min_idx)
+        if left_max_idx is not None:
+            left_maxima_indices.append(left_max_idx)
+        if right_min_idx is not None:
+            right_minima_indices.append(right_min_idx)
+        if right_max_idx is not None:
+            right_maxima_indices.append(right_max_idx)
 
 
-#=============IMU2-Left Leg====================#
-    movement_ranges_yaw2 = []
-    movement_ranges_pitch2 = []
-    movement_ranges_roll2 = []
+    # Determine the gait phases by comparing the mean magnitudes between intersection points
+    gait_phases = []
+    for i in range(len(intersection_times) - 1):
+        start_idx = intersection_indices[i]
+        end_idx = intersection_indices[i + 1]
+        left_mean = np.mean(left_filtered_magnitude_interpolated[start_idx:end_idx])
+        right_mean = np.mean(right_filtered_magnitude_interpolated[start_idx:end_idx])
+        if left_mean < right_mean:
+            gait_phases.append(('Left Stance, Right Swing', start_idx, end_idx))
+        else:
+            gait_phases.append(('Right Stance, Left Swing', start_idx, end_idx))
 
-    for valley2, peak2 in movement_pairs2:
-            yaw_range2 = abs(Z_filtered2[peak2] - Z_filtered2[valley2])
-            movement_ranges_yaw2.append(yaw_range2)
+    # Calculate heel strikes and toe offs based on the determined gait phases
+    left_hs_indices = []
+    left_to_indices = []
+    right_hs_indices = []
+    right_to_indices = []
 
-            pitch_range2 = abs(X_filtered2[peak2] - X_filtered2[valley2])
-            movement_ranges_pitch2.append(pitch_range2)
-            
-            roll_range2 = abs(Y_filtered2[peak2] - Y_filtered2[valley2])
-            movement_ranges_roll2.append(roll_range2)
+    for i in range(len(gait_phases)):
+        phase, start_idx, end_idx = gait_phases[i]
+        
+        if 'Left Stance' in phase:
+            left_min_idx, _ = find_extrema_between(left_filtered_magnitude_interpolated, start_idx, end_idx)
+            if left_min_idx is not None:
+                hs_idx = start_idx + (left_min_idx - start_idx) // 2
+                left_hs_indices.append(hs_idx)
+                to_idx = left_min_idx + (end_idx - left_min_idx) // 2
+                left_to_indices.append(to_idx)
+        elif 'Right Stance' in phase:
+            right_min_idx, _ = find_extrema_between(right_filtered_magnitude_interpolated, start_idx, end_idx)
+            if right_min_idx is not None:
+                hs_idx = start_idx + (right_min_idx - start_idx) // 2
+                right_hs_indices.append(hs_idx)
+                to_idx = right_min_idx + (end_idx - right_min_idx) // 2
+                right_to_indices.append(to_idx)
 
-    combined_movement_ranges2 = [np.sqrt(yaw2**2 + pitch2**2 + roll2**2) for yaw2, pitch2, roll2 in zip(movement_ranges_yaw2, movement_ranges_roll2, movement_ranges_pitch2)]
+    # # Print calculated indices for verification
+    # print(f"Left Heel Strike Indices: {left_hs_indices}")
+    # print(f"Left Toe Off Indices: {left_to_indices}")
+    # print(f"Right Heel Strike Indices: {right_hs_indices}")
+    # print(f"Right Toe Off Indices: {right_to_indices}")
 
-    for i, (yaw_range2, roll_range2, pitch_range2) in enumerate(zip(movement_ranges_yaw2, movement_ranges_roll2, movement_ranges_pitch2)):
-            combined_range2 = np.sqrt(yaw_range2**2 + roll_range2**2 + pitch_range2**2)
-            print(f"MovementLeft {i+1}: Yaw Range Left = {yaw_range2:.2f} degrees, Pitch Range Left = {pitch_range2:.2f} degrees, Roll Range Left = {roll_range2:.2f} degrees, Combined Range Left = {combined_range2:.2f} degrees")
+    # # Plot the results with the new heel strikes and toe offs
+    # plt.figure(figsize=(14, 6))
+    # plt.plot(common_time, left_filtered_magnitude_interpolated, label='Left IMU Magnitude Spline', color='blue', alpha=0.5)
+    # plt.plot(common_time, right_filtered_magnitude_interpolated, label='Right IMU Magnitude Spline', color='red', alpha=0.5)
 
-        # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
-    significant_movements2 = [(pair2, yaw2, pitch2, roll2, np.sqrt(yaw2**2 + pitch2**2 + roll2**2)) for pair2, yaw2, pitch2, roll2 in zip(movement_pairs2, movement_ranges_yaw2, movement_ranges_pitch2 ,movement_ranges_roll2) if np.sqrt(yaw2**2 + pitch2**2 + roll2**2) >= 0.01]
+    # # Highlight the periods where left is greater than right and vice versa
+    # plt.fill_between(common_time, left_filtered_magnitude_interpolated, right_filtered_magnitude_interpolated,
+    #                 where=left_filtered_magnitude_interpolated < right_filtered_magnitude_interpolated, facecolor='blue', alpha=0.3, label='Left Stance')
+    # plt.fill_between(common_time, left_filtered_magnitude_interpolated, right_filtered_magnitude_interpolated,
+    #                 where=right_filtered_magnitude_interpolated < left_filtered_magnitude_interpolated, facecolor='red', alpha=0.3, label='Right Stance')
 
-    filtered_pairs2 = [item[0] for item in significant_movements2]
-    filtered_combined_ranges2 = [item[3] for item in significant_movements2]
+    # # Mark the intersection points
+    # plt.scatter(intersection_times, left_filtered_magnitude_interpolated[intersection_indices], color='black', zorder=5)
 
-        # Print the significant movements and their combined ranges
-    for i, (_, _, _, _, combined_range2) in enumerate(significant_movements2):
-            print(f"Significant Movement Left Leg {i+1}: Combined Range Left = {combined_range2:.2f} degrees")
+    # # Mark heel strikes and toe offs
+    # plt.scatter(common_time[left_hs_indices], left_filtered_magnitude_interpolated[left_hs_indices], color='green', zorder=5, label='Left Heel Strikes')
+    # plt.scatter(common_time[left_to_indices], left_filtered_magnitude_interpolated[left_to_indices], color='cyan', zorder=5, label='Left Toe Offs')
+    # plt.scatter(common_time[right_hs_indices], right_filtered_magnitude_interpolated[right_hs_indices], color='yellow', zorder=5, label='Right Heel Strikes')
+    # plt.scatter(common_time[right_to_indices], right_filtered_magnitude_interpolated[right_to_indices], color='magenta', zorder=5, label='Right Toe Offs')
 
-        # Calculate durations for significant movements using timestamps
-    movement_durations2 = []
-
-    for start, end in filtered_pairs2:
-        start_time2 = df_Limu2.iloc[start].name  # Assuming the DataFrame index is datetime or similar
-        end_time2 = df_Limu2.iloc[end].name
-        duration2 = (end_time2 - start_time2).total_seconds()
-        movement_durations2.append(duration2)
-
-    # Calculate pace: total number of movements divided by the total observation period in seconds
-    total_duration_seconds2 = (df_Limu2.index[-1] - df_Limu2.index[0]).total_seconds()
-    pace2 = len(filtered_pairs2) / total_duration_seconds2  # Movements per second
-
-    # Calculate mean and STD for combined ranges and durations
-    mean_combined_range2 = np.mean(filtered_combined_ranges2)
-    std_combined_range2 = np.std(filtered_combined_ranges2, ddof=1)  # ddof=1 for sample standard deviation
-
-    mean_duration2 = np.mean(movement_durations2)
-    std_duration2 = np.std(movement_durations2, ddof=1)  # ddof=1 for sample standard deviation    
-
-
-    steps = min(len(movement_pairs1), len(movement_pairs2)) 
-    # steps1 = calculate_steps_with_fft(movement_magnitude1, fs, 0.5, 3.0)
-    # steps2 = calculate_steps_with_fft(movement_magnitude2, fs, 0.5, 3.0)
-    # steps = int((steps1 + steps2) / 2)
-    
-
-    # Calculate total steps by taking the minimum of the two methods
-    # total_steps = min(movement_pair_steps, int((steps1 + steps2) / 4))
-
-    heel_strikes_times_Right, properties1 = find_peaks(movement_magnitude1, prominence = 0.0)  # Adjust the prominence as needed
-    print(heel_strikes_times_Right)
-    toe_off_times_Right, properties1 = find_peaks(-movement_magnitude1, prominence = 0.0) # Adjust the prominence as needed
-    print(toe_off_times_Right)
-    heel_strikes_times_Left, properties2 = find_peaks(movement_magnitude2, prominence = 0.1)  # Adjust the prominence as needed
-    print(heel_strikes_times_Left)
-    toe_off_times_Left, properties2 = find_peaks(-movement_magnitude2, prominence = 0.1)  # Adjust the prominence as needed
-    print(toe_off_times_Left)
-
-    t1 = heel_strikes_times_Right
-    t2 = heel_strikes_times_Left
-    t3 = toe_off_times_Right  
-    t4 = toe_off_times_Left
-
-    t1_series = pd.Series(t1)
-    print(t1_series)
-    t2_series = pd.Series(t2)
-    print(t2_series)
-    t3_series = pd.Series(t3)
-    print(t3_series)
-    t4_series = pd.Series(t4)
-    print(t4_series)
-
-    # time_vector = np.linspace(0, len(linear_df1) / 100, len(Limu1))
-    # plt.figure(figsize=(12, 6))
-    # plt.plot(time_vector, linear_df1, label='IMU Data')
-
-    # # Add heel strikes and toe offs to the plot
-    # plt.scatter(t1, linear_df1[peaks1], color='red', label='Heel Strikes (t1)')
-    # plt.scatter(t3, linear_df1[valleys1], color='blue', label='Toe Offs (t3)')
-    # # plt.scatter(t2, Limu1[heel_strike2], color='green', label='Heel Strikes (t2)')
-    # # plt.scatter(t4, Limu1[toe_off2], color='orange', label='Toe Offs (t4)')
-
-    # plt.title('Detected Heel Strikes and Toe Offs Over Time')
-    # plt.xlabel('Time (seconds)')
-    # plt.ylabel('Sensor Data')
+    # plt.xlabel('Timestamp')
+    # plt.ylabel('Linear Acceleration (Magnitude)')
+    # plt.title('Spline-Interpolated Linear Acceleration Magnitude - Gait Events with Heel Strikes and Toe Offs')
     # plt.legend()
+    # plt.grid(True)
     # plt.show()
 
-    ###GAIT CYCLE###
 
-    # Right single support time = t4|nextcycle - t2
-    right_single_support_time = t4_series.shift(-1) - t2_series
-    # Left single support time =  t1|nextcycle - t3
-    left_single_support_time = t1_series.shift(-1) - t3_series
-    # Double support time = (t4 -t1) + (t3-t2)
-    double_support_time = (t4_series - t1_series) + (t3_series - t2_series)
-    # Right stance phase duration = t3 -t1
-    right_stance_phase_duration = t3_series - t1_series
-    # Left stance phase duration =  t4|nextcycle - t2
-    left_stance_phase_duration = t4_series.shift(-1) - t2_series
-    # Right load response time = t4 - t1
-    right_load_response_time = t4_series - t1_series
-    # Right gait cycle time = t1|nextcycle - t1
-    right_gait_cycle_time = t1_series.shift(-1) - t1_series
-    # Left loading response time = t3 - t2
-    left_load_response_time = t3_series - t2_series
-    # Left gait cycle = t4|nextcycle - t4
-    left_gait_cycle_time = t4_series.shift(-1) - t4_series
-    # Cadence = 1/ t4|nextcycle - t1
-    cadence = 1/ (t4_series.shift(-1) - t1_series)
-    # Right single support time percentage over gait cycle =  Right single support time/Right gait cycle time
-    right_single_support_time_percentage = (right_single_support_time / right_gait_cycle_time) * 100
-    # Left single support time percentage over gait cycle = Left single support time/Right gait cycle time
-    left_single_support_time_percentage = (left_single_support_time / right_gait_cycle_time) * 100
-    # Double support time percentage over gait cycle =  Double support time/Right gait cycle time
-    double_support_time_percentage = (double_support_time / right_gait_cycle_time) * 100
-    # Right stance phase time percentage over gait cycle = Right stance phase duration/Right gait cycle time 
-    right_stance_phase_percentage = (right_stance_phase_duration / right_gait_cycle_time) * 100
-    # Left stance phase time percentage over gait cycle = Left stance phase duration/Right gait cycle time
-    left_stance_phase_percentage = (left_stance_phase_duration / right_gait_cycle_time) * 100
-    # Right loading response percentage time over gait cycle = Right load response time/Right gait cycle time
-    right_loading_response_percentage = (right_load_response_time / right_gait_cycle_time) * 100
-    # Left loading response percentage phase time over gait cycle = Left loading response time/Right gait cycle time
-    left_loading_response_percentage = (left_load_response_time / right_gait_cycle_time) * 100
+    # Calculate overall gait metrics
+    stride_times = [(end - start).total_seconds() for start, end in zip(intersection_times[:-1], intersection_times[1:])]
+    step_times = [time / 2 for time in stride_times]
+    cadence = (len(step_times) / ((common_time[-1] - common_time[0]).total_seconds())) * 60  # Steps per minute
+    gait_cycle_times = stride_times  # Each stride is one gait cycle
+
+    # Calculate individual foot gait metrics
+    left_stance_times = []
+    right_stance_times = []
+    left_swing_times = []
+    right_swing_times = []
+    double_support_times = []
+    left_toe_off_times = []
+    right_toe_off_times = []
+    left_swing_peak_times = []
+    right_swing_peak_times = []
+
+    # Calculate metrics for each phase
+    for phase, start_idx, end_idx in gait_phases:
+        start_time = common_time[start_idx]
+        end_time = common_time[end_idx]
+        duration = (end_time - start_time).total_seconds()
+        if 'Left Swing' in phase:
+            left_swing_times.append(duration)
+            # Calculate toe off and swing peak times
+            for idx in left_maxima_indices:
+                if start_time <= common_time[idx] <= end_time:
+                    left_swing_peak_times.append((common_time[idx] - start_time).total_seconds())
+            for idx in right_minima_indices:
+                if start_time <= common_time[idx] <= end_time:
+                    right_toe_off_times.append((common_time[idx] - start_time).total_seconds())
+        else:
+            right_swing_times.append(duration)
+            # Calculate toe off and swing peak times
+            for idx in right_maxima_indices:
+                if start_time <= common_time[idx] <= end_time:
+                    right_swing_peak_times.append((common_time[idx] - start_time).total_seconds())
+            for idx in left_minima_indices:
+                if start_time <= common_time[idx] <= end_time:
+                    left_toe_off_times.append((common_time[idx] - start_time).total_seconds())
+
+    # Calculate stance times
+    for i in range(0, len(intersection_times) - 1, 2):
+        left_stance_times.append((intersection_times[i+1] - intersection_times[i]).total_seconds())
+        if i + 2 < len(intersection_times):
+            right_stance_times.append((intersection_times[i+2] - intersection_times[i+1]).total_seconds())
+
+
+
+    # # Print overall gait metrics
+    # print(f"Stride Times: {stride_times}")
+    # print(f"Step Times: {step_times}")
+    # print(f"Cadence: {cadence} steps/minute")
+    # print(f"Gait Cycle Times: {gait_cycle_times}")
+
+
+
+    # Calculate the times for the metrics
+    right_single_support_times = []
+    left_single_support_times = []
+    double_support_times = []
+
+    # Iterate through the cycles to calculate the times
+    for i in range(min(len(right_to_indices), len(left_to_indices)) - 1):
+        t2 = common_time[left_to_indices[i]]
+        t5 = common_time[left_hs_indices[i + 1]]
+        right_single_support_times.append((t5 - t2).total_seconds())
+        
+        t6 = common_time[right_to_indices[i]]
+        t1 = common_time[right_hs_indices[i + 1]]
+        left_single_support_times.append((t1 - t6).total_seconds())
+        
+        t1 = common_time[right_hs_indices[i]]
+        t2 = common_time[left_to_indices[i]]
+        t5 = common_time[left_hs_indices[i]]
+        t6 = common_time[right_to_indices[i]]
+        double_support_times.append((t2 - t1).total_seconds() + (t6 - t5).total_seconds())
+
+    # # Print calculated gait metrics
+    # print(f"Right Single Support Times: {right_single_support_times}")
+    # print(f"Left Single Support Times: {left_single_support_times}")
+    # print(f"Double Support Times: {double_support_times}")
+
+    '''
+    Right stance phase duration a4 = t6 âˆ’ t1
+    Left stance phase duration a5 = t2|nextcycle - t5
+    Right load response time a6 = t2 âˆ’ t1
+    Right terminal stance time a7 = t4 âˆ’ t2
+    Right pre-swing time a8 = t5 âˆ’ t4
+    Right gait cycle time a9 = t1|nextcycle - t1
+    Left loading response time a10 = t6 âˆ’ t5
+    Left terminal stance time a11 = t7 âˆ’ t6
+    Left pre-swing phase time a12 = t1|nextcycle - t7
+    Left gait cycle a13 = t2|nextcycle - t2
+    '''
+
+    # # Plot the results with the new heel strikes, toe offs, and metrics
+    # plt.figure(figsize=(14, 6))
+    # plt.plot(common_time, left_filtered_magnitude_interpolated, label='Left IMU Magnitude Spline', color='blue', alpha=0.5)
+    # plt.plot(common_time, right_filtered_magnitude_interpolated, label='Right IMU Magnitude Spline', color='red', alpha=0.5)
+
+    # # Highlight the periods where left is greater than right and vice versa
+    # plt.fill_between(common_time, left_filtered_magnitude_interpolated, right_filtered_magnitude_interpolated,
+    #                 where=left_filtered_magnitude_interpolated < right_filtered_magnitude_interpolated, facecolor='blue', alpha=0.3, label='Left Stance')
+    # plt.fill_between(common_time, left_filtered_magnitude_interpolated, right_filtered_magnitude_interpolated,
+    #                 where=right_filtered_magnitude_interpolated < left_filtered_magnitude_interpolated, facecolor='red', alpha=0.3, label='Right Stance')
+    # # Mark the intersection points
+    # plt.scatter(intersection_times, left_filtered_magnitude_interpolated[intersection_indices], color='black', zorder=5)
+
+    # # Mark heel strikes and toe offs
+    # plt.scatter(common_time[left_hs_indices], left_filtered_magnitude_interpolated[left_hs_indices], color='green', zorder=5, label='Left Heel Strikes')
+    # plt.scatter(common_time[left_to_indices], left_filtered_magnitude_interpolated[left_to_indices], color='cyan', zorder=5, label='Left Toe Offs')
+    # plt.scatter(common_time[right_hs_indices], right_filtered_magnitude_interpolated[right_hs_indices], color='yellow', zorder=5, label='Right Heel Strikes')
+    # plt.scatter(common_time[right_to_indices], right_filtered_magnitude_interpolated[right_to_indices], color='magenta', zorder=5, label='Right Toe Offs')
+
+    # Annotate gait events
+    for phase, start_idx, end_idx in gait_phases:
+        start_time = common_time[start_idx]
+        end_time = common_time[end_idx]
+        mid_time = pd.Timestamp((start_time.timestamp() + end_time.timestamp()) / 2, unit='s')
+    #     plt.axvspan(start_time, end_time, color='yellow' if 'Left Swing' in phase else 'green', alpha=0.2)
+    #     plt.text(mid_time, plt.ylim()[1] - 0.1 * plt.ylim()[1], phase, horizontalalignment='center', verticalalignment='top', fontsize=8, rotation=45)
+
+    # plt.xlabel('Timestamp')
+    # plt.ylabel('Linear Acceleration (Magnitude)')
+    # plt.title('Spline-Interpolated Linear Acceleration Magnitude - Gait Events with Heel Strikes and Toe Offs')
+    # plt.legend()
+    # plt.grid(True)
+    # plt.show()
 
     metrics_data = {
-        "total_metrics": {
-             "Gait Cycle":{
-                "Number of steps": int(steps/3),
-                "Right Single Support Time": right_single_support_time.tolist(),
-                "Left Single Support Time": left_single_support_time.tolist(),
-                "Double Support Time": double_support_time.tolist(),
-                "Right Stance Phase Duration": right_stance_phase_duration.tolist(),
-                "Left Stance Phase Duration": left_stance_phase_duration.tolist(),
-                "Right Load Response Time": right_load_response_time.tolist(),
-                "Right Gait Cycle Time": right_gait_cycle_time.tolist(),
-                "Left Load Response Time": left_load_response_time.tolist(),
-                "Left Gait Cycle Time": left_gait_cycle_time.tolist(),
-                "Cadence": cadence.tolist(),
-                "Right Single Support Percentage": right_single_support_time_percentage.tolist(),
-                "Left Single Support Percentage": left_single_support_time_percentage.tolist(),
-                "Double Support Percentage": double_support_time_percentage.tolist(),
-                "Right Stance Phase Percentage": right_stance_phase_percentage.tolist(),
-                "Left Stance Phase Percentage": left_stance_phase_percentage.tolist(),
-                "Right Loading Response Percentage": right_loading_response_percentage.tolist(),
-                "Left Loading Response Percentage": left_loading_response_percentage.tolist()   
-                            }
-             
-    }
-    }
+            "total_metrics": {
+                "Gait Cycle":{
+                    "Number of steps": int(len(step_times)),
+                    "Right Single Support Time": right_single_support_times,
+                    "Left Single Support Time": left_single_support_times,
+                    "Right Single Support Time": right_single_support_times,
+                    "Left Single Support Time": left_single_support_times,
+                    "Double Support Time": double_support_times,
+                    "Stride Phase Duration": stride_times,
+                    "Gait Cycle Duration": gait_cycle_times,
+                    "Right stance time ": right_stance_times,
+                    "Right Swing Time": right_swing_times,
+                    "Left stance Time": left_stance_times,
+                    "Left Swing Time": left_swing_times,
+                    "Right Toe Off Times": right_toe_off_times,
+                    "Right Swing peak Times": right_swing_peak_times,
+                    "Left Toe Off Times": left_toe_off_times,
+                    "Left Swing peak Times": left_swing_peak_times,
+                    "Cadence": cadence
+                                }
+                
+        }
+        }
 
 
 
     datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"{datetime_string}_SideStepping_metrics.txt"
 
-    # Save the metrics to a file
+        # Save the metrics to a file
     save_metrics_to_txt(metrics_data, filename)
 
     return json.dumps(metrics_data, indent=4)
 
-    
+        
 def save_metrics_to_txt(metrics, file_path):
-    main_directory = "Gait Metrics Data"
-    sub_directory = "SideStepping Metrics Data"
+        main_directory = "Gait Metrics Data"
+        sub_directory = "SideStepping Metrics Data"
 
-    directory = os.path.join(main_directory, sub_directory)
+        directory = os.path.join(main_directory, sub_directory)
+        
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        
     
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+        full_path = os.path.join(directory, file_path)
+
     
-   
-    full_path = os.path.join(directory, file_path)
-
-   
-    with open(full_path, 'w') as file:
-        for main_key, main_value in metrics.items():
-            file.write(f"{main_key}:\n")
-            for key, value in main_value.items():
-                file.write(f"  {key}:\n")
-                for sub_key, sub_value in value.items():
-                    file.write(f"    {sub_key}: {sub_value}\n")
-                file.write("\n") 
-         
-
+        with open(full_path, 'w') as file:
+            for main_key, main_value in metrics.items():
+                file.write(f"{main_key}:\n")
+                for key, value in main_value.items():
+                    file.write(f"  {key}:\n")
+                    for sub_key, sub_value in value.items():
+                        file.write(f"    {sub_key}: {sub_value}\n")
+                    file.write("\n") 
 # def calculate_correlation(metric1, metric2):
 #     # Calculate the correlation between two metrics
 #     correlation = metric1.corr(metric2)

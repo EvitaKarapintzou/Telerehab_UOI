@@ -1,0 +1,18 @@
+total_metrics:
+  Gait Cycle:
+    Number of steps: 6
+    Right Single Support Time: [1.03, 1.11]
+    Left Single Support Time: [1.16, 1.09]
+    Double Support Time: [0.7999999999999999, 0.6900000000000001]
+    Stride Phase Duration: [0.86, 0.74, 0.67, 0.71, 0.69, 0.75]
+    Gait Cycle Duration: [0.86, 0.74, 0.67, 0.71, 0.69, 0.75]
+    Right stance time : [0.74, 0.71, 0.75]
+    Right Swing Time: [0.74, 0.71, 0.75]
+    Left stance Time: [0.86, 0.67, 0.69]
+    Left Swing Time: [0.86, 0.67, 0.69]
+    Right Toe Off Times: [0.25, 0.22, 0.3]
+    Right Swing peak Times: [0.21, 0.26, 0.24]
+    Left Toe Off Times: [0.22, 0.21, 0.34]
+    Left Swing peak Times: [0.76, 0.56, 0.6]
+    Cadence: 5.9523809523809526
+

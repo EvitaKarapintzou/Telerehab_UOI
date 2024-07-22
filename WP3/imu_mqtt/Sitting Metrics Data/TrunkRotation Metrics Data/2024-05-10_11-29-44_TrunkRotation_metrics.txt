@@ -1,8 +1,0 @@
-total_metrics:
-  number_of_movements: 3
-  pace_movements_per_second: 200000.0
-  mean_combined_range_degrees: 69.3078004456932
-  std_combined_range_degrees: 38.531963514122786
-  mean_duration_seconds: 1.3333333333333332e-06
-  std_duration_seconds: 5.773502691896258e-07
-

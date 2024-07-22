@@ -118,7 +118,7 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
    
     columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'])
+    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
     df_Limu1 = df_Limu1.sort_values(by='Timestamp')
     df_Limu1.set_index('Timestamp', inplace=True)
     
@@ -127,8 +127,8 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
     interval_length = pd.Timedelta(seconds=5)
     
     current_time = start_time
-    while current_time + interval_length <= end_time:
-        interval_end_time = current_time + interval_length
+    # while current_time + interval_length <= end_time:
+    #     interval_end_time = current_time + interval_length
         
 
     
@@ -239,22 +239,32 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
 
     for i, movement_range in enumerate(movement_ranges):
         print(f"Movement {i+1}: Range = {movement_range:.2f} degrees")
-    significant_movements = [(pair, mrange) for pair, mrange in zip(movement_pairs, movement_ranges) if mrange >= 5]
+    significant_movements = [(pair, mrange) for pair, mrange in zip(movement_pairs, movement_ranges) if mrange >= 10]
 
     filtered_pairs = [pair for pair, range in significant_movements]
     filtered_ranges = [mrange for pair, mrange in significant_movements]
-
+    
+    movement_details = []
     for i, (pair, mrange) in enumerate(significant_movements):
         print(f"Significant Movement {i+1}: Pair = {pair}, Range = {mrange:.2f} degrees")
+
+        movement_detail = f"Significant Movement {i+1}: Pair = {pair}, Range = {mrange:.2f} degrees"
+        print(movement_detail)
+        movement_details.append(movement_detail)  # Append to list
 
     movement_durations = []
     for start, end in filtered_pairs:
         start_time = df_Limu1.iloc[start].name
         end_time = df_Limu1.iloc[end].name
         duration = (end_time - start_time).total_seconds()
+        print(duration)
         movement_durations.append(duration)
+        print(movement_durations)
+
+
 
     total_duration_seconds = (df_Limu1.index[-1] - df_Limu1.index[0]).total_seconds()
+    print(total_duration_seconds)
     if (total_duration_seconds > 0):
         pace = len(filtered_pairs) / total_duration_seconds  # Movements per second
     else:
@@ -274,20 +284,30 @@ def getMetricsSittingOld01(Limu1, plotdiagrams):
         mean_duration = -1
         std_duration = -1        
 
-
+   
 
     metrics_data = {
         "total_metrics": {
             "number_of_movements": int(len(filtered_pairs)),
             "pace_movements_per_second": float(pace),
-            "mean_range_degrees": float(mean_range),
-            "std_range_degrees": float(std_range),
-            "mean_duration_seconds": float(mean_duration),
-            "std_duration_seconds": float(std_duration),
-            "peak_acceleration": peak_acceleration.to_dict()
+            "mean_movement_range_degrees": float((mean_range)),
+            "std_movement_range_degrees": float(std_range),
+            "mean_movement_duration_seconds": float(mean_duration),
+            "std_movement_duration_seconds": float(std_duration),
+            "Degrees per movement": movement_details,
+            "Exersice_duration" : total_duration_seconds,
+            "movement_duration": movement_durations
+        }
+            # "number_of_movements": int(len(filtered_pairs)),
+            # "pace_movements_per_second": float(pace),
+            # "mean_range_degrees": float(mean_range),
+            # "std_range_degrees": float(std_range),
+            # "mean_duration_seconds": float(mean_duration),
+            # "std_duration_seconds": float(std_duration),
+            #"peak_acceleration": peak_acceleration.to_dict()
             # "movement_symmetry": movement_symmetry
         }
-    }
+    
 
     datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"{datetime_string}_HeadRotation_metrics.txt"

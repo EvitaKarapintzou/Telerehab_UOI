@@ -1,0 +1,37 @@
+// Yaw Angle Calculation
+digraph {
+	rankdir=LR size="12,8"
+	A [label="Euler angles
+E(y, p, r, t)" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	B [label="Measurement in
+pitch plane
+P(t)" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	C [label="Values pre-
+processing
+(normalization)
+
+P'(t)
+(full circles elimination
+zero normalization)" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	D [label="Low pass filter
+H(P'(s)) = wc / (s + wc)" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	E [label="1st derivative
+dP'(t)/dt" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	F [label="Local extrema
+dP'(t)/dt = 0" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	G [label="Outliers
+elimination" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	H [label="min - max
+pairing" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	I [label="metric calculation
+(range, time,
+variation, mean)" color="#e0e0e0" fontname=Helvetica fontsize=14 shape=box style="rounded,filled"]
+	A -> B
+	B -> C
+	C -> D
+	D -> E
+	E -> F
+	F -> G
+	G -> H
+	H -> I
+}

@@ -1,0 +1,36 @@
+// Yaw Angle Calculation
+digraph {
+	A [label="Euler angles
+E(y, p, r, t)" color="#f0f0f0" shape=box style="rounded,filled"]
+	B [label="Measurement in
+yaw plane
+Y(t)" color="#f0f0f0" shape=box style="rounded,filled"]
+	C [label="Values pre-
+processing
+(normalization)
+
+Y'(t)
+(full circles elimination
+zero normalization)" color="#f0f0f0" shape=box style="rounded,filled"]
+	D [label="Low pass filter
+H(Y'(s)) = wc / (s + wc)" color="#f0f0f0" shape=box style="rounded,filled"]
+	E [label="1st derivative
+dY'(t)/dt" color="#f0f0f0" shape=box style="rounded,filled"]
+	F [label="Local extrema
+dY'(t)/dt = 0" color="#f0f0f0" shape=box style="rounded,filled"]
+	G [label="Outliers
+elimination" color="#f0f0f0" shape=box style="rounded,filled"]
+	H [label="min - max
+pairing" color="#f0f0f0" shape=box style="rounded,filled"]
+	I [label="metric calculation
+(range, time,
+variation, mean)" color="#f0f0f0" shape=box style="rounded,filled"]
+	A -> B
+	B -> C
+	C -> D
+	D -> E
+	E -> F
+	F -> G
+	G -> H
+	H -> I
+}

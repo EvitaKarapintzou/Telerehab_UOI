@@ -1,0 +1,16 @@
+
+Mean Yaw Trial 1: 0.34248816804375454, STD Yaw Trial 1: 0.28407129501845463
+Mean Yaw Trial 2: 0.24200530616510046, STD Yaw Trial 2: 0.2512946401104411
+Mean Yaw Trial 3: 0.3149972358262699, STD Yaw Trial 3: 0.29323997163961657
+Mean Yaw Trial 4: 0.29532308186258677, STD Yaw Trial 4: 0.3127728924117024
+Mean Yaw Trial 5: 0.2968439540091765, STD Yaw Trial 5: 0.323377770059136
+ICC for Yaw: 0.9999986684362491
+Trial 1 vs Trial 2 - Correlation: 0.27, RMSE: 0.34
+Trial 1 vs Trial 3 - Correlation: 0.54, RMSE: 0.28
+Trial 1 vs Trial 4 - Correlation: 0.49, RMSE: 0.31
+Trial 1 vs Trial 5 - Correlation: 0.53, RMSE: 0.30
+Trial 2 vs Trial 3 - Correlation: 0.24, RMSE: 0.35
+Trial 2 vs Trial 4 - Correlation: 0.49, RMSE: 0.30
+Trial 2 vs Trial 5 - Correlation: 0.27, RMSE: 0.36
+Trial 3 vs Trial 4 - Correlation: 0.54, RMSE: 0.29
+Trial 3 vs Trial 5 - Correlation: 0.24, RMSE: 0.38

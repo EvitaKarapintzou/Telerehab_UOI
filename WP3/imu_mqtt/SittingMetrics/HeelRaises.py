@@ -25,20 +25,6 @@ def plotIMUDATA(Limu, x, filename):
     plt.ylabel('W component of quaternion')
     plt.grid(True)  
 
-
-# def interpolate_imu_data(imu_data, starttime, endtime, N):
-    # """
-    # Interpolate IMU data (w, x, y, z) between starttime and endtime into N samples.
-
-    # Parameters:
-    # imu_data (list of lists): The IMU data in format [time, w, x, y, z, _, _].
-    # starttime (float): The start time for interpolation.
-    # endtime (float): The end time for interpolation.
-    # N (int): Number of samples to interpolate.
-
-    # Returns:
-    # list of lists: Interpolated IMU data with N entries.
-    # """
     
 
 def butter_lowpass_filter(data, cutoff, fs, order=5):
@@ -140,16 +126,16 @@ def getMetricsSittingNew03(Limu1, Limu2, plotdiagrams):
         interval_data2 = df_Limu2.loc[current_time:interval_end_time]
 
         # Calculate metrics for the interval (you can implement your metric calculation here)
-        metrics = getMetricsSittingNew03(interval_data1, interval_data2)  # Placeholder for the real calculation function
+        metrics = getMetricsSittingNew03(interval_data1, interval_data2, plotdiagrams)  # Placeholder for the real calculation function
 
-    # if (plotdiagrams):
-    #     plt.figure(figsize=(10, 6))
-    #     plt.xlabel('Timestamp')
-    #     plt.ylabel('Quaternion Components')
-    #     plt.title('Quaternion Components (W, X, Y, Z) over Time')
-    #     plt.legend()
-    #     plt.xticks(rotation=45)
-    #     plt.tight_layout()
+    if (plotdiagrams):
+        plt.figure(figsize=(10, 6))
+        plt.xlabel('Timestamp')
+        plt.ylabel('Quaternion Components')
+        plt.title('Quaternion Components (W, X, Y, Z) over Time')
+        plt.legend()
+        plt.xticks(rotation=45)
+        plt.tight_layout()
 
     #     plt.savefig('quaternion_components_plot!!!!!!!.png')
         #plt.show()
@@ -175,23 +161,26 @@ def getMetricsSittingNew03(Limu1, Limu2, plotdiagrams):
     Y_filtered2 = butter_lowpass_filter(linear_df2['Y (number)'], cutoff, fs, order=5)
 
 # Calculate the magnitude of movement considering both yaw and roll
-    movement_magnitude1 = np.sqrt(np.square(X_filtered1) + np.square(Y_filtered1) + np.square(Z_filtered1))
-    movement_magnitude2 = np.sqrt(np.square(X_filtered2) + np.square(Y_filtered2) + np.square(Z_filtered2))
+    # movement_magnitude1 = np.sqrt(np.square(X_filtered1) + np.square(Y_filtered1) + np.square(Z_filtered1))
+    # movement_magnitude2 = np.sqrt(np.square(X_filtered2) + np.square(Y_filtered2) + np.square(Z_filtered2))
+
+    movement_magnitude1 = np.sqrt(np.square(Z_filtered1))
+    movement_magnitude2 = np.sqrt(np.square(Z_filtered2))
 
 
-    # if (plotdiagrams):
-    #     plt.figure(figsize=(12, 8))
-    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Roll (degrees)'], label='Roll', linewidth=1)
-    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Pitch (degrees)'], label='Pitch', linewidth=1)
-    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Yaw (degrees)'], label='Yaw', linewidth=1)
+    if (plotdiagrams):
+        plt.figure(figsize=(12, 8))
+        # plt.plot(euler_df_degrees.index, euler_df_degrees['Roll (degrees)'], label='Roll', linewidth=1)
+        # plt.plot(euler_df_degrees.index, euler_df_degrees['Pitch (degrees)'], label='Pitch', linewidth=1)
+        # plt.plot(euler_df_degrees.index, euler_df_degrees['Yaw (degrees)'], label='Yaw', linewidth=1)
 
-    #     plt.xlabel('Timestamp')
-    #     plt.ylabel('Euler Angles (degrees)')
-    #     plt.title('Euler Angles (Roll, Pitch, Yaw) over Time')
-    #     plt.legend()
-    #     plt.xticks(rotation=45)
-    #     plt.tight_layout()  
-    #     plt.show()
+        plt.xlabel('Timestamp')
+        plt.ylabel('Euler Angles (degrees)')
+        plt.title('Euler Angles (Roll, Pitch, Yaw) over Time')
+        plt.legend()
+        plt.xticks(rotation=45)
+        plt.tight_layout()  
+        plt.show()
 
     #IMU1
     peaks1, _ = find_peaks(movement_magnitude1)
@@ -272,35 +261,46 @@ def getMetricsSittingNew03(Limu1, Limu2, plotdiagrams):
             yaw_range1 = abs(Z_filtered1[peak1] - Z_filtered1[valley1])
             movement_ranges_yaw1.append(yaw_range1)
 
-            pitch_range1 = abs(X_filtered1[peak1] - X_filtered1[valley1])
-            movement_ranges_pitch1.append(pitch_range1)
+            # pitch_range1 = abs(X_filtered1[peak1] - X_filtered1[valley1])
+            # movement_ranges_pitch1.append(pitch_range1)
             
-            roll_range1 = abs(Y_filtered1[peak1] - Y_filtered1[valley1])
-            movement_ranges_roll1.append(roll_range1)
+            # roll_range1 = abs(Y_filtered1[peak1] - Y_filtered1[valley1])
+            # movement_ranges_roll1.append(roll_range1)
 
-    combined_movement_ranges1 = [np.sqrt(yaw1**2 + pitch1**2 + roll1**2) for yaw1, pitch1, roll1 in zip(movement_ranges_yaw1, movement_ranges_roll1, movement_ranges_pitch1)]
 
-    for i, (yaw_range1, roll_range1, pitch_range1) in enumerate(zip(movement_ranges_yaw1, movement_ranges_roll1, movement_ranges_pitch1)):
-            combined_range1 = np.sqrt(yaw_range1**2 + roll_range1**2 + pitch_range1**2)
-            print(f"MovementRight {i+1}: Yaw Range Right = {yaw_range1:.2f} degrees, Pitch Range Right = {pitch_range1:.2f} degrees, Roll Range Right = {roll_range1:.2f} degrees, Combined Range Right = {combined_range1:.2f} degrees")
 
+    for i, yaw_range1 in enumerate(movement_ranges_yaw1):
+        print(f"Movement {i+1}: Range = {yaw_range1:.2f} degrees")
+    significant_movements1 = [(pair1, mrange1) for pair1, mrange1 in zip(movement_pairs1, movement_ranges_yaw1) if mrange1 >= 0.02]
+
+    filtered_pairs1 = [pair1 for pair1, movement_range1 in significant_movements1]
+    filtered_combined_ranges1= [mrange1 for pair1, mrange1 in significant_movements1]
+
+
+    movement_details1 = []
+    for i, (pair1, mrange1) in enumerate(significant_movements1):
+        print(f"Significant Movement {i+1}: Pair = {pair1}, Range = {mrange1:.2f} degrees")
+
+        movement_detail1 = f"Significant Movement {i+1}: Pair = {pair1}, Range = {mrange1:.2f} degrees"
+        print(movement_detail1)
+        movement_details1.append(movement_detail1)  # Append to list
         # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
-    significant_movements1 = [(pair1, yaw1, pitch1, roll1, np.sqrt(yaw1**2 + pitch1**2 + roll1**2)) for pair1, yaw1, pitch1, roll1 in zip(movement_pairs1, movement_ranges_yaw1, movement_ranges_pitch1 ,movement_ranges_roll1) if np.sqrt(yaw1**2 + pitch1**2 + roll1**2) >= 0.01]
+    # significant_movements1 = [(pair1, yaw1, np.sqrt(yaw1**2)) for pair1, yaw1 in zip(movement_pairs1, movement_ranges_yaw1) if np.sqrt(yaw1**2) >= 0.01]
 
-    filtered_pairs1 = [item[0] for item in significant_movements1]
-    filtered_combined_ranges1 = [item[3] for item in significant_movements1]
+    # filtered_pairs1 = [item[0] for item in significant_movements1]
+    # filtered_combined_ranges1 = [item[3] for item in significant_movements1]
 
-        # Print the significant movements and their combined ranges
-    for i, (_, _, _, _, combined_range1) in enumerate(significant_movements1):
-            print(f"Significant Movement Right Leg {i+1}: Combined Range Right = {combined_range1:.2f} degrees")
+    #     # Print the significant movements and their combined ranges
+    # for i, (_, _, combined_range1) in enumerate(significant_movements1):
+    #         print(f"Significant Movement Right Leg {i+1}: Combined Range Right = {combined_range1:.2f} degrees")
 
         # Calculate durations for significant movements using timestamps
     movement_durations1 = []
 
     for start, end in filtered_pairs1:
-        start_time1 = df_Limu1.iloc[start].name  # Assuming the DataFrame index is datetime or similar
-        end_time1 = df_Limu1.iloc[end].name
-        duration1 = (end_time1 - start_time1).total_seconds()
+        start_time = df_Limu1.iloc[start].name  # Assuming the DataFrame index is datetime or similar
+        end_time = df_Limu1.iloc[end].name
+        duration1 = (end_time - start_time).total_seconds()
         movement_durations1.append(duration1)
 
     # Calculate pace: total number of movements divided by the total observation period in seconds
@@ -321,38 +321,43 @@ def getMetricsSittingNew03(Limu1, Limu2, plotdiagrams):
     movement_ranges_roll2 = []
 
     for valley2, peak2 in movement_pairs2:
-            yaw_range2 = abs(Z_filtered2[peak2] - Z_filtered2[valley2])
+            yaw_range2 = abs(Y_filtered2[peak2] - Y_filtered2[valley2])
             movement_ranges_yaw2.append(yaw_range2)
 
-            pitch_range2 = abs(X_filtered2[peak2] - X_filtered2[valley2])
-            movement_ranges_pitch2.append(pitch_range2)
+            # pitch_range2 = abs(X_filtered2[peak2] - X_filtered2[valley2])
+            # movement_ranges_pitch2.append(pitch_range2)
             
-            roll_range2 = abs(Y_filtered2[peak2] - Y_filtered2[valley2])
-            movement_ranges_roll2.append(roll_range2)
+            # roll_range2 = abs(Y_filtered2[peak2] - Y_filtered2[valley2])
+            # movement_ranges_roll2.append(roll_range2)
 
-    combined_movement_ranges2 = [np.sqrt(yaw2**2 + pitch2**2 + roll2**2) for yaw2, pitch2, roll2 in zip(movement_ranges_yaw2, movement_ranges_roll2, movement_ranges_pitch2)]
+   
 
-    for i, (yaw_range2, roll_range2, pitch_range2) in enumerate(zip(movement_ranges_yaw2, movement_ranges_roll2, movement_ranges_pitch2)):
-            combined_range2 = np.sqrt(yaw_range2**2 + roll_range2**2 + pitch_range2**2)
-            print(f"MovementLeft {i+1}: Yaw Range Left = {yaw_range2:.2f} degrees, Pitch Range Left = {pitch_range2:.2f} degrees, Roll Range Left = {roll_range2:.2f} degrees, Combined Range Left = {combined_range2:.2f} degrees")
+    for i, yaw_range2 in enumerate(movement_ranges_yaw2):
+        print(f"Movement {i+1}: Range = {yaw_range1:.2f} degrees")
+    significant_movements2 = [(pair1, mrange1) for pair2, mrange2 in zip(movement_pairs2, movement_ranges_yaw2) if mrange2 >= 0.01]
 
-        # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
-    significant_movements2 = [(pair2, yaw2, pitch2, roll2, np.sqrt(yaw2**2 + pitch2**2 + roll2**2)) for pair2, yaw2, pitch2, roll2 in zip(movement_pairs2, movement_ranges_yaw2, movement_ranges_pitch2 ,movement_ranges_roll2) if np.sqrt(yaw2**2 + pitch2**2 + roll2**2) >= 0.01]
+    filtered_pairs2 = [pair2 for pair2, movement_range2 in significant_movements2]
+    filtered_combined_ranges2= [mrange2 for pair2, mrange2 in significant_movements2]
 
-    filtered_pairs2 = [item[0] for item in significant_movements2]
-    filtered_combined_ranges2 = [item[3] for item in significant_movements2]
 
+    movement_details2 = []
+    for i, (pair2, mrange2) in enumerate(significant_movements2):
+        print(f"Significant Movement {i+1}: Pair = {pair2}, Range = {mrange2:.2f} degrees")
+
+        movement_detail2 = f"Significant Movement {i+1}: Pair = {pair2}, Range = {mrange2:.2f} degrees"
+        print(movement_detail2)
+        movement_details2.append(movement_detail2)
         # Print the significant movements and their combined ranges
-    for i, (_, _, _, _, combined_range2) in enumerate(significant_movements2):
-            print(f"Significant Movement Left Leg {i+1}: Combined Range Left = {combined_range2:.2f} degrees")
+    # for i, (_, _, combined_range2) in enumerate(significant_movements2):
+    #         print(f"Significant Movement Left Leg {i+1}: Combined Range Left = {combined_range2:.2f} degrees")
 
         # Calculate durations for significant movements using timestamps
     movement_durations2 = []
 
     for start, end in filtered_pairs2:
-        start_time2 = df_Limu2.iloc[start].name  # Assuming the DataFrame index is datetime or similar
-        end_time2 = df_Limu2.iloc[end].name
-        duration2 = (end_time2 - start_time2).total_seconds()
+        start_time = df_Limu2.iloc[start].name  # Assuming the DataFrame index is datetime or similar
+        end_time = df_Limu2.iloc[end].name
+        duration2 = (end_time - start_time).total_seconds()
         movement_durations2.append(duration2)
 
     # Calculate pace: total number of movements divided by the total observation period in seconds
@@ -369,22 +374,26 @@ def getMetricsSittingNew03(Limu1, Limu2, plotdiagrams):
     metrics_data = {
        
         "total_metrics": {
-             "***************LIMU1*************":{
+             "***************LIMU1 RIGHT*************":{
                 "number_of_movements": int(len(filtered_pairs1)),
-                "pace_movements_per_second": float(pace1),
+                "pace_movements_per_second": float(pace1*0.000001),
                 "mean_combined_range_degrees": float(mean_combined_range1),
                 "std_combined_range_degrees": float(std_combined_range1),
                 "mean_duration_seconds": float(mean_duration1),
-                "std_duration_seconds": float(std_duration1)
+                "std_duration_seconds": float(std_duration1),
+                "Exersice_duration" : total_duration_seconds1,
+                "movement_duration": movement_durations1
              },
 
-             "***************LIMU2*************":{
-                "number_of_movements": int(len(filtered_pairs2)),
-                "pace_movements_per_second": float(pace2),
+             "***************LIMU2 LEFT*************":{
+                "number_of_movements": int(len(filtered_pairs2)/2),
+                "pace_movements_per_second": float(pace2*0.000001),
                 "mean_combined_range_degrees": float(mean_combined_range2),
                 "std_combined_range_degrees": float(std_combined_range2),
                 "mean_duration_seconds": float(mean_duration2),
-                "std_duration_seconds": float(std_duration2)
+                "std_duration_seconds": float(std_duration2),
+                "Exersice_duration" : total_duration_seconds2,
+                "movement_duration": movement_durations2
             }
     }
     }

@@ -1,0 +1,30 @@
+Mean Yaw Trial 1: 0.3988028697004735, STD Yaw Trial 1: 1.840437907843321
+Mean Yaw Trial 2: -0.5686770577626478, STD Yaw Trial 2: 1.4124242824010032
+Mean Yaw Trial 3: -1.2656109411226217, STD Yaw Trial 3: 0.4066038655200028
+Mean Yaw Trial 4: -1.2632471602226012, STD Yaw Trial 4: 0.5396055487342543
+Mean Yaw Trial 5: -1.1650687064913172, STD Yaw Trial 5: 0.4776667681711427
+Mean Roll Trial 1: -0.6054308045523984, STD Roll Trial 1: 1.875392000997711
+Mean Roll Trial 2: 0.7338483363665357, STD Roll Trial 2: 1.4176563250262846
+Mean Roll Trial 3: 1.6709401283538077, STD Roll Trial 3: 0.39908178215008516
+Mean Roll Trial 4: 1.7016141253603758, STD Roll Trial 4: 0.582765151191739
+Mean Roll Trial 5: 1.6267420050428576, STD Roll Trial 5: 0.47459225988053194
+ICC for Yaw: 0.9999913127653397
+ICC for Roll: 0.9999888497073575
+Trial 1 vs Trial 2 (Yaw) - Correlation: -0.16, RMSE: 2.86
+Trial 1 vs Trial 3 (Yaw) - Correlation: -0.06, RMSE: 2.99
+Trial 1 vs Trial 4 (Yaw) - Correlation: -0.03, RMSE: 3.04
+Trial 1 vs Trial 5 (Yaw) - Correlation: -0.32, RMSE: 3.05
+Trial 2 vs Trial 3 (Yaw) - Correlation: 0.32, RMSE: 1.64
+Trial 2 vs Trial 4 (Yaw) - Correlation: 0.05, RMSE: 1.79
+Trial 2 vs Trial 5 (Yaw) - Correlation: -0.02, RMSE: 1.75
+Trial 3 vs Trial 4 (Yaw) - Correlation: 0.12, RMSE: 0.67
+Trial 3 vs Trial 5 (Yaw) - Correlation: -0.07, RMSE: 0.64
+Trial 1 vs Trial 2 (Roll) - Correlation: -0.16, RMSE: 2.86
+Trial 1 vs Trial 3 (Roll) - Correlation: -0.06, RMSE: 2.99
+Trial 1 vs Trial 4 (Roll) - Correlation: -0.03, RMSE: 3.04
+Trial 1 vs Trial 5 (Roll) - Correlation: -0.32, RMSE: 3.05
+Trial 2 vs Trial 3 (Roll) - Correlation: 0.32, RMSE: 1.64
+Trial 2 vs Trial 4 (Roll) - Correlation: 0.05, RMSE: 1.79
+Trial 2 vs Trial 5 (Roll) - Correlation: -0.02, RMSE: 1.75
+Trial 3 vs Trial 4 (Roll) - Correlation: 0.12, RMSE: 0.67
+Trial 3 vs Trial 5 (Roll) - Correlation: -0.07, RMSE: 0.64

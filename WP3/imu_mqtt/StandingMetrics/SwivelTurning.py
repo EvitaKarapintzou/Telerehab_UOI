@@ -104,15 +104,15 @@ def getMetricsStandingOld04(Limu1, Limu2, plotdiagrams):
    
     columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'])
+    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
     df_Limu1 = df_Limu1.sort_values(by='Timestamp')
     df_Limu1.set_index('Timestamp', inplace=True)
     
-    #Limu2
-    df_Limu2 = pd.DataFrame(Limu2, columns=columns)
-    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'])
-    df_Limu2 = df_Limu2.sort_values(by='Timestamp')
-    df_Limu2.set_index('Timestamp', inplace=True)
+    # #Limu2
+    # df_Limu2 = pd.DataFrame(Limu2, columns=columns)
+    # df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'])
+    # df_Limu2 = df_Limu2.sort_values(by='Timestamp')
+    # df_Limu2.set_index('Timestamp', inplace=True)
 
 #     start_time = df_Limu1.index.min()
 #     end_time = df_Limu1.index.max()
@@ -139,7 +139,13 @@ def getMetricsStandingOld04(Limu1, Limu2, plotdiagrams):
 
     #     plt.savefig('quaternion_components_plot!!!!!!!.png')
     #     #plt.show()
+    columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
+    df_Limu2 = pd.DataFrame(Limu2, columns=columns)
+    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'], unit='ms')
+    df_Limu2 = df_Limu2.sort_values(by='Timestamp')
+    df_Limu2.set_index('Timestamp', inplace=True)
     
+
     quaternions1 = df_Limu1[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
     rotations1 = R.from_quat(quaternions1)
     euler_angles1 = rotations1.as_euler('xyz', degrees=False)
@@ -155,6 +161,11 @@ def getMetricsStandingOld04(Limu1, Limu2, plotdiagrams):
     euler_angles_degrees2 = rotations2.as_euler('xyz', degrees=True)
     euler_df_degrees2 = pd.DataFrame(euler_angles_degrees2, columns=['Roll (degrees)', 'Pitch (degrees)', 'Yaw (degrees)'])
    
+
+    start_time = df_Limu2.index.min()
+    end_time = df_Limu2.index.max()
+    interval_length = pd.Timedelta(seconds=5)
+    
     # if (plotdiagrams):
     #     plt.figure(figsize=(12, 8))
     #     plt.plot(euler_df_degrees.index, euler_df_degrees['Roll (degrees)'], label='Roll', linewidth=1)
@@ -170,7 +181,7 @@ def getMetricsStandingOld04(Limu1, Limu2, plotdiagrams):
     #     plt.show()
 
     quaternions_df1 = df_Limu1;
-    quaternions_df2 = df_Limu2;
+    # quaternions_df2 = df_Limu2;
 
     fs = 50
     cutoff = 0.5
@@ -179,9 +190,11 @@ def getMetricsStandingOld04(Limu1, Limu2, plotdiagrams):
     W_filtered1 = butter_lowpass_filter(quaternions_df1['W(number)'], cutoff, fs, order=5)
     Y_filtered1 = butter_lowpass_filter(quaternions_df1['Y (number)'], cutoff, fs, order=5)
 
-    W_filtered2 = butter_lowpass_filter(quaternions_df2['W(number)'], cutoff, fs, order=5)
-    Y_filtered2 = butter_lowpass_filter(quaternions_df2['Y (number)'], cutoff, fs, order=5)
+    # W_filtered2 = butter_lowpass_filter(quaternions_df2['W(number)'], cutoff, fs, order=5)
+    # Y_filtered2 = butter_lowpass_filter(quaternions_df2['Y (number)'], cutoff, fs, order=5)
+    # Z_filtered2 = butter_lowpass_filter(quaternions_df2['Z (number)'], cutoff, fs, order=5)
 
+    
     # # Plotting the original and filtered signals
     # plt.figure(figsize=(12, 6))
     # plt.plot(quaternions_df1.index, quaternions_df1['W(number)'], label='W', linewidth=1, alpha=0.5)
@@ -194,8 +207,9 @@ def getMetricsStandingOld04(Limu1, Limu2, plotdiagrams):
 
         # Calculate the magnitude of movement considering both yaw and roll
     movement_magnitude1 = np.sqrt(np.square(W_filtered1) + np.square(Y_filtered1))
-    movement_magnitude2 = np.sqrt(np.square(W_filtered2) + np.square(Y_filtered2))
+    # movement_magnitude2 = np.sqrt(np.square(W_filtered2) + np.square(Y_filtered2))
 
+    yaw_filtered = butter_lowpass_filter(euler_df_degrees2['Yaw (degrees)'], cutoff, fs, order=5)
     # # Plot the combined metric over time
     # plt.figure(figsize=(12, 6))
     # plt.plot(quaternions_df1.index, movement_magnitude1, label='Movement Magnitude', linewidth=2)
@@ -349,90 +363,97 @@ def getMetricsStandingOld04(Limu1, Limu2, plotdiagrams):
     
 
     #IMU2 BACK
+    peaks, _ = find_peaks(yaw_filtered)
 
-    peaks2, _ = find_peaks(movement_magnitude2)
-    valleys2, _ = find_peaks(-movement_magnitude2)
+    valleys, _ = find_peaks(-yaw_filtered)
 
-    print("peaks Right IMU ", peaks2)
-    print("valleys Right IMU", valleys2)
-    
-    if(len(peaks2) == 0):
+
+
+    print("peaks ", peaks)
+    print("valleys ", valleys)
+    if(len(peaks) == 0):
         return 0
-    if(len(valleys2) == 0):
+    if(len(valleys) == 0):
         return 0
 
-    if valleys2[0] > peaks2[0]:
-        peaks2 = peaks2[1:]  
-    if peaks2[-1] < valleys2[-1]:
-        valleys2 = valleys2[:-1]  
+    if valleys[0] > peaks[0]:
+        peaks = peaks[1:]  
+    if peaks[-1] < valleys[-1]:
+        valleys = valleys[:-1]  
         
-    movement_pairs2 = []
+    movement_pairs = []
 
-    for i in range(min(len(peaks2), len(valleys2))):
-        movement_pairs2.append((valleys2[i], peaks2[i]))
+    for i in range(min(len(peaks), len(valleys))):
+        movement_pairs.append((valleys[i], peaks[i]))
 
-    print("Movement pairs (as index positions): ", movement_pairs2)
+    print("Movement pairs (as index positions):", movement_pairs)
 
-    # if (plotdiagrams):
-    #     plt.figure(figsize=(12, 6))
-    #     plt.plot(movement_magnitude1, label='movement_magnitude1', linewidth=1)
-    #     # Plot peaks and valleys
-    #     plt.plot(peaks1, movement_magnitude1[peaks1],    x   , label='Maxima')
-    #     plt.plot(valleys1, movement_magnitude1[valleys1],    o   , label='Minima')
-    #     plt.xlabel('Sample index')
-    #     plt.ylabel('movement_magnitude')
-    #     plt.title('Fused W-Y signal with Detected Movements')
-    #     plt.legend()
-    #     plt.show()
     
+    if (plotdiagrams):
+        plt.figure(figsize=(12, 6))
+        plt.plot(yaw_filtered, label='Filtered Yaw', linewidth=1)
 
-    movement_ranges_yaw2 = []
-    movement_ranges_roll2 = []
+        plt.plot(peaks, yaw_filtered[peaks], "x", label='Maxima')
+        plt.plot(valleys, yaw_filtered[valleys], "o", label='Minima')
 
-    for valley2, peak2 in movement_pairs2:
-            yaw_range2 = abs(W_filtered2[peak2] - W_filtered2[valley2])
-            movement_ranges_yaw2.append(yaw_range2)
-            
-            roll_range2 = abs(Y_filtered2[peak2] - Y_filtered2[valley2])
-            movement_ranges_roll2.append(roll_range2)
+        plt.xlabel('Sample index')
+        plt.ylabel('Yaw (degrees)')
+        plt.title('Yaw Signal with Detected Movements')
+        plt.legend()
+        plt.show()
 
-    combined_movement_ranges2 = [np.sqrt(yaw2**2 + roll2**2) for yaw2, roll2 in zip(movement_ranges_yaw2, movement_ranges_roll2)]
+    movement_ranges = []
 
-    for i, (yaw_range2, roll_range2) in enumerate(zip(movement_ranges_yaw2, movement_ranges_roll2)):
-            combined_range2 = np.sqrt(yaw_range2**2 + roll_range2**2)
-            print(f"MovementBack {i+1}: Yaw Range Back = {yaw_range2:.2f} degrees, Roll Range Back = {roll_range2:.2f} degrees, Combined Range Back= {combined_range2:.2f} degrees")
+    for valley, peak in movement_pairs:
+        movement_range = yaw_filtered[peak] - yaw_filtered[valley]
+        movement_ranges.append(movement_range)
 
-        # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
-    significant_movements2 = [(pair2, yaw2, roll2, np.sqrt(yaw2**2 + roll2**2)) for pair2, yaw2, roll2 in zip(movement_pairs2, movement_ranges_yaw2, movement_ranges_roll2) if np.sqrt(yaw2**2 + roll2**2) >= 0.01]
+    for i, movement_range in enumerate(movement_ranges):
+        print(f"Movement {i+1}: Range = {movement_range:.2f} degrees")
+    significant_movements = [(pair, mrange) for pair, mrange in zip(movement_pairs, movement_ranges) if mrange >= 10]
 
-        # Separate the filtered pairs and combined ranges again if needed
-    filtered_pairs2 = [item[0] for item in significant_movements2]
-    filtered_combined_ranges2 = [item[3] for item in significant_movements2]
+    filtered_pairs = [pair for pair, range in significant_movements]
+    filtered_ranges = [mrange for pair, mrange in significant_movements]
+    
+    movement_details = []
+    for i, (pair, mrange) in enumerate(significant_movements):
+        print(f"Significant Movement {i+1}: Pair = {pair}, Range = {mrange:.2f} degrees")
 
-        # Print the significant movements and their combined ranges
-    for i, (_, _, _, combined_range2) in enumerate(significant_movements2):
-            print(f"Significant Movement Back {i+1}: Combined Range Back = {combined_range2:.2f} degrees")
+        movement_detail = f"Significant Movement {i+1}: Pair = {pair}, Range = {mrange:.2f} degrees"
+        print(movement_detail)
+        movement_details.append(movement_detail)  # Append to list
 
-        # Calculate durations for significant movements using timestamps
-    movement_durations2 = []
+    movement_durations = []
+    for start, end in filtered_pairs:
+        start_time = df_Limu2.iloc[start].name
+        end_time = df_Limu2.iloc[end].name
+        duration = (end_time - start_time).total_seconds()
+        print(duration)
+        movement_durations.append(duration)
+        print(movement_durations)
 
-    for start, end in filtered_pairs2:
-        start_time2 = df_Limu2.iloc[start].name  # Assuming the DataFrame index is datetime or similar
-        end_time2 = df_Limu2.iloc[end].name
-        duration2 = (end_time2 - start_time2).total_seconds()
-        movement_durations2.append(duration2)
 
-    # Calculate pace: total number of movements divided by the total observation period in seconds
-    total_duration_seconds2 = (df_Limu2.index[-1] - df_Limu2.index[0]).total_seconds()
-    pace2 = len(filtered_pairs2) / total_duration_seconds2  # Movements per second
 
-    # Calculate mean and STD for combined ranges and durations
-    mean_combined_range2 = np.mean(filtered_combined_ranges2)
-    std_combined_range2 = np.std(filtered_combined_ranges2, ddof=1)  # ddof=1 for sample standard deviation
+    total_duration_seconds = (df_Limu2.index[-1] - df_Limu2.index[0]).total_seconds()
+    print(total_duration_seconds)
+    if (total_duration_seconds > 0):
+        pace = len(filtered_pairs) / total_duration_seconds  # Movements per second
+    else:
+        pace = -1
 
-    mean_duration2 = np.mean(movement_durations2)
-    std_duration2 = np.std(movement_durations2, ddof=1)  # ddof=1 for sample standard deviation    
+    if (len(filtered_ranges) > 0):
+        mean_range = np.mean(filtered_ranges)
+        std_range = np.std(filtered_ranges, ddof=1) 
+    else:
+        mean_range = -1
+        std_range = -1
 
+    if (len(movement_durations) > 0):
+        mean_duration = np.mean(movement_durations)
+        std_duration = np.std(movement_durations, ddof=1)
+    else:
+        mean_duration = -1
+        std_duration = -1        
 
 
     metrics_data = {
@@ -450,12 +471,14 @@ def getMetricsStandingOld04(Limu1, Limu2, plotdiagrams):
                    "std_duration_seconds1": float(std_duration1),
                 },
                     "***************LIMU2*************":{
-                   "number_of_movements2": int(len(filtered_pairs2)),
-                   "pace_movements_per_second2": float(pace2),
-                   "mean_range_degrees2": float(mean_combined_range2),
-                   "std_range_degrees2": float(std_combined_range2),
-                   "mean_duration_seconds2": float(mean_duration2),
-                   "std_duration_seconds2": float(std_duration2)
+                   "number_of_movements2": int(len(filtered_pairs)),
+                   "pace_movements_per_second2": float(pace),
+                   "mean_range_degrees2": float(mean_range),
+                   "std_range_degrees2": float(std_range),
+                   "mean_duration_seconds2": float(mean_duration),
+                   "std_duration_seconds2": float(std_duration),
+                   "Exercise duration": total_duration_seconds,
+                   "Sway_Range": max(filtered_ranges)-min(filtered_ranges)
                 }
             }
         }

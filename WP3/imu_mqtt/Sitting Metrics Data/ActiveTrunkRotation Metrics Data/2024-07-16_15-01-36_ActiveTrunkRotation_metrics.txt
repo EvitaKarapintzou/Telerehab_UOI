@@ -1,0 +1,13 @@
+total_metrics:
+  number_of_movements: 5
+  pace_movements_per_second: 0.08333333333333333
+  mean_movement_range_degrees: 248.2478906559479
+  std_movement_range_degrees: 15.179792561402621
+  mean_movement_duration_seconds: 1.7999999999999997e-06
+  std_movement_duration_seconds: 8.366600265340756e-07
+Significant Movement 1: Combined Range = 225.51 degrees
+Significant Movement 2: Combined Range = 252.96 degrees
+Significant Movement 3: Combined Range = 240.83 degrees
+Significant Movement 4: Combined Range = 262.36 degrees
+Significant Movement 5: Combined Range = 259.57 degrees
+

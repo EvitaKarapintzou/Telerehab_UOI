@@ -268,11 +268,13 @@ def getMetricsStandingOld03(Limu1, plotdiagrams):
         # ],
         "total_metrics": {
             "number_of_movements": int(len(filtered_pairs)),
-            "pace_movements_per_second": float(pace),
-            "mean_combined_range_degrees": float(mean_combined_range),
-            "std_combined_range_degrees": float(std_combined_range),
+            "pace_movements_per_second": float(pace*0.000001),
+            "mean_movement_range_degrees": float(mean_combined_range),
+            "std_movement_range_degrees": float(std_combined_range),
             "mean_duration_seconds": float(mean_duration),
-            "std_duration_seconds": float(std_duration)
+            "std_duration_seconds": float(std_duration),
+            "Exersice_duration" : total_duration_seconds,
+            "movement_duration": movement_durations
         }
     }
     datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

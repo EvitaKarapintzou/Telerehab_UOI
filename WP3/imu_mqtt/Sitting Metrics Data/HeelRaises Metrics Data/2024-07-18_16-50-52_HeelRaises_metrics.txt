@@ -1,0 +1,21 @@
+total_metrics:
+  ***************LIMU1 RIGHT*************:
+    number_of_movements: 6
+    pace_movements_per_second: 400000.0
+    mean_combined_range_degrees: 0.016649480210653326
+    std_combined_range_degrees: 0.005812220841372124
+    mean_duration_seconds: 0.0
+    std_duration_seconds: 0.0
+    Exersice_duration: 1.5e-05
+    movement_duration: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+  ***************LIMU2 LEFT*************:
+    number_of_movements: 8
+    pace_movements_per_second: 571428.5714285715
+    mean_combined_range_degrees: 0.013221565533952128
+    std_combined_range_degrees: 0.0
+    mean_duration_seconds: 0.0
+    std_duration_seconds: 0.0
+    Exersice_duration: 1.4e-05
+    movement_duration: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+

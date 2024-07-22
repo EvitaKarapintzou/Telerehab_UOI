@@ -1,0 +1,18 @@
+total_metrics:
+  ***************LIMU1*************:
+    number_of_movements1: 0
+    pace_movements_per_second1: 0.0
+    mean_range_degrees1: nan
+    std_range_degrees1: nan
+    mean_duration_seconds1: nan
+    std_duration_seconds1: nan
+
+  ***************LIMU2*************:
+    number_of_movements2: 6
+    pace_movements_per_second2: 0.09935419936006291
+    mean_range_degrees2: 68.17138866205482
+    std_range_degrees2: 13.742479477886885
+    mean_duration_seconds2: 1.8583333333333334
+    std_duration_seconds2: 0.40582837094844254
+    Exercise duration: 60.389999
+

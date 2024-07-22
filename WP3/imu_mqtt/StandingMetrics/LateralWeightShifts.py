@@ -103,19 +103,19 @@ def getMetricsStandingNew01(Limu1, Limu2, Limu3, plotdiagrams):
    
     columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'])
+    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
     df_Limu1 = df_Limu1.sort_values(by='Timestamp')
     df_Limu1.set_index('Timestamp', inplace=True)
     
     #Limu2
     df_Limu2 = pd.DataFrame(Limu2, columns=columns)
-    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'])
+    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'], unit='ms')
     df_Limu2 = df_Limu2.sort_values(by='Timestamp')
     df_Limu2.set_index('Timestamp', inplace=True)
 
     #Limu3
     df_Limu3 = pd.DataFrame(Limu3, columns=columns)
-    df_Limu3['Timestamp'] = pd.to_datetime(df_Limu3['Timestamp'])
+    df_Limu3['Timestamp'] = pd.to_datetime(df_Limu3['Timestamp'], unit='ms')
     df_Limu3 = df_Limu3.sort_values(by='Timestamp')
     df_Limu3.set_index('Timestamp', inplace=True)
 
@@ -469,6 +469,7 @@ def getMetricsStandingNew01(Limu1, Limu2, Limu3, plotdiagrams):
             "std_duration_seconds": float(std_duration1),
             "symmetry": float(symmetry_index),
             "acceleration1": float(peak_acceleration1),
+            "Exercise duration": max(total_duration_seconds1,total_duration_seconds2, total_duration_seconds3)
              },
              "***************LIMU2*************":{
             "number_of_movements": int(len(filtered_pairs2)),

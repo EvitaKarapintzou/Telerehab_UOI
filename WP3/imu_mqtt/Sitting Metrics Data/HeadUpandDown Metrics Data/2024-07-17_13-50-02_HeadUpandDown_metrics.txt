@@ -1,0 +1,32 @@
+Significant Movement 1: Combined Range = 3.22 degrees
+Significant Movement 2: Combined Range = 6.89 degrees
+Significant Movement 3: Combined Range = 8.72 degrees
+Significant Movement 4: Combined Range = 8.67 degrees
+Significant Movement 5: Combined Range = 10.01 degrees
+Significant Movement 6: Combined Range = 8.01 degrees
+Significant Movement 7: Combined Range = 11.21 degrees
+Significant Movement 8: Combined Range = 8.38 degrees
+Significant Movement 9: Combined Range = 9.93 degrees
+Significant Movement 10: Combined Range = 6.80 degrees
+Significant Movement 11: Combined Range = 8.80 degrees
+Significant Movement 12: Combined Range = 10.24 degrees
+Significant Movement 13: Combined Range = 8.21 degrees
+Significant Movement 14: Combined Range = 8.60 degrees
+Significant Movement 15: Combined Range = 11.16 degrees
+Significant Movement 16: Combined Range = 7.69 degrees
+Significant Movement 17: Combined Range = 9.52 degrees
+Significant Movement 18: Combined Range = 3.78 degrees
+Significant Movement 19: Combined Range = 7.01 degrees
+Significant Movement 20: Combined Range = 11.49 degrees
+Significant Movement 21: Combined Range = 12.00 degrees
+{
+    "total_metrics": {
+        "number_of_movements": 21,
+        "pace_movements_per_second": 0.3417412530512612,
+        "mean_movement_range_degrees": 8.587676245661791,
+        "std_movement_range_degrees": 2.2673174380825563,
+        "mean_movement_duration_seconds": 1.2333329523809526,
+        "std_movement_duration_seconds": 0.5355027142790665
+    }
+}
+

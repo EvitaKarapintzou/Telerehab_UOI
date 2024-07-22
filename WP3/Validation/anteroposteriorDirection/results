@@ -1,0 +1,6 @@
+CC for Yaw: 0.9999998242400214
+ICC for Pitch: 0.9999998277227978
+ICC for Roll: 0.9999997222016886
+Trial 1 vs Trial 2 (Yaw) - Correlation: 0.45, RMSE: 0.19
+Trial 1 vs Trial 2 (Pitch) - Correlation: -0.02, RMSE: 0.07
+Trial 1 vs Trial 2 (Roll) - Correlation: -0.20, RMSE: 0.06

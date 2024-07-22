@@ -1,0 +1,8 @@
+ICC for Yaw: 0.9999978588417912
+ICC for Roll: 0.9999977576142332
+Trial 1 vs Trial 2 (Yaw) - Correlation: 0.31, RMSE: 0.15
+Trial 1 vs Trial 3 (Yaw) - Correlation: 0.16, RMSE: 0.17
+Trial 2 vs Trial 3 (Yaw) - Correlation: 0.10, RMSE: 0.12
+Trial 1 vs Trial 2 (Roll) - Correlation: 0.35, RMSE: 0.18
+Trial 1 vs Trial 3 (Roll) - Correlation: 0.06, RMSE: 0.19
+Trial 2 vs Trial 3 (Roll) - Correlation: 0.01, RMSE: 0.14

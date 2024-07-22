@@ -1,3 +1,4 @@
+
 import pandas as pd
 import numpy as np
 import os
@@ -285,7 +286,7 @@ def getMetricsSittingNew02(Limu1, Limu2, plotdiagrams):
             print(f"MovementRight {i+1}: Yaw Range Right = {yaw_range1:.2f} degrees, Pitch Range Right = {pitch_range1:.2f} degrees, Roll Range Right = {roll_range1:.2f} degrees, Combined Range Right = {combined_range1:.2f} degrees")
 
         # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
-    significant_movements1 = [(pair1, yaw1, pitch1, roll1, np.sqrt(yaw1**2 + pitch1**2 + roll1**2)) for pair1, yaw1, pitch1, roll1 in zip(movement_pairs1, movement_ranges_yaw1, movement_ranges_pitch1 ,movement_ranges_roll1) if np.sqrt(yaw1**2 + pitch1**2 + roll1**2) >= 0.01]
+    significant_movements1 = [(pair1, yaw1, pitch1, roll1, np.sqrt(yaw1**2 + pitch1**2 + roll1**2)) for pair1, yaw1, pitch1, roll1 in zip(movement_pairs1, movement_ranges_yaw1, movement_ranges_pitch1 ,movement_ranges_roll1) if np.sqrt(yaw1**2 + pitch1**2 + roll1**2) >= 0.02]
 
     filtered_pairs1 = [item[0] for item in significant_movements1]
     filtered_combined_ranges1 = [item[3] for item in significant_movements1]
@@ -337,7 +338,7 @@ def getMetricsSittingNew02(Limu1, Limu2, plotdiagrams):
             print(f"MovementLeft {i+1}: Yaw Range Left = {yaw_range2:.2f} degrees, Pitch Range Left = {pitch_range2:.2f} degrees, Roll Range Left = {roll_range2:.2f} degrees, Combined Range Left = {combined_range2:.2f} degrees")
 
         # Filter the movement ranges and corresponding pairs for combined ranges >= 8 degrees
-    significant_movements2 = [(pair2, yaw2, pitch2, roll2, np.sqrt(yaw2**2 + pitch2**2 + roll2**2)) for pair2, yaw2, pitch2, roll2 in zip(movement_pairs2, movement_ranges_yaw2, movement_ranges_pitch2 ,movement_ranges_roll2) if np.sqrt(yaw2**2 + pitch2**2 + roll2**2) >= 0.01]
+    significant_movements2 = [(pair2, yaw2, pitch2, roll2, np.sqrt(yaw2**2 + pitch2**2 + roll2**2)) for pair2, yaw2, pitch2, roll2 in zip(movement_pairs2, movement_ranges_yaw2, movement_ranges_pitch2 ,movement_ranges_roll2) if np.sqrt(yaw2**2 + pitch2**2 + roll2**2) >= 0.02]
 
     filtered_pairs2 = [item[0] for item in significant_movements2]
     filtered_combined_ranges2 = [item[3] for item in significant_movements2]
@@ -421,5 +422,3 @@ def save_metrics_to_txt(metrics, file_path):
                 for sub_key, sub_value in value.items():
                     file.write(f"    {sub_key}: {sub_value}\n")
                 file.write("\n") 
-                    
-            

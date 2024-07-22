@@ -1,0 +1,10 @@
+ICC for Pitch: 0.9999952781447303
+Trial 1 vs Trial 2 (Pitch) - Correlation: 0.28, RMSE: 0.27
+Trial 1 vs Trial 3 (Pitch) - Correlation: -0.16, RMSE: 0.43
+Trial 1 vs Trial 4 (Pitch) - Correlation: 0.09, RMSE: 0.31
+Trial 1 vs Trial 5 (Pitch) - Correlation: -0.07, RMSE: 0.32
+Trial 2 vs Trial 3 (Pitch) - Correlation: 0.02, RMSE: 0.42
+Trial 2 vs Trial 4 (Pitch) - Correlation: 0.48, RMSE: 0.29
+Trial 2 vs Trial 5 (Pitch) - Correlation: 0.07, RMSE: 0.33
+Trial 3 vs Trial 4 (Pitch) - Correlation: 0.30, RMSE: 0.34
+Trial 3 vs Trial 5 (Pitch) - Correlation: 0.13, RMSE: 0.37

@@ -144,21 +144,21 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
     # if balance_loss:
     #     give_feedback("Stabilize balance.")
 
-    if (plotdiagrams):
-        plt.figure(figsize=(12, 8))
-        plt.plot(euler_df_degrees.index, euler_df_degrees['Roll (degrees)'], label='Roll', linewidth=1)
-        plt.plot(euler_df_degrees.index, euler_df_degrees['Pitch (degrees)'], label='Pitch', linewidth=1)
-        plt.plot(euler_df_degrees.index, euler_df_degrees['Yaw (degrees)'], label='Yaw', linewidth=1)
+    # if (plotdiagrams):
+    #     plt.figure(figsize=(12, 8))
+    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Roll (degrees)'], label='Roll', linewidth=1)
+    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Pitch (degrees)'], label='Pitch', linewidth=1)
+    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Yaw (degrees)'], label='Yaw', linewidth=1)
 
-        plt.xlabel('Timestamp')
-        plt.ylabel('Euler Angles (degrees)')
-        plt.title('Euler Angles (Roll, Pitch, Yaw) over Time')
-        plt.legend()
-        plt.xticks(rotation=45)
-        plt.tight_layout()  
-        plt.show()
+    #     plt.xlabel('Timestamp')
+    #     plt.ylabel('Euler Angles (degrees)')
+    #     plt.title('Euler Angles (Roll, Pitch, Yaw) over Time')
+    #     plt.legend()
+    #     plt.xticks(rotation=45)
+    #     plt.tight_layout()  
+    #     plt.show()
 
-    quaternions_df1 = df_Limu1;
+    quaternions_df1 = df_Limu1
 
     fs = 50
     cutoff = 0.5
@@ -167,27 +167,27 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
     W_filtered = butter_lowpass_filter(quaternions_df1['W(number)'], cutoff, fs, order=5)
     Y_filtered = butter_lowpass_filter(quaternions_df1['Y (number)'], cutoff, fs, order=5)
 
-    # Plotting the original and filtered signals
-    plt.figure(figsize=(12, 6))
-    plt.plot(quaternions_df1.index, quaternions_df1['W(number)'], label='W', linewidth=1, alpha=0.5)
-    plt.plot(quaternions_df1.index, W_filtered, label='Filtered W', linewidth=2)
-    plt.xlabel('Timestamp')
-    plt.ylabel('W(number)')
-    plt.title('W Signal filtering Filtering')
-    plt.legend()
-    plt.show()
+    # # Plotting the original and filtered signals
+    # plt.figure(figsize=(12, 6))
+    # plt.plot(quaternions_df1.index, quaternions_df1['W(number)'], label='W', linewidth=1, alpha=0.5)
+    # plt.plot(quaternions_df1.index, W_filtered, label='Filtered W', linewidth=2)
+    # plt.xlabel('Timestamp')
+    # plt.ylabel('W(number)')
+    # plt.title('W Signal filtering Filtering')
+    # plt.legend()
+    # plt.show()
 
         # Calculate the magnitude of movement considering both yaw and roll
     movement_magnitude = np.sqrt(np.square(W_filtered) + np.square(Y_filtered))
 
-    # Plot the combined metric over time
-    plt.figure(figsize=(12, 6))
-    plt.plot(quaternions_df1.index, movement_magnitude, label='Movement Magnitude', linewidth=2)
-    plt.xlabel('Timestamp')
-    plt.ylabel('Magnitude of Movement')
-    plt.title('Combined X and Z Movement Magnitude')
-    plt.legend()
-    plt.show()
+    # # Plot the combined metric over time
+    # plt.figure(figsize=(12, 6))
+    # plt.plot(quaternions_df1.index, movement_magnitude, label='Movement Magnitude', linewidth=2)
+    # plt.xlabel('Timestamp')
+    # plt.ylabel('Magnitude of Movement')
+    # plt.title('Combined X and Z Movement Magnitude')
+    # plt.legend()
+    # plt.show()
 
     
     peaks, _ = find_peaks(movement_magnitude)
@@ -214,17 +214,17 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
 
     print("Movement pairs (as index positions):", movement_pairs)
 
-    if (plotdiagrams):
-        plt.figure(figsize=(12, 6))
-        plt.plot(movement_magnitude, label='movement_magnitude', linewidth=1)
-        # Plot peaks and valleys
-        plt.plot(peaks, movement_magnitude[peaks], "x", label='Maxima')
-        plt.plot(valleys, movement_magnitude[valleys], "o", label='Minima')
-        plt.xlabel('Sample index')
-        plt.ylabel('movement_magnitude')
-        plt.title('Fused W-Y signal with Detected Movements')
-        plt.legend()
-        plt.show()
+    # if (plotdiagrams):
+    #     plt.figure(figsize=(12, 6))
+    #     plt.plot(movement_magnitude, label='movement_magnitude', linewidth=1)
+    #     # Plot peaks and valleys
+    #     plt.plot(peaks, movement_magnitude[peaks], "x", label='Maxima')
+    #     plt.plot(valleys, movement_magnitude[valleys], "o", label='Minima')
+    #     plt.xlabel('Sample index')
+    #     plt.ylabel('movement_magnitude')
+    #     plt.title('Fused W-Y signal with Detected Movements')
+    #     plt.legend()
+    #     plt.show()
 
     movement_ranges_yaw = []
     movement_ranges_roll = []
@@ -295,21 +295,12 @@ def getMetricsStandingNew01(Limu1, plotdiagrams):
     mean_duration = np.mean(movement_durations)
     std_duration = np.std(movement_durations, ddof=1)  # ddof=1 for sample standard deviation    
 
-    # Output the metrics
-    #print(f"Number of movements: {len(filtered_pairs)}")
-    #print(f"Pace: {pace:.2f} movements per second")
-    #print(f"Mean Movement Range: {mean_range:.2f} degrees, STD: {std_range:.2f}")
-    #print(f"Mean Movement Duration: {mean_duration:.2f} seconds, STD: {std_duration:.2f}")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+   
 
     metrics_data = {
-            # "movements": [
-            #     {"id": i+1, "duration_seconds": float(duration), "range_degrees": float(mrange)}
-            #     for i, ((_, _), mrange, duration) in enumerate(zip(filtered_pairs, filtered_ranges, movement_durations))
-            # ],
             "total_metrics": {
                 "number_of_movements": int(len(filtered_pairs)),
-                "pace_movements_per_second": float(pace),
+                "pace_movements_per_second": float(pace*0.000001),
                 "mean_range_degrees": float(mean_combined_range),
                 "std_range_degrees": float(std_combined_range),
                 "mean_duration_seconds": float(mean_duration),

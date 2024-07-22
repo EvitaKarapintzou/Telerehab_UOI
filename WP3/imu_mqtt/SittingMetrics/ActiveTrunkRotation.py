@@ -239,7 +239,7 @@ def getMetricsSittingOld03(Limu1, plotdiagrams):
         combined_range = np.sqrt(yaw_range**2 + roll_range**2)
         print(f"Movement {i+1}: Yaw Range = {yaw_range:.2f} degrees, Roll Range = {roll_range:.2f} degrees, Combined Range = {combined_range:.2f} degrees")
 
-    significant_movements = [(pair, yaw, roll, np.sqrt(yaw**2 + roll**2)) for pair, yaw, roll in zip(movement_pairs, movement_ranges_yaw, movement_ranges_roll) if np.sqrt(yaw**2 + roll**2) >= 8]
+    significant_movements = [(pair, yaw, roll, np.sqrt(yaw**2 + roll**2)) for pair, yaw, roll in zip(movement_pairs, movement_ranges_yaw, movement_ranges_roll) if np.sqrt(yaw**2 + roll**2) >= 40]
     print("Hereee****", significant_movements)
     filtered_pairs = [item[0] for item in significant_movements]
     filtered_combined_ranges = [item[3] for item in significant_movements]
@@ -265,13 +265,13 @@ def getMetricsSittingOld03(Limu1, plotdiagrams):
     metrics_data = {
         "total_metrics": {
             "number_of_movements": int(len(filtered_pairs)),
-            "pace_movements_per_second": float(pace),
-            "mean_combined_range_degrees": float(mean_combined_range),
-            "std_combined_range_degrees": float(std_combined_range),
-            "mean_duration_seconds": float(mean_duration),
-            "std_duration_seconds": float(std_duration),
-            "Peak Acceleration": peak_acceleration.to_dict(),
-            "Peak Angular Velocity": peak_angular_velocity.to_dict()
+            "pace_movements_per_second": float(pace*0.000001),
+            "mean_movement_range_degrees": float(mean_combined_range),
+            "std_movement_range_degrees": float(std_combined_range),
+            "mean_movement_duration_seconds": float(mean_duration),
+            "std_movement_duration_seconds": float(std_duration),
+            "Exersice_duration" : total_duration_seconds,
+            "movement_duration": movement_durations
         }
     }
     datetime_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
