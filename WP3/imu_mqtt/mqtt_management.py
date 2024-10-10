@@ -12,6 +12,7 @@ def on_message(client, userdata, msg):
     startReceiving.value = True   
     lastDataTime.value = time.time()
     print(msg.payload.decode())
+    # print("HERE****************************************************************8")
     #print("Message Received. ", msg.payload.decode(), " ", counter)
     if 'start' in msg.payload.decode():
         new_value = "R"

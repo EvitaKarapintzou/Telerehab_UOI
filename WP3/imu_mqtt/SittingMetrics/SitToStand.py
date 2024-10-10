@@ -69,10 +69,10 @@ def striplist(L):
     return A
 
 def get_metrics(imu1,imu2,imu3,imu4, counter):
-    Limu1 = striplist(imu1)
-    Limu2 = striplist(imu2)
-    Limu3 = striplist(imu3)
-    Limu4 = striplist(imu4)
+    Limu1 = striplist(imu1[2:])
+    Limu2 = striplist(imu2[2:])
+    Limu3 = striplist(imu3[2:])
+    Limu4 = striplist(imu4[2:])
     
     #print(')))))) ', Limu1[0].index(''))
     # if ['MAC'] in Limu1:
@@ -89,36 +89,47 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     dt3 = 0
     dt4 = 0
     
-    if(len(Limu1) > 0 ):
-        dt1 = float(Limu1[-1][0]) - float(Limu1[0][0]);
+    # if(len(Limu1) > 0 ):
+    #     dt1 = float(Limu1[-1][0]) - float(Limu1[0][0]);
     if(len(Limu2) > 0 ):
         dt2 = float(Limu2[-1][0]) - float(Limu2[0][0]);
-    if(len(Limu3) > 0 ):
-        dt3 = float(Limu3[-1][0]) - float(Limu3[0][0]);
-    if(len(Limu4) > 0 ):
-        dt4 = float(Limu4[-1][0]) - float(Limu4[0][0]);
+    # if(len(Limu3) > 0 ):
+    #     dt3 = float(Limu3[-1][0]) - float(Limu3[0][0]);
+    # if(len(Limu4) > 0 ):
+    #     dt4 = float(Limu4[-1][0]) - float(Limu4[0][0]);
 
     mean = statistics.mean([dt1, dt2, dt3, dt4])
     std = statistics.stdev([dt1, dt2, dt3, dt4])
 
-    Limu1 = [[float(item) for item in sublist] for sublist in Limu1]
+    # Limu1 = [[float(item) for item in sublist] for sublist in Limu1]
 
     Limu2 = [[float(item) for item in sublist] for sublist in Limu2]
-    Limu3 = [[float(item) for item in sublist] for sublist in Limu3]
-    Limu4 = [[float(item) for item in sublist] for sublist in Limu4]
+    # Limu3 = [[float(item) for item in sublist] for sublist in Limu3]
+    # Limu4 = [[float(item) for item in sublist] for sublist in Limu4]
 
-    if(len(Limu1) > 0):
-        returnedJson = getMetricsSittingNew01(Limu1, False) 
+    if(len(Limu2) > 0):
+        returnedJson = getMetricsSittingNew01(Limu2, False) 
         return returnedJson
 
-def getMetricsSittingNew01(Limu1, plotdiagrams):
+def getMetricsSittingNew01(Limu2, plotdiagrams):
    
     columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
-    df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
-    df_Limu1 = df_Limu1.sort_values(by='Timestamp')
-    df_Limu1.set_index('Timestamp', inplace=True)
+    df_Limu2 = pd.DataFrame(Limu2, columns=columns)
+    df_Limu2['elapsed(time)'] = pd.to_datetime(df_Limu2['elapsed(time)'], unit='ms')
+    df_Limu2 = df_Limu2.sort_values(by='elapsed(time)')
+    df_Limu2.set_index('elapsed(time)', inplace=True)
     
+    quaternions2 = df_Limu2[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
+    rotations2 = R.from_quat(quaternions2)
+    euler_angles2 = rotations2.as_euler('xyz', degrees=False)
+    euler_df2 = pd.DataFrame(euler_angles2, columns=['Roll (rad)', 'Pitch (rad)', 'Yaw (rad)'])
+    euler_angles_degrees2 = rotations2.as_euler('xyz', degrees=True)
+    euler_df_degrees2 = pd.DataFrame(euler_angles_degrees2, columns=['Roll (degrees)', 'Pitch (degrees)', 'Yaw (degrees)'])
+
+    start_time = df_Limu2.index.min()
+    end_time = df_Limu2.index.max()
+    interval_length = pd.Timedelta(seconds=5)
+
 
     if (plotdiagrams):
         plt.figure(figsize=(10, 6))
@@ -131,42 +142,34 @@ def getMetricsSittingNew01(Limu1, plotdiagrams):
 
         plt.savefig('quaternion_components_plot!!!!!!!.png')
         #plt.show()
-    
-    quaternions = df_Limu1[['X(number)', 'Y (number)', 'Z (number)', 'W(number)']].to_numpy()
-    rotations = R.from_quat(quaternions)
-    euler_angles = rotations.as_euler('xyz', degrees=False)
-    euler_df = pd.DataFrame(euler_angles, columns=['Roll (rad)', 'Pitch (rad)', 'Yaw (rad)'])
-    euler_angles_degrees = rotations.as_euler('xyz', degrees=True)
-    euler_df_degrees = pd.DataFrame(euler_angles_degrees, columns=['Roll (degrees)', 'Pitch (degrees)', 'Yaw (degrees)'])
-   
 
-    if (plotdiagrams):
-        plt.figure(figsize=(12, 8))
-        plt.plot(euler_df_degrees.index, euler_df_degrees['Roll (degrees)'], label='Roll', linewidth=1)
-        plt.plot(euler_df_degrees.index, euler_df_degrees['Pitch (degrees)'], label='Pitch', linewidth=1)
-        plt.plot(euler_df_degrees.index, euler_df_degrees['Yaw (degrees)'], label='Yaw', linewidth=1)
+    # if (plotdiagrams):
+    #     plt.figure(figsize=(12, 8))
+    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Roll (degrees)'], label='Roll', linewidth=1)
+    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Pitch (degrees)'], label='Pitch', linewidth=1)
+    #     plt.plot(euler_df_degrees.index, euler_df_degrees['Yaw (degrees)'], label='Yaw', linewidth=1)
 
-        plt.xlabel('Timestamp')
-        plt.ylabel('Euler Angles (degrees)')
-        plt.title('Euler Angles (Roll, Pitch, Yaw) over Time')
-        plt.legend()
-        plt.xticks(rotation=45)
-        plt.tight_layout()  
-        plt.show()
+    #     plt.xlabel('Timestamp')
+    #     plt.ylabel('Euler Angles (degrees)')
+    #     plt.title('Euler Angles (Roll, Pitch, Yaw) over Time')
+    #     plt.legend()
+    #     plt.xticks(rotation=45)
+    #     plt.tight_layout()  
+    #     plt.show()
 
     fs = 50
     cutoff = 0.5
 
 
-    yaw_filtered = butter_lowpass_filter(euler_df_degrees['Yaw (degrees)'], cutoff, fs, order=5)
-    roll_filtered = butter_lowpass_filter(euler_df_degrees['Roll (degrees)'], cutoff, fs, order=5)
+    yaw_filtered = butter_lowpass_filter(euler_df_degrees2['Yaw (degrees)'], cutoff, fs, order=5)
+    roll_filtered = butter_lowpass_filter(euler_df_degrees2['Roll (degrees)'], cutoff, fs, order=5)
 
     movement_magnitude = np.sqrt(np.square(yaw_filtered) + np.square(roll_filtered))
 
 
     if (plotdiagrams):
         plt.figure(figsize=(12, 6))
-        plt.plot(euler_df_degrees.index, movement_magnitude, label='Movement Magnitude', linewidth=2)
+        plt.plot(euler_df_degrees2.index, movement_magnitude, label='Movement Magnitude', linewidth=2)
         plt.xlabel('Timestamp')
         plt.ylabel('Magnitude of Movement')
         plt.title('Combined Yaw and Roll Movement Magnitude')
@@ -234,12 +237,12 @@ def getMetricsSittingNew01(Limu1, plotdiagrams):
 
     movement_durations = []
     for start, end in filtered_pairs:
-        start_time = df_Limu1.iloc[start].name  
-        end_time = df_Limu1.iloc[end].name
+        start_time = df_Limu2.iloc[start].name  
+        end_time = df_Limu2.iloc[end].name
         duration = (end_time - start_time).total_seconds()
         movement_durations.append(duration)
 
-    total_duration_seconds = (df_Limu1.index[-1] - df_Limu1.index[0]).total_seconds()
+    total_duration_seconds = (df_Limu2.index[-1] - df_Limu2.index[0]).total_seconds()
     pace = len(filtered_pairs) / total_duration_seconds
     mean_combined_range = np.mean(filtered_combined_ranges)
     std_combined_range = np.std(filtered_combined_ranges, ddof=1)

@@ -150,19 +150,19 @@ def getMetricsStretchingNew03(Limu1, Limu2, Limu3, plotdiagrams):
     #Limu1
     columns = ['Timestamp', 'elapsed(time)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'])
+    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
     df_Limu1 = df_Limu1.sort_values(by='Timestamp')
     df_Limu1.set_index('Timestamp', inplace=True)
     
     #Limu2
     df_Limu2 = pd.DataFrame(Limu2, columns=columns)
-    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'])
+    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'], unit='ms')
     df_Limu2 = df_Limu2.sort_values(by='Timestamp')
     df_Limu2.set_index('Timestamp', inplace=True)
 
     #Limu3
     df_Limu3 = pd.DataFrame(Limu3, columns=columns)
-    df_Limu3['Timestamp'] = pd.to_datetime(df_Limu3['Timestamp'])
+    df_Limu3['Timestamp'] = pd.to_datetime(df_Limu3['Timestamp'], unit='ms')
     df_Limu3 = df_Limu3.sort_values(by='Timestamp')
     df_Limu3.set_index('Timestamp', inplace=True)
     

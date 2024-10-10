@@ -68,10 +68,11 @@ def striplist(L):
     return A
 
 def get_metrics(imu1,imu2,imu3,imu4, counter):
-    Limu1 = striplist(imu1)
-    Limu2 = striplist(imu2)
-    Limu3 = striplist(imu3)
-    Limu4 = striplist(imu4)
+    Limu1 = striplist(imu1[2:])
+    Limu2 = striplist(imu2[2:])
+    Limu3 = striplist(imu3[2:])
+    Limu4 = striplist(imu4[2:])
+    
 
     dt1 = 0 
     dt2 = 0
@@ -79,13 +80,13 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     dt4 = 0
     
     if(len(Limu1) > 0 ):
-        dt1 = float(Limu1[-1][0]) - float(Limu1[0][0]);
+        dt1 = float(Limu1[-1][0]) - float(Limu1[0][1]);
     if(len(Limu2) > 0 ):
-        dt2 = float(Limu2[-1][0]) - float(Limu2[0][0]);
+        dt2 = float(Limu2[-1][0]) - float(Limu2[0][1]);
     if(len(Limu3) > 0 ):
-        dt3 = float(Limu3[-1][0]) - float(Limu3[0][0]);
-    if(len(Limu4) > 0 ):
-        dt4 = float(Limu4[-1][0]) - float(Limu4[0][0]);
+        dt3 = float(Limu3[-1][0]) - float(Limu3[0][1]);
+    # if(len(Limu4) > 0 ):
+    #     dt4 = float(Limu4[-1][0]) - float(Limu4[0][1]);
 
     mean = statistics.mean([dt1, dt2, dt3, dt4])
     std = statistics.stdev([dt1, dt2, dt3, dt4])
@@ -93,7 +94,7 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     Limu1 = [[float(item) for item in sublist] for sublist in Limu1]
     Limu2 = [[float(item) for item in sublist] for sublist in Limu2]
     Limu3 = [[float(item) for item in sublist] for sublist in Limu3]
-    Limu4 = [[float(item) for item in sublist] for sublist in Limu4]
+    # Limu4 = [[float(item) for item in sublist] for sublist in Limu4]
 
     if len(Limu1) > 0 and len(Limu2) > 0 and len(Limu3) > 0:
         returnedJson = getMetricsStandingNew01(Limu1, Limu2, Limu3, False) 
@@ -103,21 +104,21 @@ def getMetricsStandingNew01(Limu1, Limu2, Limu3, plotdiagrams):
    
     columns = ['Timestamp', 'elapsed(time)',  'W(number)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'], unit='ms')
-    df_Limu1 = df_Limu1.sort_values(by='Timestamp')
-    df_Limu1.set_index('Timestamp', inplace=True)
+    df_Limu1['elapsed(time)'] = pd.to_datetime(df_Limu1['elapsed(time)'], unit='ms')
+    df_Limu1 = df_Limu1.sort_values(by='elapsed(time)')
+    df_Limu1.set_index('elapsed(time)', inplace=True)
     
     #Limu2
     df_Limu2 = pd.DataFrame(Limu2, columns=columns)
-    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'], unit='ms')
-    df_Limu2 = df_Limu2.sort_values(by='Timestamp')
-    df_Limu2.set_index('Timestamp', inplace=True)
+    df_Limu2['elapsed(time)'] = pd.to_datetime(df_Limu2['elapsed(time)'], unit='ms')
+    df_Limu2 = df_Limu2.sort_values(by='elapsed(time)')
+    df_Limu2.set_index('elapsed(time)', inplace=True)
 
     #Limu3
     df_Limu3 = pd.DataFrame(Limu3, columns=columns)
-    df_Limu3['Timestamp'] = pd.to_datetime(df_Limu3['Timestamp'], unit='ms')
-    df_Limu3 = df_Limu3.sort_values(by='Timestamp')
-    df_Limu3.set_index('Timestamp', inplace=True)
+    df_Limu3['elapsed(time)'] = pd.to_datetime(df_Limu3['elapsed(time)'], unit='ms')
+    df_Limu3 = df_Limu3.sort_values(by='elapsed(time)')
+    df_Limu3.set_index('elapsed(time)', inplace=True)
 
     # if (plotdiagrams):
     #     plt.figure(figsize=(10, 6))

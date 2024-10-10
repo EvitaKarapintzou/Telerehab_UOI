@@ -1,0 +1,20 @@
+total_metrics:
+  number_of_movements: 10
+  pace_movements_per_second: 0.16315875346712352
+  mean_combined_range_degrees: 120.58063379155001
+  std_combined_range_degrees: 9.771010660049669
+  mean_duration_seconds: 1.8379998999999998
+  std_duration_seconds: 0.5761520185198907
+  Movement Duration: [2.1, 1.669999, 1.92, 2.1, 1.5, 2.69, 1.01, 1.06, 1.6800000000000002, 2.65]
+  Movement Range: [12.733858418066292, 137.64428491593338, 124.66893010519772, 115.511431094513, 114.40334385864703, 10.842712548654355, 112.13755937671276, 10.528630529981633, 127.71912728659906, 121.78596344622154, 1.917354613048338, 118.65267137281683, 5.2570883716406795, 103.81441368775717, 129.46861277110148, 28.2527905817262, 18.998503196486098, 1.2797390378095554]
+Significant Movement 1: Combined Range = 137.64 degrees
+Significant Movement 2: Combined Range = 124.67 degrees
+Significant Movement 3: Combined Range = 115.51 degrees
+Significant Movement 4: Combined Range = 114.40 degrees
+Significant Movement 5: Combined Range = 112.14 degrees
+Significant Movement 6: Combined Range = 127.72 degrees
+Significant Movement 7: Combined Range = 121.79 degrees
+Significant Movement 8: Combined Range = 118.65 degrees
+Significant Movement 9: Combined Range = 103.81 degrees
+Significant Movement 10: Combined Range = 129.47 degrees
+

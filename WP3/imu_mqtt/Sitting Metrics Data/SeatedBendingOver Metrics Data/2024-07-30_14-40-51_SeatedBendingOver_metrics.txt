@@ -1,0 +1,4 @@
+total_metrics:
+  ***************LIMU1- BACK*************: {'number_of_movements1': 17, 'pace_movements_per_second1': 0.27841467409105797, 'mean_range_degrees1': 0.09680053713871327, 'std_range_degrees1': 0.11281330039397588, 'mean_duration_seconds1': 1.3864701764705882, 'std_duration_seconds1': 0.9932581350625347}
+  ***************LIMU2-HEAD*************: {'number_of_movements2': 15, 'pace_movements_per_second2': 0.24888004395022473, 'mean_range_degrees2': 61.41493099955392, 'std_range_degrees2': 86.15382550235552, 'mean_duration_seconds2': 1.3606663333333335, 'std_duration_seconds2': 0.8191150390165567, 'Exercise duration': 60.269999, 'Chin_to_Chest_Distance': 0.07776820411129141}
+

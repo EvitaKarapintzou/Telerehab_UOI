@@ -1,0 +1,4 @@
+total_metrics:
+  ***************LIMU1- HEAD*************: {'number_of_movements': 0, 'pace_movements_per_second': 0.0, 'mean_movement_range_degrees': -1.0, 'std_movement_range_degrees': -1.0, 'mean_movement_duration_seconds': -1.0, 'std_movement_duration_seconds': -1.0, 'Degrees per movement': [], 'Exersice_duration': 7.46, 'movement_duration': []}
+  ***************LIMU2- BACK*************: {'number_of_movements': 0, 'pace_movements_per_second': 0.0}
+

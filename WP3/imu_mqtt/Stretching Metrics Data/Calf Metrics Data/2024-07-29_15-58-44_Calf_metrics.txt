@@ -1,0 +1,30 @@
+total_metrics:
+  Gait Cycle:
+    Number of steps: 2
+    Right Single Support Time: []
+    Left Single Support Time: [131.0, 130.0, 53.0, 110.0, 111.0, 107.0, 96.0, 98.0, 115.0, 128.0, 126.0, 114.0, nan, nan]
+    Double Support Time: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Duration: [-30.0, -83.0, -5.0, -37.0, -36.0, -31.0, -37.0, -37.0, -30.0, -44.0, -42.0, -43.0, -35.0, nan]
+    Left Stance Phase Duration: []
+    Right Load Response Time: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Gait Cycle Time: [101.0, 47.0, 48.0, 73.0, 75.0, 76.0, 59.0, 61.0, 85.0, 84.0, 84.0, 71.0, nan]
+    Left Load Response Time: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Gait Cycle Time: []
+    Cadence: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Single Support Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Single Support Percentage: [129.7029702970297, 276.5957446808511, 110.41666666666667, 150.68493150684932, 148.0, 140.78947368421052, 162.71186440677968, 160.65573770491804, 135.29411764705884, 152.38095238095238, 150.0, 160.56338028169014, nan, nan]
+    Double Support Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Percentage: [-29.7029702970297, -176.59574468085106, -10.416666666666668, -50.68493150684932, -48.0, -40.78947368421053, -62.71186440677966, -60.65573770491803, -35.294117647058826, -52.38095238095239, -50.0, -60.56338028169014, nan, nan]
+    Left Stance Phase Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Loading Response Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Loading Response Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+
+  BACK METRICS:
+    number_of_movements: 0
+    pace_movements_per_second: 0.0
+    mean_combined_range_degrees: nan
+    std_combined_range_degrees: nan
+    mean_duration_seconds: nan
+    std_duration_seconds: nan
+    acceleration1: 0.032762274578737635
+

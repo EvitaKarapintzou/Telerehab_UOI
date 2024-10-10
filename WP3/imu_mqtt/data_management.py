@@ -3,38 +3,11 @@ import json
 import numpy as np
 
 from shared_variables import enableInterpolation, isFoundFirstTimestamp, firstTimestamp, imus, firstPacket, timeToCallMetrics, sensorDataToUpload, imu1Queue, imu2Queue, imu3Queue, imu4Queue, mqttState, enableMetrics, imu1FinalQueue, imu2FinalQueue, imu3FinalQueue, imu4FinalQueue, csv_file_path, imus, counter, startReceiving, lastDataTime, enableConnectionToAPI, feedbackData
-#from get_online_metrics_ex_1_pr_1 import get_metrics
-# from SittingMetrics.MaintainingFocus_HeadUpandDown import get_metrics
-# from SittingMetrics.HeelRaises import get_metrics
-# from SittingMetrics.MaintainingFocus_Headrotation import get_metrics
-# from SittingMetrics.MaintainingFocus_Headrotation import getMetricsSittingOld01
-# from SittingMetrics.ActiveTrunkRotation import get_metrics
-# from SittingMetrics.ActiveTrunkRotation import getMetricsSittingOld03
-# from SittingMetrics.TrunkRotation import get_metrics
-# from GaitMetrics.WalkingHorizontalHeadTurns import get_metrics
-# from SittingMetrics.ActiveTrunkRotation import getMetricsSittingOld03
-# from SittingMetrics.TrunkRotation import get_metrics
-# from SittingMetrics.Trunk_rotation import getMetricsSittingNew01
-# from SittingMetrics.HeelRaises import get_metrics
-# from SittingMetrics.AssistedToeRaises import get_metrics
-# from SittingMetrics.SeatedMarchingSpot import get_metrics
-# from SittingMetrics.SitToStand import get_metrics
-# from SittingMetrics.SeatedMarchingSpot import getMetricsSittingNew04
-# from SittingMetrics.MaintainingFocus_HeadUpandDown import getMetricsSittingOld02
-#from getMetricsSittingOld02 import get_metrics
-#from getMetricsSittingOld02 import getMetricsSitting01
-# from GaitMetrics.WalkingHorizontalHeadTurns import getMetricsGaitNew02
-# from GaitMetrics.WalkingHorizontalHeadTurns import get_metrics
-from GaitMetrics.SideStepping import get_metrics
-# from GaitMetrics.sidestep import get_metrics
-# from StretchingMetrics.HipExternal import get_metrics
-# from StretchingMetrics.LateralTrunkFlexion import get_metrics
-# from StretchingMetrics.Calf import get_metrics
-# from StandingMetrics.MaintainBalance import get_metrics
-# from StandingMetrics.BendingOver import get_metrics
-# from StandingMetrics.SwivelTurning import get_metrics
+# from StandingMetrics.StandingBendingOver import get_metrics
+# from StandingMetrics.StandingTurn import get_metrics
 # from StandingMetrics.LateralWeightShifts import get_metrics
-# from StandingMetrics.AnteroposteriorDirection import get_metrics
+# from StandingMetrics.LimitsofStability import get_metrics
+from StandingMetrics.ForwardReach import get_metrics
 from csv_management import write_in_files
 from api_management import upload_sensor_data
 

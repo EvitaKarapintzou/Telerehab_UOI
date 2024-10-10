@@ -1,0 +1,20 @@
+total_metrics:
+  number_of_movements: 10
+  pace_movements_per_second: 0.16246953696181968
+  mean_movement_range_degrees: 112.89258704875161
+  std_movement_range_degrees: 23.84729794578369
+  mean_movement_duration_seconds: 2.0269996000000003
+  std_movement_duration_seconds: 0.5659808257453407
+  Exersice_duration: 61.55
+  movement_duration: [2.929999, 1.369999, 1.5899999999999999, 1.8199999999999998, 2.09, 2.9, 2.049999, 2.429999, 1.6099999999999999, 1.48]
+Significant Movement 1: Combined Range = 101.90 degrees
+Significant Movement 2: Combined Range = 160.59 degrees
+Significant Movement 3: Combined Range = 77.64 degrees
+Significant Movement 4: Combined Range = 138.11 degrees
+Significant Movement 5: Combined Range = 109.26 degrees
+Significant Movement 6: Combined Range = 105.55 degrees
+Significant Movement 7: Combined Range = 115.77 degrees
+Significant Movement 8: Combined Range = 86.13 degrees
+Significant Movement 9: Combined Range = 113.92 degrees
+Significant Movement 10: Combined Range = 120.05 degrees
+

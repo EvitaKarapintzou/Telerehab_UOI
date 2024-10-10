@@ -56,10 +56,10 @@ def striplist(L):
     return A
 
 def get_metrics(imu1,imu2,imu3,imu4, counter):
-    Limu1 = striplist(imu1)
-    Limu2 = striplist(imu2)
-    Limu3 = striplist(imu3)
-    Limu4 = striplist(imu4)
+    Limu1 = striplist(imu1[2:])
+    Limu2 = striplist(imu2[2:])
+    Limu3 = striplist(imu3[2:])
+    Limu4 = striplist(imu4[2:])
     
     #print(')))))) ', Limu1[0].index(''))
     # if ['MAC'] in Limu1:
@@ -77,13 +77,14 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
     dt4 = 0
     
     if(len(Limu1) > 0 ):
-        dt1 = float(Limu1[-1][0]) - float(Limu1[0][0]);
+        dt1 = float(Limu1[-1][1]) - float(Limu1[0][1]);
     if(len(Limu2) > 0 ):
-        dt2 = float(Limu2[-1][0]) - float(Limu2[0][0]);
+        dt2 = float(Limu2[-1][1]) - float(Limu2[0][1]);
     if(len(Limu3) > 0 ):
-        dt3 = float(Limu3[-1][0]) - float(Limu3[0][0]);
+        dt3 = float(Limu3[-1][1]) - float(Limu3[0][1]);
     if(len(Limu4) > 0 ):
-        dt4 = float(Limu4[-1][0]) - float(Limu4[0][0]);
+        dt4 = float(Limu4[-1][1]) - float(Limu4[0][1]);
+
 
     mean = statistics.mean([dt1, dt2, dt3, dt4])
     std = statistics.stdev([dt1, dt2, dt3, dt4])
@@ -100,18 +101,18 @@ def get_metrics(imu1,imu2,imu3,imu4, counter):
 
 def getMetricsSittingNew03(Limu1, Limu2, plotdiagrams):
    
-    #Limu1
+#Limu1
     columns = ['Timestamp', 'elapsed(time)', 'X(number)', 'Y (number)', 'Z (number)']
     df_Limu1 = pd.DataFrame(Limu1, columns=columns)
-    df_Limu1['Timestamp'] = pd.to_datetime(df_Limu1['Timestamp'])
-    df_Limu1 = df_Limu1.sort_values(by='Timestamp')
-    df_Limu1.set_index('Timestamp', inplace=True)
+    df_Limu1['elapsed(time)'] = pd.to_datetime(df_Limu1['elapsed(time)'], unit='ms')
+    df_Limu1 = df_Limu1.sort_values(by='elapsed(time)')
+    df_Limu1.set_index('elapsed(time)', inplace=True)
     
     #Limu2
     df_Limu2 = pd.DataFrame(Limu2, columns=columns)
-    df_Limu2['Timestamp'] = pd.to_datetime(df_Limu2['Timestamp'])
-    df_Limu2 = df_Limu2.sort_values(by='Timestamp')
-    df_Limu2.set_index('Timestamp', inplace=True)
+    df_Limu2['elapsed(time)'] = pd.to_datetime(df_Limu2['elapsed(time)'], unit='ms')
+    df_Limu2 = df_Limu2.sort_values(by='elapsed(time)')
+    df_Limu2.set_index('elapsed(time)', inplace=True)
 
     start_time = df_Limu1.index.min()
     end_time = df_Limu1.index.max()
@@ -376,7 +377,7 @@ def getMetricsSittingNew03(Limu1, Limu2, plotdiagrams):
         "total_metrics": {
              "***************LIMU1 RIGHT*************":{
                 "number_of_movements": int(len(filtered_pairs1)),
-                "pace_movements_per_second": float(pace1*0.000001),
+                "pace_movements_per_second": float(pace1),
                 "mean_combined_range_degrees": float(mean_combined_range1),
                 "std_combined_range_degrees": float(std_combined_range1),
                 "mean_duration_seconds": float(mean_duration1),
@@ -387,7 +388,7 @@ def getMetricsSittingNew03(Limu1, Limu2, plotdiagrams):
 
              "***************LIMU2 LEFT*************":{
                 "number_of_movements": int(len(filtered_pairs2)/2),
-                "pace_movements_per_second": float(pace2*0.000001),
+                "pace_movements_per_second": float(pace2),
                 "mean_combined_range_degrees": float(mean_combined_range2),
                 "std_combined_range_degrees": float(std_combined_range2),
                 "mean_duration_seconds": float(mean_duration2),

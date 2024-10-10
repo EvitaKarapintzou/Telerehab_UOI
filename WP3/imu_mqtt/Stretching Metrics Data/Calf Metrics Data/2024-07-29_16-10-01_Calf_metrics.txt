@@ -1,0 +1,30 @@
+total_metrics:
+  Gait Cycle:
+    Number of steps: 11
+    Right Single Support Time: [nan]
+    Left Single Support Time: [140.0, 127.0, 84.0, 63.0, 122.0, 122.0, 216.0, 150.0, 123.0, 105.0, 120.0, 109.0, 84.0, 141.0, 128.0, 179.0, 156.0, 95.0, 77.0, 100.0, 98.0, 123.0, 114.0, 106.0, 192.0, 152.0, 138.0, 143.0, 140.0, 110.0, 79.0, 132.0, 113.0, 116.0, nan]
+    Double Support Time: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Duration: [-88, -46, -38, -21, -18, -52, -35, -77, -25, -56, -31, -49, -38, -27, -52, -53, -68, -44, -30, -23, -33, -34, -34, -42, -23, -42, -59, -43, -55, -46, -12, -45, -40, -40, -30]
+    Left Stance Phase Duration: [nan]
+    Right Load Response Time: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Gait Cycle Time: [52.0, 81.0, 46.0, 42.0, 104.0, 70.0, 181.0, 73.0, 98.0, 49.0, 89.0, 60.0, 46.0, 114.0, 76.0, 126.0, 88.0, 51.0, 47.0, 77.0, 65.0, 89.0, 80.0, 64.0, 169.0, 110.0, 79.0, 100.0, 85.0, 64.0, 67.0, 87.0, 73.0, 76.0, nan]
+    Left Load Response Time: [-3070.0, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Gait Cycle Time: []
+    Cadence: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Single Support Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Single Support Percentage: [269.2307692307692, 156.79012345679013, 182.6086956521739, 150.0, 117.3076923076923, 174.28571428571428, 119.33701657458565, 205.47945205479454, 125.51020408163265, 214.28571428571428, 134.8314606741573, 181.66666666666666, 182.6086956521739, 123.6842105263158, 168.42105263157893, 142.06349206349208, 177.27272727272728, 186.27450980392157, 163.82978723404256, 129.87012987012986, 150.76923076923077, 138.20224719101125, 142.5, 165.625, 113.6094674556213, 138.1818181818182, 174.68354430379748, 143.0, 164.70588235294116, 171.875, 117.91044776119404, 151.72413793103448, 154.7945205479452, 152.63157894736844, nan]
+    Double Support Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Stance Phase Percentage: [-169.23076923076923, -56.79012345679012, -82.6086956521739, -50.0, -17.307692307692307, -74.28571428571429, -19.337016574585636, -105.47945205479452, -25.510204081632654, -114.28571428571428, -34.831460674157306, -81.66666666666667, -82.6086956521739, -23.684210526315788, -68.42105263157895, -42.06349206349206, -77.27272727272727, -86.27450980392157, -63.829787234042556, -29.87012987012987, -50.76923076923077, -38.20224719101123, -42.5, -65.625, -13.609467455621301, -38.18181818181819, -74.68354430379746, -43.0, -64.70588235294117, -71.875, -17.91044776119403, -51.724137931034484, -54.794520547945204, -52.63157894736842, nan]
+    Left Stance Phase Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Right Loading Response Percentage: [nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+    Left Loading Response Percentage: [-5903.846153846154, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan]
+
+  BACK METRICS:
+    number_of_movements: 0
+    pace_movements_per_second: 0.0
+    mean_combined_range_degrees: nan
+    std_combined_range_degrees: nan
+    mean_duration_seconds: nan
+    std_duration_seconds: nan
+    acceleration1: 0.034170529911798
+

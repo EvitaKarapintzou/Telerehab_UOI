@@ -1,0 +1,10 @@
+total_metrics:
+  number_of_movements: 8
+  pace_movements_per_second: 0.5714285714285715
+  mean_movement_range_degrees: 106.44488726903069
+  std_movement_range_degrees: 58.881496211359334
+  mean_movement_duration_seconds: 2.5e-07
+  std_movement_duration_seconds: 7.071067811865475e-07
+  Exersice_duration: 1.4e-05
+  movement_duration: [0.0, 0.0, 0.0, 0.0, 0.0, 2e-06, 0.0, 0.0]
+

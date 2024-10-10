@@ -1,0 +1,9 @@
+total_metrics:
+  number_of_movements: 0
+  pace_movements_per_second: 0.0
+  mean_range_degrees: nan
+  std_range_degrees: nan
+  mean_duration_seconds: nan
+  std_duration_seconds: nan
+  sway_range_degrees: 1.4617443220144776e-09
+

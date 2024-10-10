@@ -1,0 +1,4 @@
+total_metrics:
+  ***************LIMU1- HEAD*************: {'number_of_movements': 3, 'pace_movements_per_second': 0.19569471624266144, 'mean_movement_range_degrees': 17.01617824609613, 'std_movement_range_degrees': 6.628136938753193, 'mean_movement_duration_seconds': 1.586666, 'std_movement_duration_seconds': 0.7651358746438439, 'Degrees per movement': ['Significant Movement 1: Pair = (297, 393), Range = 21.20 degrees', 'Significant Movement 2: Pair = (489, 585), Range = 20.47 degrees', 'Significant Movement 3: Pair = (769, 900), Range = 9.37 degrees'], 'Exersice_duration': 15.33, 'movement_duration': [1.16, 1.129999, 2.469999]}
+  ***************LIMU2- BACK*************: {'number_of_movements': 3, 'pace_movements_per_second': 0.22107591901812226}
+

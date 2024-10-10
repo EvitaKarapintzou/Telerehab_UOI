@@ -1,0 +1,10 @@
+total_metrics:
+  number_of_movements: 1
+  pace_movements_per_second: 0.06557377049180328
+  mean_movement_range_degrees: 141.37520952544534
+  std_movement_range_degrees: nan
+  mean_movement_duration_seconds: 1.5699999999999998
+  std_movement_duration_seconds: nan
+  Exersice_duration: 15.25
+  movement_duration: [1.5699999999999998]
+

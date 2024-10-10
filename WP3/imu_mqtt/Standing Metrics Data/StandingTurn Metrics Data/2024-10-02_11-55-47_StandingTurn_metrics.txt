@@ -1,0 +1,19 @@
+total_metrics:
+  ***************LIMU1- BACK*************:
+    number_of_movements1: 5
+    pace_movements_per_second1: 0.32894736842105265
+    mean_range_degrees1: 0.4009626765658821
+    std_range_degrees1: 0.35390530654062363
+    mean_duration_seconds1: 1.4559996000000002
+    std_duration_seconds1: 0.9648470920308047
+
+  ***************LIMU2-HEAD*************:
+    number_of_movements2: 3
+    pace_movements_per_second2: 0.19907100199071
+    mean_range_degrees2: 201.12330180180518
+    std_range_degrees2: 156.64334284163772
+    mean_duration_seconds2: 2.13
+    std_duration_seconds2: 1.5115885683611132
+    Exercise duration: 15.07
+    Sway_Range: 305.21134663115043
+
