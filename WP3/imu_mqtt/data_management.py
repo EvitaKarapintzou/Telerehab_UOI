@@ -7,7 +7,10 @@ from shared_variables import enableInterpolation, isFoundFirstTimestamp, firstTi
 # from StandingMetrics.StandingTurn import get_metrics
 # from StandingMetrics.LateralWeightShifts import get_metrics
 # from StandingMetrics.LimitsofStability import get_metrics
-from StandingMetrics.ForwardReach import get_metrics
+# from StandingMetrics.ForwardReach import get_metrics
+# from Walking.Walking import get_metrics
+# from SittingMetrics.ToeRaises import get_metrics
+from SittingMetrics.HeelRaises import get_metrics
 from csv_management import write_in_files
 from api_management import upload_sensor_data
 

@@ -1,0 +1,33 @@
+// Yaw Angle Calculation
+digraph {
+	A [label=Start color=lightgrey shape=hexagon style=filled]
+	B [label="Euler Angles Calculation
+(Convert quaternion data to Euler angles)" color=lightgrey shape=box style=filled]
+	C [label="Yaw Measurement
+(Extract yaw component (ψ))" color=lightgrey shape=box style=filled]
+	D [label="Pre-processing
+(Normalize yaw data, Eliminate full circles, Zero normalize)" color=lightgrey shape=box style=filled]
+	E [label="Low Pass Filtering
+(Apply low-pass filter to ψ')" color=lightgrey shape=box style=filled]
+	F [label="First Derivative Calculation
+(Calculate first derivative of H(ψ'))" color=lightgrey shape=box style=filled]
+	G [label="Local Extrema Detection
+(Detect local maxima and minima)" color=lightgrey shape=box style=filled]
+	H [label="Outliers Elimination
+(Remove outliers from extrema)" color=lightgrey shape=box style=filled]
+	I [label="Min-Max Pairing
+(Pair minima and maxima)" color=lightgrey shape=box style=filled]
+	J [label="Metrics Calculation
+(Calculate range, time, variation, mean)" color=lightgrey shape=box style=filled]
+	K [label=End color=lightgrey shape=hexagon style=filled]
+	A -> B
+	B -> C
+	C -> D
+	D -> E
+	E -> F
+	F -> G
+	G -> H
+	H -> I
+	I -> J
+	J -> K
+}

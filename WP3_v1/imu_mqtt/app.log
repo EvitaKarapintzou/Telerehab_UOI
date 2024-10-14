@@ -1,0 +1,264 @@
+2024-06-24 10:06:50,014 - asyncio - DEBUG - Using selector: EpollSelector
+2024-06-24 10:06:50,021 - websockets.server - INFO - server listening on 0.0.0.0:8765
+2024-06-24 10:06:56,368 - root - INFO - Message Received -> up
+2024-06-24 10:06:56,547 - websockets.server - DEBUG - = connection is CONNECTING
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - < GET / HTTP/1.1
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - < Connection: Upgrade
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - < Host: 192.168.1.109:8765
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - < Sec-WebSocket-Key: cXOifTavCNFKCp+xB8EGAg==
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - < Sec-WebSocket-Version: 13
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - < Upgrade: websocket
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - > HTTP/1.1 101 Switching Protocols
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - > Upgrade: websocket
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - > Connection: Upgrade
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - > Sec-WebSocket-Accept: Y9/tK/nXbZN+Kx2plAF6r14zjfA=
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - > Date: Mon, 24 Jun 2024 07:06:56 GMT
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - > Server: Python/3.10 websockets/12.0
+2024-06-24 10:06:56,555 - websockets.server - INFO - connection open
+2024-06-24 10:06:56,555 - websockets.server - DEBUG - = connection is OPEN
+2024-06-24 10:06:57,023 - root - INFO - Message Received -> [DA:C1:9F:1B:6E:40, Quaternion], [ED:B1:65:CE:EF:D4, OFF], [EF:0F:A9:3D:48:AA, OFF], [EB:0B:A9:F4:5E:4E, OFF]
+2024-06-24 10:07:16,572 - websockets.server - DEBUG - % sending keepalive ping
+2024-06-24 10:07:16,572 - websockets.server - DEBUG - > PING 08 1a 5c d1 [binary, 4 bytes]
+2024-06-24 10:07:16,614 - websockets.server - DEBUG - < PONG 08 1a 5c d1 [binary, 4 bytes]
+2024-06-24 10:07:16,614 - websockets.server - DEBUG - % received keepalive pong
+2024-06-24 10:07:16,685 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-8.677864680066705E-4}' [162 bytes]
+2024-06-24 10:07:16,715 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-8.677864680066705E-4}' [162 bytes]
+2024-06-24 10:07:16,734 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-8.677864680066705E-4}' [162 bytes]
+2024-06-24 10:07:16,754 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-8.677864680066705E-4}' [162 bytes]
+2024-06-24 10:07:16,779 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-8.677864680066705E-4}' [162 bytes]
+2024-06-24 10:07:16,804 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...53593263775E-4,"z":0.0}' [149 bytes]
+2024-06-24 10:07:16,828 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-1.889375766950252E-9}' [166 bytes]
+2024-06-24 10:07:16,855 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-6.818751785431232E-9}' [166 bytes]
+2024-06-24 10:07:16,871 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-8.526797046215506E-9}' [168 bytes]
+2024-06-24 10:07:16,892 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...-9.080443064135579E-10}' [169 bytes]
+2024-06-24 10:07:16,912 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:1.7593892565059832E-8}' [167 bytes]
+2024-06-24 10:07:16,929 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":2.988292635563994E-8}' [167 bytes]
+2024-06-24 10:07:16,955 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:5.3975096392377964E-8}' [167 bytes]
+2024-06-24 10:07:16,965 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":8.024532149875085E-8}' [165 bytes]
+2024-06-24 10:07:16,986 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":1.055811011951846E-7}' [167 bytes]
+2024-06-24 10:07:16,998 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":1.514241745326217E-7}' [166 bytes]
+2024-06-24 10:07:17,015 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:1.8237913934626704E-7}' [166 bytes]
+2024-06-24 10:07:17,032 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":2.144475530485579E-7}' [165 bytes]
+2024-06-24 10:07:17,052 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":2.854540355201607E-7}' [166 bytes]
+2024-06-24 10:07:17,066 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:3.8335380736498337E-7}' [166 bytes]
+2024-06-24 10:07:17,085 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:4.2539852529444033E-7}' [166 bytes]
+2024-06-24 10:07:17,099 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:3.8324702700265334E-7}' [166 bytes]
+2024-06-24 10:07:17,117 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:3.0628774538854486E-7}' [166 bytes]
+2024-06-24 10:07:17,135 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":2.549193993672816E-7}' [165 bytes]
+2024-06-24 10:07:17,155 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":2.124741058651125E-7}' [164 bytes]
+2024-06-24 10:07:17,175 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:3.1758659702063596E-7}' [164 bytes]
+2024-06-24 10:07:17,183 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...z":4.72891372282902E-7}' [164 bytes]
+2024-06-24 10:07:17,198 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":6.288508416218974E-7}' [165 bytes]
+2024-06-24 10:07:17,222 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":7.694947612435499E-7}' [165 bytes]
+2024-06-24 10:07:17,233 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":7.107664146133175E-7}' [165 bytes]
+2024-06-24 10:07:17,251 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...":5.528531232812384E-7}' [163 bytes]
+2024-06-24 10:07:17,263 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:2.2361564333550632E-7}' [164 bytes]
+2024-06-24 10:07:17,277 - websockets.server - DEBUG - < TEXT '{"deviceMacAddress":"DA:C1:9F:1B:6E:40","timest...:-9.154084068541124E-8}' [166 bytes]
+2024-06-24 10:07:36,628 - websockets.server - DEBUG - % sending keepalive ping
+2024-06-24 10:07:36,628 - websockets.server - DEBUG - > PING 39 33 25 d8 [binary, 4 bytes]
+2024-06-24 10:07:50,032 - websockets.server - DEBUG - > TEXT '{"type": "heartbeat"}' [21 bytes]
+2024-06-24 10:07:56,636 - websockets.server - DEBUG - ! timed out waiting for keepalive pong
+2024-06-24 10:07:56,636 - websockets.server - DEBUG - ! failing connection with code 1011
+2024-06-24 10:07:56,636 - websockets.server - DEBUG - = connection is CLOSING
+2024-06-24 10:07:56,636 - websockets.server - DEBUG - > CLOSE 1011 (internal error) keepalive ping timeout [24 bytes]
+2024-06-24 10:07:56,636 - websockets.server - DEBUG - x half-closing TCP connection
+2024-06-24 10:07:57,090 - root - INFO - Message Received -> stop
+2024-06-24 10:08:06,647 - websockets.server - DEBUG - ! timed out waiting for TCP close
+2024-06-24 10:08:06,647 - websockets.server - DEBUG - x closing TCP connection
+2024-06-24 10:08:06,647 - websockets.server - DEBUG - = connection is CLOSED
+2024-06-24 10:08:06,647 - websockets.server - INFO - connection closed
+2024-06-24 10:08:07,130 - root - INFO - Message Received -> [DA:C1:9F:1B:6E:40, Quaternion], [ED:B1:65:CE:EF:D4, OFF], [EF:0F:A9:3D:48:AA, OFF], [EB:0B:A9:F4:5E:4E, OFF]
+2024-06-24 10:09:07,226 - root - INFO - Message Received -> exit
+2024-10-14 17:16:22,752 - This is a test log entry.
+2024-10-14 17:16:22,758 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:16:22,933 - https://telerehab-develop.biomed.ntua.gr:443 "POST /api/Login HTTP/1.1" 200 295
+2024-10-14 17:16:22,937 - JWT Token:
+2024-10-14 17:16:22,937 - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRlc3REb2N0b3IiLCJSb2xlIjoiZG9jdG9yIiwiVXNlcklkIjoiMjYiLCJuYmYiOjE3Mjg5MTUzODEsImV4cCI6MTcyODk1ODU4MiwiaXNzIjoiVGVsZXJlaGFiLWRldmVsb3AiLCJhdWQiOiJUZWxlcmVoYWItZGV2ZWxvcCJ9.Fh-6H_0AV4VhFbBhv-gA6XkzwZnvj7gi0m-tzYWwWnQ
+2024-10-14 17:16:22,940 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:16:23,023 - https://telerehab-develop.biomed.ntua.gr:443 "GET /api/PatientDeviceSet/list HTTP/1.1" 200 1468
+2024-10-14 17:16:23,026 - apiKey:
+2024-10-14 17:16:23,027 - j0oMeBtroHpvYrYGi7WhZV2yAQZynsFj2fukpgQr
+2024-10-14 17:16:23,039 - Listening for multicast messages...
+2024-10-14 17:16:28,060 - Traceback (most recent call last):
+2024-10-14 17:16:28,060 - File "main.py", line 243, in <module>
+2024-10-14 17:16:28,060 - client.connect(MQTT_BROKER_HOST, MQTT_BROKER_PORT, MQTT_KEEP_ALIVE_INTERVAL)
+2024-10-14 17:16:28,060 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 914, in connect
+2024-10-14 17:16:28,060 - return self.reconnect()
+2024-10-14 17:16:28,061 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 1044, in reconnect
+2024-10-14 17:16:28,061 - sock = self._create_socket_connection()
+2024-10-14 17:16:28,061 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 3685, in _create_socket_connection
+2024-10-14 17:16:28,061 - return socket.create_connection(addr, timeout=self._connect_timeout, source_address=source)
+2024-10-14 17:16:28,061 - File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+2024-10-14 17:16:28,062 - raise err
+2024-10-14 17:16:28,062 - File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+2024-10-14 17:16:28,062 - sock.connect(sa)
+2024-10-14 17:16:28,062 - socket
+2024-10-14 17:16:28,062 - .
+2024-10-14 17:16:28,062 - timeout
+2024-10-14 17:16:28,062 - :
+2024-10-14 17:16:28,062 - timed out
+2024-10-14 17:16:38,383 - Closing socket
+2024-10-14 17:16:38,383 - Error in atexit._run_exitfuncs:
+2024-10-14 17:16:38,384 - Traceback (most recent call last):
+2024-10-14 17:16:38,384 - File "/usr/lib/python3.8/multiprocessing/popen_fork.py", line 27, in poll
+2024-10-14 17:16:38,384 - pid, sts = os.waitpid(self.pid, flag)
+2024-10-14 17:16:38,385 - KeyboardInterrupt
+2024-10-14 17:16:38,385 - Process Process-2:
+2024-10-14 17:16:38,386 - Traceback (most recent call last):
+2024-10-14 17:16:38,387 - File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+2024-10-14 17:16:38,387 - File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+2024-10-14 17:16:38,387 - File "/home/uoi/Documents/GitHub/Telerehab_UOI/WP3_v1/imu_mqtt/UDPSERVER.py", line 38, in start_multicast_server
+    data, address = sock.recvfrom(1024)
+2024-10-14 17:16:38,387 - KeyboardInterrupt
+2024-10-14 17:16:49,397 - This is a test log entry.
+2024-10-14 17:16:49,401 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:16:49,507 - https://telerehab-develop.biomed.ntua.gr:443 "POST /api/Login HTTP/1.1" 200 295
+2024-10-14 17:16:49,510 - JWT Token:
+2024-10-14 17:16:49,510 - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRlc3REb2N0b3IiLCJSb2xlIjoiZG9jdG9yIiwiVXNlcklkIjoiMjYiLCJuYmYiOjE3Mjg5MTU0MDgsImV4cCI6MTcyODk1ODYwOSwiaXNzIjoiVGVsZXJlaGFiLWRldmVsb3AiLCJhdWQiOiJUZWxlcmVoYWItZGV2ZWxvcCJ9.9LsEulty436x6wWxbk9s7X_datjrT621uyJUmvaQqVQ
+2024-10-14 17:16:49,513 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:16:49,597 - https://telerehab-develop.biomed.ntua.gr:443 "GET /api/PatientDeviceSet/list HTTP/1.1" 200 1468
+2024-10-14 17:16:49,600 - apiKey:
+2024-10-14 17:16:49,600 - j0oMeBtroHpvYrYGi7WhZV2yAQZynsFj2fukpgQr
+2024-10-14 17:16:49,621 - Listening for multicast messages...
+2024-10-14 17:16:53,776 - Closing socket
+2024-10-14 17:16:53,776 - Traceback (most recent call last):
+2024-10-14 17:16:53,777 - File "main.py", line 243, in <module>
+2024-10-14 17:16:53,778 - client.connect(MQTT_BROKER_HOST, MQTT_BROKER_PORT, MQTT_KEEP_ALIVE_INTERVAL)
+2024-10-14 17:16:53,778 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 914, in connect
+2024-10-14 17:16:53,779 - return self.reconnect()
+2024-10-14 17:16:53,779 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 1044, in reconnect
+2024-10-14 17:16:53,780 - sock = self._create_socket_connection()
+2024-10-14 17:16:53,780 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 3685, in _create_socket_connection
+2024-10-14 17:16:53,781 - return socket.create_connection(addr, timeout=self._connect_timeout, source_address=source)
+2024-10-14 17:16:53,781 - File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+2024-10-14 17:16:53,782 - sock.connect(sa)
+2024-10-14 17:16:53,782 - KeyboardInterrupt
+2024-10-14 17:16:53,785 - Process Process-2:
+2024-10-14 17:16:53,786 - Traceback (most recent call last):
+2024-10-14 17:16:53,786 - File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+2024-10-14 17:16:53,786 - File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+2024-10-14 17:16:53,786 - File "/home/uoi/Documents/GitHub/Telerehab_UOI/WP3_v1/imu_mqtt/UDPSERVER.py", line 38, in start_multicast_server
+    data, address = sock.recvfrom(1024)
+2024-10-14 17:16:53,786 - KeyboardInterrupt
+2024-10-14 17:17:47,281 - This is a test log entry.
+2024-10-14 17:17:47,284 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:17:47,389 - https://telerehab-develop.biomed.ntua.gr:443 "POST /api/Login HTTP/1.1" 200 295
+2024-10-14 17:17:47,392 - JWT Token:
+2024-10-14 17:17:47,392 - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRlc3REb2N0b3IiLCJSb2xlIjoiZG9jdG9yIiwiVXNlcklkIjoiMjYiLCJuYmYiOjE3Mjg5MTU0NjYsImV4cCI6MTcyODk1ODY2NywiaXNzIjoiVGVsZXJlaGFiLWRldmVsb3AiLCJhdWQiOiJUZWxlcmVoYWItZGV2ZWxvcCJ9.APY0JM2dwQVCEoqkhqdqNfpG_5LOwJTzAwIPQI9dq1w
+2024-10-14 17:17:47,394 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:17:47,487 - https://telerehab-develop.biomed.ntua.gr:443 "GET /api/PatientDeviceSet/list HTTP/1.1" 200 1468
+2024-10-14 17:17:47,490 - apiKey:
+2024-10-14 17:17:47,491 - j0oMeBtroHpvYrYGi7WhZV2yAQZynsFj2fukpgQr
+2024-10-14 17:17:47,512 - Listening for multicast messages...
+2024-10-14 17:17:52,528 - Traceback (most recent call last):
+2024-10-14 17:17:52,529 - File "main.py", line 243, in <module>
+2024-10-14 17:17:52,529 - client.connect(MQTT_BROKER_HOST, MQTT_BROKER_PORT, MQTT_KEEP_ALIVE_INTERVAL)
+2024-10-14 17:17:52,529 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 914, in connect
+2024-10-14 17:17:52,529 - return self.reconnect()
+2024-10-14 17:17:52,529 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 1044, in reconnect
+2024-10-14 17:17:52,529 - sock = self._create_socket_connection()
+2024-10-14 17:17:52,529 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 3685, in _create_socket_connection
+2024-10-14 17:17:52,530 - return socket.create_connection(addr, timeout=self._connect_timeout, source_address=source)
+2024-10-14 17:17:52,530 - File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+2024-10-14 17:17:52,530 - raise err
+2024-10-14 17:17:52,530 - File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+2024-10-14 17:17:52,531 - sock.connect(sa)
+2024-10-14 17:17:52,531 - socket
+2024-10-14 17:17:52,531 - .
+2024-10-14 17:17:52,531 - timeout
+2024-10-14 17:17:52,531 - :
+2024-10-14 17:17:52,531 - timed out
+2024-10-14 17:20:33,189 - Closing socket
+2024-10-14 17:20:33,189 - Error in atexit._run_exitfuncs:
+2024-10-14 17:20:33,189 - Traceback (most recent call last):
+2024-10-14 17:20:33,190 - File "/usr/lib/python3.8/multiprocessing/popen_fork.py", line 27, in poll
+2024-10-14 17:20:33,190 - pid, sts = os.waitpid(self.pid, flag)
+2024-10-14 17:20:33,190 - KeyboardInterrupt
+2024-10-14 17:20:33,190 - Process Process-2:
+2024-10-14 17:20:33,192 - Traceback (most recent call last):
+2024-10-14 17:20:33,192 - File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+2024-10-14 17:20:33,192 - File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+2024-10-14 17:20:33,192 - File "/home/uoi/Documents/GitHub/Telerehab_UOI/WP3_v1/imu_mqtt/UDPSERVER.py", line 38, in start_multicast_server
+    data, address = sock.recvfrom(1024)
+2024-10-14 17:20:33,193 - KeyboardInterrupt
+2024-10-14 17:20:39,173 - This is a test log entry.
+2024-10-14 17:20:39,183 - Listening for multicast messages...
+2024-10-14 17:20:44,207 - Traceback (most recent call last):
+2024-10-14 17:20:44,207 - File "main.py", line 243, in <module>
+2024-10-14 17:20:44,208 - client.connect(MQTT_BROKER_HOST, MQTT_BROKER_PORT, MQTT_KEEP_ALIVE_INTERVAL)
+2024-10-14 17:20:44,208 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 914, in connect
+2024-10-14 17:20:44,208 - return self.reconnect()
+2024-10-14 17:20:44,208 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 1044, in reconnect
+2024-10-14 17:20:44,208 - sock = self._create_socket_connection()
+2024-10-14 17:20:44,208 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 3685, in _create_socket_connection
+2024-10-14 17:20:44,209 - return socket.create_connection(addr, timeout=self._connect_timeout, source_address=source)
+2024-10-14 17:20:44,209 - File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+2024-10-14 17:20:44,209 - raise err
+2024-10-14 17:20:44,209 - File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+2024-10-14 17:20:44,210 - sock.connect(sa)
+2024-10-14 17:20:44,210 - socket
+2024-10-14 17:20:44,210 - .
+2024-10-14 17:20:44,210 - timeout
+2024-10-14 17:20:44,210 - :
+2024-10-14 17:20:44,210 - timed out
+2024-10-14 17:21:32,583 - Closing socket
+2024-10-14 17:21:32,583 - Error in atexit._run_exitfuncs:
+2024-10-14 17:21:32,583 - Traceback (most recent call last):
+2024-10-14 17:21:32,584 - File "/usr/lib/python3.8/multiprocessing/popen_fork.py", line 27, in poll
+2024-10-14 17:21:32,584 - pid, sts = os.waitpid(self.pid, flag)
+2024-10-14 17:21:32,585 - KeyboardInterrupt
+2024-10-14 17:21:32,585 - Process Process-2:
+2024-10-14 17:21:32,587 - Traceback (most recent call last):
+2024-10-14 17:21:32,588 - File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+2024-10-14 17:21:32,588 - File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+2024-10-14 17:21:32,588 - File "/home/uoi/Documents/GitHub/Telerehab_UOI/WP3_v1/imu_mqtt/UDPSERVER.py", line 38, in start_multicast_server
+    data, address = sock.recvfrom(1024)
+2024-10-14 17:21:32,588 - KeyboardInterrupt
+2024-10-14 17:21:40,412 - This is a test log entry.
+2024-10-14 17:21:40,415 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:21:40,530 - https://telerehab-develop.biomed.ntua.gr:443 "POST /api/Login HTTP/1.1" 200 295
+2024-10-14 17:21:40,533 - JWT Token:
+2024-10-14 17:21:40,533 - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InRlc3REb2N0b3IiLCJSb2xlIjoiZG9jdG9yIiwiVXNlcklkIjoiMjYiLCJuYmYiOjE3Mjg5MTU2OTksImV4cCI6MTcyODk1ODkwMCwiaXNzIjoiVGVsZXJlaGFiLWRldmVsb3AiLCJhdWQiOiJUZWxlcmVoYWItZGV2ZWxvcCJ9.XXrHPoq6B27lnrzdORKMuE8zz8yzYEgj7A6m4kCEO9g
+2024-10-14 17:21:40,536 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:21:40,631 - https://telerehab-develop.biomed.ntua.gr:443 "GET /api/PatientDeviceSet/list HTTP/1.1" 200 1468
+2024-10-14 17:21:40,634 - apiKey:
+2024-10-14 17:21:40,634 - j0oMeBtroHpvYrYGi7WhZV2yAQZynsFj2fukpgQr
+2024-10-14 17:21:40,643 - running scenario
+2024-10-14 17:21:40,644 - Connected with result code 0
+2024-10-14 17:21:40,651 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:21:40,653 - Listening for multicast messages...
+2024-10-14 17:21:40,730 - https://telerehab-develop.biomed.ntua.gr:443 "GET /api/PatientSchedule/daily HTTP/1.1" 401 None
+2024-10-14 17:21:40,733 - Error: 401 Client Error: Unauthorized for url: https://telerehab-develop.biomed.ntua.gr/api/PatientSchedule/daily
+2024-10-14 17:22:25,256 - Closing socket
+2024-10-14 17:22:25,256 - Traceback (most recent call last):
+2024-10-14 17:22:25,256 - File "main.py", line 276, in <module>
+2024-10-14 17:22:25,257 - client.loop_forever()
+2024-10-14 17:22:25,257 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 1756, in loop_forever
+2024-10-14 17:22:25,259 - rc = self._loop(timeout)
+2024-10-14 17:22:25,259 - File "/home/uoi/.local/lib/python3.8/site-packages/paho/mqtt/client.py", line 1150, in _loop
+2024-10-14 17:22:25,260 - socklist = select.select(rlist, wlist, [], timeout)
+2024-10-14 17:22:25,260 - KeyboardInterrupt
+2024-10-14 17:22:25,266 - Process Process-2:
+2024-10-14 17:22:25,267 - Traceback (most recent call last):
+2024-10-14 17:22:25,267 - File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+2024-10-14 17:22:25,267 - File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+2024-10-14 17:22:25,267 - File "/home/uoi/Documents/GitHub/Telerehab_UOI/WP3_v1/imu_mqtt/UDPSERVER.py", line 38, in start_multicast_server
+    data, address = sock.recvfrom(1024)
+2024-10-14 17:22:25,268 - KeyboardInterrupt
+2024-10-14 17:22:30,596 - This is a test log entry.
+2024-10-14 17:22:30,602 - running scenario
+2024-10-14 17:22:30,603 - Connected with result code 0
+2024-10-14 17:22:30,606 - Listening for multicast messages...
+2024-10-14 17:22:30,607 - Starting new HTTPS connection (1): telerehab-develop.biomed.ntua.gr:443
+2024-10-14 17:22:30,684 - https://telerehab-develop.biomed.ntua.gr:443 "GET /api/PatientSchedule/daily HTTP/1.1" 401 None
+2024-10-14 17:22:30,685 - Error: 401 Client Error: Unauthorized for url: https://telerehab-develop.biomed.ntua.gr/api/PatientSchedule/daily

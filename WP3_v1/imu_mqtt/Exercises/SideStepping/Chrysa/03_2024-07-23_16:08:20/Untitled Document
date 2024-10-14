@@ -1,0 +1,59 @@
+Metrics before change point:
+Left Step Count: 6
+Right Step Count: 10
+Left Step Frequency (steps/min): 44.72049689440993
+Right Step Frequency (steps/min): 70.92198581560282
+Left Step Duration Mean (s): 1.61
+Right Step Duration Mean (s): 0.9400000000000001
+Left Step Duration Std Dev (s): 0.6368987360640622
+Right Step Duration Std Dev (s): 0.34509258017072586
+Symmetry (difference in step count): 4
+Consistency (mean of std dev in step duration): 0.49099565811739404
+
+Metrics after change point:
+Left Step Count: 8
+Right Step Count: 5
+Left Step Frequency (steps/min): 58.25242718446602
+Right Step Frequency (steps/min): 37.92667509481669
+Left Step Duration Mean (s): 1.1771428571428568
+Right Step Duration Mean (s): 1.9775
+Left Step Duration Std Dev (s): 0.5200470936288719
+Right Step Duration Std Dev (s): 0.20992558205230727
+Symmetry (difference in step count): 3
+Consistency (mean of std dev in step duration): 0.3649863378405896
+
+Comparison of metrics between directions:
+Step Count Difference: 1
+Step Frequency Difference (steps/min): 5.8757368315435485
+Step Duration Mean Difference (s): 0.13035714285714306
+Step Duration Std Dev Difference (s): 0.6019276674699011
+Intersection Points: [Timestamp('2024-07-23 13:08:30.570757376'), Timestamp('2024-07-23 13:08:32.169353984'), Timestamp('2024-07-23 13:08:33.014770176'), Timestamp('2024-07-23 13:08:34.156809472'), Timestamp('2024-07-23 13:08:35.002415616'), Timestamp('2024-07-23 13:08:36.138804224'), Timestamp('2024-07-23 13:08:36.858028288'), Timestamp('2024-07-23 13:08:37.853282816'), Timestamp('2024-07-23 13:08:38.739723264'), Timestamp('2024-07-23 13:08:39.884205568'), Timestamp('2024-07-23 13:08:40.780144896'), Timestamp('2024-07-23 13:08:41.319075072'), Timestamp('2024-07-23 13:08:42.441274368'), Timestamp('2024-07-23 13:08:43.169146880'), Timestamp('2024-07-23 13:08:44.292198144'), Timestamp('2024-07-23 13:08:45.216732160'), Timestamp('2024-07-23 13:08:46.300417280'), Timestamp('2024-07-23 13:08:47.095826176'), Timestamp('2024-07-23 13:08:48.217550336'), Timestamp('2024-07-23 13:08:48.902231040'), Timestamp('2024-07-23 13:08:50.152268032'), Timestamp('2024-07-23 13:08:50.926527232'), Timestamp('2024-07-23 13:08:51.892737280'), Timestamp('2024-07-23 13:08:55.719394048'), Timestamp('2024-07-23 13:08:56.394131712'), Timestamp('2024-07-23 13:08:58.141185024'), Timestamp('2024-07-23 13:08:58.763742976'), Timestamp('2024-07-23 13:09:06.757517056'), Timestamp('2024-07-23 13:09:08.037326080'), Timestamp('2024-07-23 13:09:09.235572480'), Timestamp('2024-07-23 13:09:09.813163776'), Timestamp('2024-07-23 13:09:10.360395008'), Timestamp('2024-07-23 13:09:12.815262720'), Timestamp('2024-07-23 13:09:14.699443200'), Timestamp('2024-07-23 13:09:16.220812544'), Timestamp('2024-07-23 13:09:18.060182272'), Timestamp('2024-07-23 13:09:19.775159296'), Timestamp('2024-07-23 13:09:20.730927360')]
+Metrics before change point:
+Left Step Count: 5
+Right Step Count: 5
+Left Step Frequency (steps/min): 37.26708074534161
+Right Step Frequency (steps/min): 39.52569169960474
+Left Step Duration Mean (s): 2.0125
+Right Step Duration Mean (s): 1.8975
+Left Step Duration Std Dev (s): 0.2939706618014798
+Right Step Duration Std Dev (s): 0.3556947427219019
+Symmetry (difference in step count): 0
+Consistency (mean of std dev in step duration): 0.3248327022616908
+
+Metrics after change point:
+Left Step Count: 5
+Right Step Count: 5
+Left Step Frequency (steps/min): 36.407766990291265
+Right Step Frequency (steps/min): 38.86010362694301
+Left Step Duration Mean (s): 2.06
+Right Step Duration Mean (s): 1.9300000000000002
+Left Step Duration Std Dev (s): 0.19144189719076654
+Right Step Duration Std Dev (s): 0.3936368885152915
+Symmetry (difference in step count): 0
+Consistency (mean of std dev in step duration): 0.292539392853029
+
+Comparison of metrics between directions:
+Step Count Difference: 0
+Step Frequency Difference (steps/min): 4.71094759091487
+Step Duration Mean Difference (s): 0.24499999999999966
+Step Duration Std Dev Difference (s): 0.26391907224494704
