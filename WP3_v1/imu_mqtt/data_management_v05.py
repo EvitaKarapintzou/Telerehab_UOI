@@ -4,16 +4,6 @@ import numpy as np
 import re
 from shared_variables import enableInterpolation, isFoundFirstTimestamp, firstTimestamp, imus, firstPacket, timeToCallMetrics, sensorDataToUpload, imu1Queue, imu2Queue, imu3Queue, imu4Queue, mqttState, enableMetrics, imu1FinalQueue, imu2FinalQueue, imu3FinalQueue, imu4FinalQueue, csv_file_path, imus, counter, startReceiving, lastDataTime, enableConnectionToAPI, feedbackData
 #from get_online_metrics_ex_1_pr_1 import get_metrics
-#from SittingMetrics.SeatedBendingOver_v1 import get_metrics as get_metrics_SeatedBendingOver
-#from SittingMetrics.Trunk_rotation import get_metrics as get_metrics_Trunk_rotation
-#from SittingMetrics.ToeRaises import get_metrics as get_metrics_ToeRaises
-#from SittingMetrics.SitToStand import get_metrics as get_metrics_SitToStand
-#from SittingMetrics.SitToStand_v2 import get_metrics as get_metrics_SitToStand
-#from SittingMetrics.HeelRaises import get_metrics as get_metrics_HeelRaises
-#from SittingMetrics.HeelRaisesQuat import get_metrics as get_metrics_HeelRaises
-#from SittingMetrics.SeatedMarchingSpot import get_metrics as get_metrics_SeatedMarchingSpot
-#from StandingMetrics.StandingTurn import get_metrics as get_metrics_StandingTurn
-#from StandingMetrics.StandingTurnQuat import get_metrics as get_metrics_StandingTurn
 from New_Metrics.MaintainingFocus_HeadUpandDown import get_metrics as get_metrics_MaintainingFocus_HeadUpandDown
 from New_Metrics.MaintainingFocus_Headrotation import get_metrics as get_metrics_MaintainingFocus_Headrotation
 from New_Metrics.SeatedBendingOver_v1 import get_metrics as get_metrics_SeatedBendingOver
@@ -34,13 +24,6 @@ from New_Metrics.ForwardWalkingYaw import get_metrics as get_metricsForwardWalki
 from New_Metrics.ForwardWalkingTilt import get_metrics as get_metricsForwardWalkingTilt
 from New_Metrics.SideStepping import get_metrics as get_metrics_SideStepping
 from New_Metrics.WalkingHorizontalHeadTurns import get_metrics as get_metrics_WalkingHorizontalHeadTurns
-#from StandingMetrics.LateralWeightShifts import get_metrics as get_metrics_LateralWeightShifts
-#from StandingMetrics.LateralWeightShiftsQuat import get_metrics as get_metrics_LateralWeightShifts
-#from StandingMetrics.LimitsofStability import get_metrics as get_metrics_LimitsofStability
-#from StandingMetrics.ForwardReach import get_metrics as get_metrics_ForwardReach
-#from StandingMetrics.ForwardReachQuat import get_metrics as get_metrics_ForwardReach
-#from GaitMetrics.ForwardWalking import get_metrics as get_metrics_ForwardWalking
-#from GaitMetrics.ForwardWalkingQuat import get_metrics as get_metrics_ForwardWalking
 from StretchingMetrics.HipExternal import get_metrics as get_metrics_HipExternal
 from StretchingMetrics.LateralTrunkFlexion import get_metrics as get_metrics_LateralTrunkFlexion
 from GaitMetrics.GaiTest import get_metrics as get_metrics_Test
@@ -117,60 +100,55 @@ def get_data_tranch(q1, q2, q3, q4, counter, exercise):
     # Handle metrics if enabled
     if enableMetrics:
         if exercise == 'exer_01':
-            returnedJson = get_metrics_MaintainingFocus_Headrotation(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_MaintainingFocus_Headrotation(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_02':
-            returnedJson = get_metrics_MaintainingFocus_HeadUpandDown(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_MaintainingFocus_HeadUpandDown(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_03':
-            returnedJson = get_metrics_SeatedBendingOver(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_SeatedBendingOver(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_04':
-            returnedJson = get_metrics_Trunk_rotation(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_Trunk_rotation(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_05':
-            returnedJson = get_metrics_ToeRaises(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_ToeRaises(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_06':
-            returnedJson = get_metrics_HeelRaises(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_HeelRaises(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_07':
-            returnedJson = get_metrics_SeatedMarchingSpot(imu1List, imu2List, imu3List, imu4List, counter) 
+            metrics = get_metrics_SeatedMarchingSpot(imu1List, imu2List, imu3List, imu4List, counter) 
         elif exercise == 'exer_08':
-            returnedJson = get_metrics_SitToStand(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_SitToStand(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_09':
-             returnedJson = get_metrics_StandingBalance(imu1List, imu2List, imu3List, imu4List, counter)
+             metrics = get_metrics_StandingBalance(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_10':
-            returnedJson = get_metrics_StandingBalanceFoam(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_StandingBalanceFoam(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_11':
-            returnedJson = get_metrics_StandingBendingOver(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_StandingBendingOver(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_12':
-            returnedJson = get_metrics_StandingTurn(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_StandingTurn(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_13':
-            returnedJson = get_metrics_LateralWeightShifts(imu1List, imu2List, imu3List, imu4List, counter)    
+            metrics = get_metrics_LateralWeightShifts(imu1List, imu2List, imu3List, imu4List, counter)    
         elif exercise == 'exer_14':
-            returnedJson = get_metrics_LimitsofStability(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_LimitsofStability(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_15':
-            returnedJson = get_metrics_ForwardReach(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_ForwardReach(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_16':
-            returnedJson = get_metrics_ForwardWalking(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_ForwardWalking(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_17':
-            returnedJson = get_metricsForwardWalkingYaw(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metricsForwardWalkingYaw(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_18':
-            returnedJson = get_metricsForwardWalkingTilt(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metricsForwardWalkingTilt(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_19':
-            returnedJson = get_metrics_SideStepping(imu1List, imu2List, imu3List, imu4List, counter)
+            metrics = get_metrics_SideStepping(imu1List, imu2List, imu3List, imu4List, counter)
         elif exercise == 'exer_20' :
             metrics = get_metrics_WalkingHorizontalHeadTurns(imu1List, imu2List, imu3List, imu4List, counter)
-        elif exercise == 'exer_21':
-            returnedJson = get_metrics_HipExternal(imu1List, imu2List, imu3List, imu4List, counter)
-        elif exercise == 'exer_22':
-            returnedJson = get_metrics_LateralTrunkFlexion(imu1List, imu2List, imu3List, imu4List, counter)
-        elif exercise == 'exer_23':
-            returnedJson = get_metrics_LateralTrunkFlexion(imu1List, imu2List, imu3List, imu4List, counter)
-        elif exercise == 'exer_24':
-            print("ok")
-            #returnedJson = get_metrics_Test(imu1List, imu2List, imu3List, imu4List, counter)
+        else:
+            metrics = None
+        return metrics
+    return None
 
 
     # Final actions when counter reaches 4
     #if counter == 4:
-    #    postExerciseScore(returnedJson, "1")    
-    #print(returnedJson)
+    #    postExerciseScore(metrics, "1")    
+    #print(metrics)
 
 def plot_imu_data(imu_list, body_part, counter, folder_name):
     if not imu_list:
@@ -267,7 +245,7 @@ def safe_get_imu_queue(imu_data, body_part, default_queue):
     return imu_data.get(body_part, [None, default_queue])[1]  # Access the queue from imu_data or return the default queue
 
 
-def receive_imu_data(q, scheduleQueue, config_message, exercise):
+def receive_imu_data(q, scheduleQueue, config_message, exercise,metrics_queue):
 
     # Initialize multiprocessing manager
     manager = mp.Manager()
@@ -330,7 +308,7 @@ def receive_imu_data(q, scheduleQueue, config_message, exercise):
                             # interpolate
                             process_and_interpolate_imus(imu_data, target_rate_hz=100)  # 100 Hz target rate
 
-                            get_data_tranch(
+                            metrics = get_data_tranch(
                                 safe_get_imu_queue(imu_data, 'HEAD', manager.Queue()),  # imu1Queue
                                 safe_get_imu_queue(imu_data, 'PELVIS', manager.Queue()),  # imu2Queue
                                 safe_get_imu_queue(imu_data, 'LEFTFOOT', manager.Queue()),  # imu3Queue
@@ -345,7 +323,7 @@ def receive_imu_data(q, scheduleQueue, config_message, exercise):
 
                             if INTERVALS == 4:
                                 print("Processing the entire data stream...")
-                                get_data_tranch(
+                                final_metrics = get_data_tranch(
                                     imu_data.get('HEAD', [None, None, manager.Queue()])[2],  # imu1FinalQueue
                                     imu_data.get('PELVIS', [None, None, manager.Queue()])[2],  # imu2FinalQueue
                                     imu_data.get('LEFTFOOT', [None, None, manager.Queue()])[2],  # imu3FinalQueue
@@ -353,6 +331,8 @@ def receive_imu_data(q, scheduleQueue, config_message, exercise):
                                     INTERVALS,
                                     exercise_code
                                 )
+                                if final_metrics is not None:
+                                    metrics_queue.put(final_metrics)
                                 break;
     elif exercise_code == 'exer_02':
         while INTERVALS < 4 or not q.empty():
@@ -394,7 +374,7 @@ def receive_imu_data(q, scheduleQueue, config_message, exercise):
                             # interpolate
                             process_and_interpolate_imus(imu_data, target_rate_hz=100)  # 100 Hz target rate
 
-                            get_data_tranch(
+                            metrics = get_data_tranch(
                                 safe_get_imu_queue(imu_data, 'HEAD', manager.Queue()),  # imu1Queue
                                 safe_get_imu_queue(imu_data, 'PELVIS', manager.Queue()),  # imu2Queue
                                 safe_get_imu_queue(imu_data, 'LEFTFOOT', manager.Queue()),  # imu3Queue
@@ -409,7 +389,7 @@ def receive_imu_data(q, scheduleQueue, config_message, exercise):
 
                             if INTERVALS == 4:
                                 print("Processing the entire data stream...")
-                                get_data_tranch(
+                                final_metrics = get_data_tranch(
                                     imu_data.get('HEAD', [None, None, manager.Queue()])[2],  # imu1FinalQueue
                                     imu_data.get('PELVIS', [None, None, manager.Queue()])[2],  # imu2FinalQueue
                                     imu_data.get('LEFTFOOT', [None, None, manager.Queue()])[2],  # imu3FinalQueue
@@ -417,6 +397,8 @@ def receive_imu_data(q, scheduleQueue, config_message, exercise):
                                     INTERVALS,
                                     exercise_code
                                 )
+                                if final_metrics is not None:
+                                    metrics_queue.put(final_metrics)
                                 break;
     elif exercise_code == 'exer_03':
         while INTERVALS < 4 or not q.empty():
