@@ -13,6 +13,7 @@ from mqtt_messages import init_mqtt_client, set_language, start_exercise_demo, s
 from data_management_v05 import scheduler, receive_imu_data
 from api_management import login, get_device_api_key
 from configure_file_management import read_configure_file
+from Polar_test import start_ble_process 
 from shared_variables import (
     queueData, scheduleQueue, enableConnectionToAPI,
     MQTT_BROKER_HOST, MQTT_BROKER_PORT, MQTT_KEEP_ALIVE_INTERVAL,
@@ -105,6 +106,7 @@ def runScenario(queueData):
 
     try:
         metrics_queue = mp.Queue()
+        polar_queue = mp.Queue()
         logger.info('Running scenario...')
         
         while True:
@@ -190,6 +192,9 @@ def runScenario(queueData):
                 except Exception as e:
                      logger.error(f"Failed to send oral instruction for Exercise ID {exercise['exerciseId']}: {e}")
                      continue
+                
+                polar_proc = mp.Process(target=start_ble_process, args=(0, polar_queue))  # Adjust adapter index if needed
+                polar_proc.start()
 
                 # Start the process to receive and process IMU data
                 imu_process = mp.Process(
@@ -209,6 +214,13 @@ def runScenario(queueData):
                 client.publish('StopRecording', 'StopRecording')
                 time.sleep(2)
 
+                polar_proc.terminate()
+                polar_proc.join()
+                
+                polar_data = []
+                while not polar_queue.empty():
+                    polar_data.append(polar_queue.get())
+                
                 # Post metrics after the exercise ends
                 if not metrics_queue.empty():
                     metrics = metrics_queue.get()
@@ -220,6 +232,7 @@ def runScenario(queueData):
                     print(f"Metrics for Exercise {exercise['exerciseId']}: {metrics}")
 
                     # Post the results
+                    metrics["polar_data"] = polar_data
                     post_results(json.dumps(metrics), exercise['exerciseId'])
                      # Send Oral Instruction after the system 
                     try:
