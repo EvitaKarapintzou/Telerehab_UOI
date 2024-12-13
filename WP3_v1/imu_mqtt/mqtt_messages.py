@@ -2,9 +2,11 @@ import paho.mqtt.client as mqtt
 import json
 import time
 from datetime import datetime
+import FindMyIP as ip
 
 # MQTT Configuration
-MQTT_BROKER_HOST = "192.168.0.231"
+local_ip = ip.internal()
+MQTT_BROKER_HOST = local_ip
 MQTT_BROKER_PORT = 1883
 MQTT_KEEP_ALIVE_INTERVAL = 60
 
@@ -17,6 +19,7 @@ ack_received = False
 demo_start_received = False
 demo_end_received = False
 finish_received = False
+finish_response=None
 
 # MQTT Callbacks
 def on_connect(client, userdata, flags, rc):
@@ -25,7 +28,7 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_message(client, userdata, msg):
-    global ack_received, demo_start_received, demo_end_received, finish_received
+    global ack_received, demo_start_received, demo_end_received, finish_received,finish_response
 
     payload = json.loads(msg.payload.decode())
     print(f"Received message on {msg.topic}: {payload}")
@@ -44,6 +47,8 @@ def on_message(client, userdata, msg):
             ack_received = True
         elif payload.get("action") == "FINISH":
             finish_received = True
+        elif payload.get("action") == "FINISH_RESPONSE":
+            finish_response = payload.get("message", "").lower()
 
 
 # Publish and Wait
@@ -103,20 +108,14 @@ def start_exercise_demo(exercise):
         exercise_name = f"VC holobalance_sitting_2 P{exercise['progression']}"
     elif exercise['exerciseId'] == 3:
         exercise_name = f"VC holobalance_sitting_3 P{exercise['progression']}"
-    elif exercise['exerciseId'] == 2:
-        exercise_name = f"VC holobalance_sitting_2 P{exercise['progression']}"
-    elif exercise['exerciseId'] == 2:
-        exercise_name = f"VC holobalance_sitting_2 P{exercise['progression']}"
-    elif exercise['exerciseId'] == 2:
-        exercise_name = f"VC holobalance_sitting_2 P{exercise['progression']}"
-    elif exercise['exerciseId'] == 2:
-        exercise_name = f"VC holobalance_sitting_2 P{exercise['progression']}"
-    elif exercise['exerciseId'] == 2:
-        exercise_name = f"VC holobalance_sitting_2 P{exercise['progression']}"
-    elif exercise['exerciseId'] == 2:
-        exercise_name = f"VC holobalance_sitting_2 P{exercise['progression']}"
-    elif exercise['exerciseId'] == 2:
-        exercise_name = f"VC holobalance_sitting_2 P{exercise['progression']}"
+    elif exercise['exerciseId'] == 4:
+        exercise_name = f"VC holobalance_standing_1 P{exercise['progression']}"
+    elif exercise['exerciseId'] == 6:
+        exercise_name = f"VC holobalance_standing_3 P{exercise['progression']}"
+    elif exercise['exerciseId'] == 7:
+        exercise_name = f"VC holobalance_standing_4 P{exercise['progression']}"
+    elif exercise['exerciseId'] == 8:
+        exercise_name = f"VC holobalance_walking_1 P{exercise['progression']}"
     else:
         exercise_name = f"VC holobalance_sitting_3 P{exercise['progression']}"
 
@@ -152,3 +151,81 @@ def send_oral_instructions(code):
     while not publish_and_wait(MSG_TOPIC, oral_message, wait_for="FINISH"):
         print("Retrying DEMO_START...")
     
+def send_message_with_speech_to_text(code, timeout=20):
+    """
+    Send an oral instruction message and wait for FINISH_RESPONSE.
+
+    Args:
+        code (str): Code to identify the message.
+        timeout (int): Time to wait for a response before retrying (default: 20 seconds).
+
+    Returns:
+        str: The user's response ("yes" or "no").
+    """
+    global finish_response
+
+    # Message format stays the same as simple oral message
+    oral_message = {
+        "action": "SPEAK",
+        "exercise": "/",
+        "timestamp": datetime.now().isoformat(),
+        "code": code,
+        "message": "You have stopped too early, please try to continue the exercise. Yes or No?",
+        "language": "/"
+    }
+
+    while True:
+        # Send the message
+        client.publish(MSG_TOPIC, json.dumps(oral_message))
+        print(f"Published oral message: {oral_message}")
+        start_time = time.time()
+
+        # Wait for response
+        while time.time() - start_time < timeout:
+            if finish_response in ["yes", "no"]:
+                print(f"Received FINISH_RESPONSE: {finish_response}")
+                return finish_response  # Exit loop and return response
+            time.sleep(0.5)
+
+        # No response received, retrying
+        print("No response received. Retrying...")
+
+
+def send_message_with_speech_to_text_2(code, timeout=20):
+    """
+    Send an oral instruction message and wait for FINISH_RESPONSE.
+
+    Args:
+        code (str): Code to identify the message.
+        timeout (int): Time to wait for a response before retrying (default: 20 seconds).
+
+    Returns:
+        str: The user's response ("low","moderate" or "severe").
+    """
+    global finish_response
+
+    # Message format stays the same as simple oral message
+    oral_message = {
+        "action": "SPEAK",
+        "exercise": "/",
+        "timestamp": datetime.now().isoformat(),
+        "code": code,
+        "message": "You have stopped too early, please try to continue the exercise. Yes or No?",
+        "language": "/"
+    }
+
+    while True:
+        # Send the message
+        client.publish(MSG_TOPIC, json.dumps(oral_message))
+        print(f"Published oral message: {oral_message}")
+        start_time = time.time()
+
+        # Wait for response
+        while time.time() - start_time < timeout:
+            if finish_response in ["low", "moderate","severe"]:
+                print(f"Received FINISH_RESPONSE: {finish_response}")
+                return finish_response  # Exit loop and return response
+            time.sleep(0.5)
+
+        # No response received, retrying
+        print("No response received. Retrying...")
