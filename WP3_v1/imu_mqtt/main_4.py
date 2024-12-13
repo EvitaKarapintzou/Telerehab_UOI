@@ -24,10 +24,12 @@ from UDPClient import SendMyIP
 from websocketServer import run_websocket_server
 
 # Set up logger
+timestamp = time.time()
+current_time = datetime.now().strftime("%Y-%m-%d")
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(message)s')
-file_handler = logging.FileHandler('app.log', mode='a')
+file_handler = logging.FileHandler(f'{current_time}/app.log', mode='a')
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
 console_handler = logging.StreamHandler(sys.stdout)
@@ -48,8 +50,8 @@ class StreamToLogger:
     def flush(self):
         pass
 
-# sys.stdout = StreamToLogger(logger.info)
-# sys.stderr = StreamToLogger(logger.error)
+sys.stdout = StreamToLogger(logger.info)
+sys.stderr = StreamToLogger(logger.error)
 def get_devices():
     """Fetch the daily schedule from the API."""
     config = configparser.ConfigParser()
@@ -269,27 +271,38 @@ def runScenario(queueData):
 
                     # Post the results
                     # metrics["polar_data"] = polar_data
-                    post_results(json.dumps(metrics), exercise['exerciseId'])
-                    # Mark the exercise as completed
-                    print(f"Exercise {exercise['exerciseName']} completed.")
-                     # Send Oral Instruction and handle response
+                   
+                else:
                     try:
-                    # Combine sending oral instruction and waiting for response
-                        response = send_message_with_speech_to_text("bph0088")
-                    except Exception as e:
-                        logger.error(f"Failed to send oral instruction or get response for Exercise ID {exercise['exerciseId']}: {e}")
+                        metrics = {"metrics": ["ERROR IN METRICS", "ERROR IN METRICS", "ERROR IN METRICS"]}
+                    except json.JSONDecodeError:
+                        print("Metrics_2 could not be parsed as JSON.")
                         return
+                post_results(json.dumps(metrics), exercise['exerciseId'])
 
-                    if response == "no":
-                        print("User chose to stop. Exiting scenario.")
-                        return
-                    elif response == "yes":
-                        print("User chose to continue. Proceeding with next exercise.")
-                        continue
+                # Mark the exercise as completed
+                print(f"Exercise {exercise['exerciseName']} completed.")
+                # Send Oral Instruction and handle response
+                try:
+                # Combine sending oral instruction and waiting for response
+                    response = send_message_with_speech_to_text("bph0088")
+                except Exception as e:
+                    logger.error(f"Failed to send oral instruction or get response for Exercise ID {exercise['exerciseId']}: {e}")
+                    return
+
+                if response == "no":
+                    print("User chose to stop. Exiting scenario.")
+                    return
+                elif response == "yes":
+                    print("User chose to continue. Proceeding with next exercise.")
+                    continue
 
             
             # Fetch updated schedule after processing current exercises
             exercises = get_daily_schedule()
+            if not exercises :
+                response = send_oral_instructions("bph0108")
+                break;
 
     except requests.exceptions.RequestException as e:
         logger.error(f"Error: {e}")
